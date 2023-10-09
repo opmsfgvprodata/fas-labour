@@ -1,0 +1,381 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrDataInfo>
+
+@{
+    ViewBag.Title = "Continue Permit Survey Report";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    GetIdentity GetIdentity = new GetIdentity();
+    GetNSWL GetNSWL = new GetNSWL();
+    GeneralFunc GeneralFunc = new GeneralFunc();
+    var LadangList = GetNSWL.GetLadang();
+    string WilayahName = "";
+    string LadangName = "";
+    string[] WebConfigFilter = new string[] { "krytnlist", "fomemarenew" };
+    GetConfig GetConfig = new GetConfig();
+    bool FlagBr = false;
+    int i = 1;
+
+
+}
+
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+        @using (Html.BeginForm("LabourPrmtPsprtSurvey", "LabourReport", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Region</label>
+                    @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Estate</label>
+                    @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+
+                <div class="col-sm-2" id="divlist">
+                    <label>Month</label>
+                    @Html.DropDownList("MonthList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2" id="divlist">
+                    <label>Year</label>
+                    @Html.DropDownList("YearList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+
+                <div class="col-sm-2" style="padding-top:24px;">
+                    <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Continue Permit Survey Report</div> @*modified by wani 2/2/2020 (1) *@
+            <div class="panel-body">
+                <div id="searchResult">
+                    <div id="scrollArea2" class="modal-body">
+
+                        <logo />
+
+                        <table class="table table-bordered" style="font-size: 11px;" border="0" width="100%">
+                            <thead>
+                                <tr>
+
+                                    <th colspan="18" style="text-align:center;vertical-align:middle; border:none;">
+                                        @ViewBag.NamaSyarikat
+                                        <br />
+                                        (@ViewBag.NoSyarikat)
+
+                                    </th>
+                                    <th colspan="3" style="border:none" ; align="left">
+                                        <label style="font-size: 9px; border:none;">opms_cr</label> <br />
+                                        <div style="float:left ;font-size: 8px; border:none; ">
+                                            <span id="page_number"></span> &nbsp;
+                                            <div style="float:left ;font-size: 9px; border:none; "><span id="content"></span> </div>
+                                        </div>
+                                        <label style="float:left ;font-size: 8px; border:none;"><span></span> &nbsp;</label>
+                                        <label style="float:left ;font-size: 8px; border:none;"><span></span> &nbsp;</label>
+                                        <label style="float:left ;font-size: 8px; border:none;">[<span id="date"></span>] &nbsp;</label>
+                                        <label style="float:left ;font-size: 8px; border:none;">[<span id="time"></span>]</label><br />
+                                    </th>
+                                </tr>
+                                <tr>
+                                    
+                                    <td colspan="1" style="text-align:left;vertical-align:middle; border:none;">
+                                        <label>Title</label> @*modified by wani 2/2/2020  (2)  *@
+                                        <br />
+                                        <label>Region/Estate</label> @*modified by wani 2/2/2020  (3) *@
+                                        <br />
+                                    </td>
+                                    <td colspan="17" style="text-align:left;vertical-align:middle; border:none;">
+                                        <label>: @ViewBag.Title</label> <br /> @*modified by wani 2/2/2020  (4) *@
+                                        <label>: @ViewBag.Region/@ViewBag.Estate</label> <br /> @*modified by wani 2/2/2020  (5) *@
+                                    </td>
+                                   
+                                    
+
+                                    <td colspan=3 align="left" style="text-align:left;vertical-align:middle; border:none; font-weight:bold; font-size:8px;">
+                                        <label style="font-size:8px">Duration:</label>@ViewBag.Month/@ViewBag.Year
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">No</th>
+                                    <th colspan="4" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Worker</th>
+                                    <th rowspan="2" colspan="3" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Unit/Station</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Nationality)</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Birth Date</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Age)</th>
+                                    <th colspan="3" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Date</th>                                
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Year Sticker</th>
+                                    <th colspan="3" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1"> Services</th>
+                                    <th colspan="3" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="1" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">No</th>
+                                    <th colspan="1" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">ID</th>
+                                    <th colspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Name</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Arrived</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Passport End</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Permit End</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Year</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Month</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Day</th>
+                                    <th colspan="1" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Permit Renew</th>
+                                    <th colspan="1" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Passport Renew</th>
+                                    <th colspan="1" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">End Contract/<br /> COM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    WilayahName = LadangList.Where(x => x.fld_WilayahID == item.fld_WilayahID).Select(s => s.fld_NamaWilayah).Distinct().FirstOrDefault();
+                                    LadangName = LadangList.Where(x => x.fld_LadangID == item.fld_LadangID).Select(s => s.fld_NamaLadang).Distinct().FirstOrDefault();
+
+                                    var GetConfigData = GetConfig.GetConfigDesc(item.fld_NegaraID, item.fld_SyarikatID, WebConfigFilter);
+                                    var GetKerayatan = GetConfigData.Where(x => x.fldOptConfValue == item.fld_Nationality && x.fldOptConfFlag1 == "krytnlist").Select(s => s.fldOptConfDesc).FirstOrDefault();
+                                    var Age = GeneralFunc.CalAge(item.fld_BOD.Value);
+
+                                    var YearStiker = GeneralFunc.CalAge(item.fld_ArrivedDT.Value) + 1;
+                                    
+                                    var years = GeneralFunc.TimeSpanToDate(item.fld_ArrivedDT.Value);
+                                    
+                                    var months = GeneralFunc.TimeSpanToMonth(item.fld_ArrivedDT.Value);
+                                    
+                                    var days = GeneralFunc.TimeSpanToDay(item.fld_ArrivedDT.Value);
+                                   
+                                    var FormemaRenew = GetConfigData.Where(x => x.fldOptConfValue == YearStiker.ToString() && x.fldOptConfFlag1 == "fomemarenew").FirstOrDefault();
+                                    var YearEndPassport = GeneralFunc.CalEndDate(item.fld_PassportEndDT.Value);
+                                    var YearEndPermit = GeneralFunc.CalEndDate(item.fld_PermitEndDT.Value);
+                                    FlagBr = false;
+                                    var Station = LadangName;
+
+                                    <tr>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@i</td>
+                                        <td colspan="1" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerNo)</td>
+                                        <td colspan="1" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
+                                        <td colspan="2" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
+
+                                        <td colspan="3" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Station</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetKerayatan</td>
+
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_BOD)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Age</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_ArrivedDT)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_PassportEndDT)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_PermitEndDT)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@YearStiker</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@years</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@months</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@days</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                                            @if (YearEndPermit <= 0)
+                                            {
+                                                @*@Html.ActionLink("Permit", "PermitUpdate", "LabourPrmtPsprt", new { id = item.fld_ID }, null)*@
+                                                if (FlagBr)
+                                                {
+                                                    <br />
+                                                }
+                                                @Html.Raw("Permit")
+                                                FlagBr = true; @*modified by wani 3/2/2020  (6) *@
+                                            }
+                                            else
+                                            {
+                                                if (YearEndPermit >= 0)
+                                                {
+                                                    @*@Html.ActionLink("Permit ", "Permit", "LabourPrmtPsprt", new { id = item.fld_ID }, null)*@
+                                                    if (FlagBr)
+                                                    {
+                                                        <br />
+                                                    }
+                                                    @Html.Raw("Permit")
+                                                    FlagBr = true; @*modified by wani 3/2/2020  (7) *@
+                                                }
+                                            }
+                                        </td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                                            @if (YearEndPassport <= 0)
+                                            {
+
+                                                @*@Html.ActionLink("Passport ", "Passport", "LabourPrmtPsprt", new { id = item.fld_ID }, null)*@
+                                                if (FlagBr)
+                                                {
+                                                    <br />
+                                                }
+                                                @Html.Raw("Passport")
+                                                FlagBr = true; @*modified by wani 3/2/2020  (8) *@
+
+                                            }
+                                        </td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                                            @if (YearStiker >= 10)
+                                            {
+                                                if (item.fld_WilayahID == 1)
+                                                {
+                                                    @*@Html.ActionLink("End Contract Register", "EndContractRegister", new { id = item.fld_ID }, null)*@
+                                                    if (FlagBr)
+                                                    {
+                                                        <br />
+                                                    }
+                                                    @Html.Raw("End Contract Register")
+                                                    FlagBr = true; @*modified by wani 3/2/2020  (9) *@
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div style="text-align:right; margin-top:10px">
+                    <a class="btn btn-default btn-sm" href="#" id="printpage">
+                        <span class="glyphicon glyphicon-print"> </span>Print
+                    </a>
+                    <a class="btn btn-default btn-sm" href="#" id="downloadpdf">
+                        <span><img src="~/Asset/Images/pdf-icon.png" width="20px" height="20px" /></span> Download PDF
+                    </a>
+                    <a class="btn btn-default btn-sm" href="#" id="HTMLtoExcel">
+                        <span><img src="~/Asset/Images/excel-icon.png" width="20px" height="20px" /></span>download Excel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</section>
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    #content{
+        display:table;
+    }
+
+   #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after{
+        content:"";
+        counter-increment:pagenumber; 
+        content:"Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+</style>
+
+
+
+
+
+
+<script>
+    $("#HTMLtoExcel").click(function () {
+
+        var blob = new Blob([document.getElementById('scrollArea2').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        })
+        saveAs(blob, 'LabourPrmtPsprtSurvery' + ".xls");  //Edited by Shazana on 3/9
+
+    });
+
+    $(document).ready(function () {
+        $("#printpage").click(function () {
+            var DivElement = document.getElementById("scrollArea2").innerHTML;
+            var page_number;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = DivElement;
+            window.print();
+            document.body.innerHTML = oldPage;
+            document.getElementById("content").innerHTML = page_number.toString();
+            window.toLocaleString.print();
+ 
+        })
+
+        $("#downloadpdf").click(function () {
+            var RadioGroup = $('input[name=RadioGroup]:checked').val();
+            //var MonthList = $("#MonthList").val();
+            //var YearList = $("#YearList").val();
+            var SelectionList = $("#SelectionList").val();
+            var StatusList = $("#StatusList").val();
+            var JnsPkjList = $("#JnsPkjList").val();
+            //var WorkCategoryList = $("#WorkCategoryList").val();
+
+            //var StatusList = '';
+            //var WorkCategoryList = '';
+
+            var param = '/?RadioGroup=' + RadioGroup + '&SelectionList=' + SelectionList + '&StatusList=' + StatusList + '&JnsPkjList=' + JnsPkjList;
+            var controller = 'Report';
+            var action = 'PrintWorkerPdf';
+
+            var ajxfn = {};
+            ajxfn.url = "@Url.Action("PDFIndetifier", "PdfCreator")";
+            ajxfn.type = "POST";
+            ajxfn.data = JSON.stringify({ controller: controller, action: action, param: param });
+            ajxfn.datatype = "json";
+            ajxfn.contentType = "application/json";
+            ajxfn.success = function (result) {
+                //var win = window.open(result.link, '_blank');
+                //win.focus();
+                PDFObject.embed(result.link, "#searchResultWorkerInfo", { height: "450px" });
+            };
+
+            ajxfn.error = function () {
+                $.simplyToast('error', 'danger');
+                $("#UpdateProgress1").css("display", "none");
+            };
+            $.ajax(ajxfn);
+
+            return false;
+        });
+    });
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("date").innerHTML = dt.toLocaleDateString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("datetime").innerHTML = dt.toLocaleString();
+</script>
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>
+

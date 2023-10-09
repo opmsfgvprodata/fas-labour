@@ -1,0 +1,185 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+@{
+    ViewBag.Title = "Sick Death Register";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetConfig GetConfig = new GetConfig();
+    string dateformat = GetConfig.GetData("dateformat");
+    string DisableAll = ViewBag.DisableAll;
+}
+    <style>
+        div.ex0 {
+            height: auto;
+            width: 100px;
+            margin: 100px;
+            background-color: purple;
+        }
+
+        div.ex2 {
+            padding-left: 130px;
+            padding-top: 10px;
+        }
+
+        div.ex3 {
+            padding-left: 130px;
+            padding-top: 10px;
+        }
+    </style>
+
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Sick Death Registration: @Model.fld_WorkerNo - @Model.fld_WorkerName</div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                            <input type="hidden" id="fld_LbrRefID" name="fld_LbrRefID" value="@Model.fld_ID" />
+                            @Html.AntiForgeryToken()
+
+                            <table>
+                                <div>
+                                    <tr>
+                                        <td style="form-group">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:40px; ">Worker ID:</label>
+                                            </div>
+                                            <div class="ex2">
+                                                <div class="col-md-7">
+                                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @style = " margin-top: 20px", @readonly = "readonly" } })
+                                                </div>
+
+                                            </div>
+                                        </td>
+
+                                        <td style="form-group">
+                                            <div>
+                                                <label style="float: left; margin-right: 10px; padding-left: 40px;padding-top: 40px; "> Status:</label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class=" col-md-8">
+                                                    @Html.DropDownList("fld_HealthStatus", null, htmlAttributes: new { @class = "form-control", @style = " margin-top: 20px" })
+                                                
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px; ">Worker Name:</label>
+                                            </div>
+                                            <div class="ex2">
+                                                <div class="col-md-7">
+                                                  
+                                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td style="width:50%">
+                                            <div>
+                                                @*Edited by nana on 29/7*@<label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Date of Death:</label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class="col-md-8">
+                                                    <div class='input-group date' id='datetimepicker1'>
+                                                        <input id="fld_DeathDT" name="fld_DeathDT" class="form-control" value="" />
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr style="padding-top:20px">
+
+                                        <td>
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px; ">Remarks:</label>
+                                            </div>
+                                            <div class="ex2">
+                                                <div class="col-md-7">
+                                                    @Html.TextArea("fld_Remark", null, 4, 100, new { htmlAttributes = new { @class = "form-control" } })
+                                                   
+                                                </div>
+                                                </div>
+
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <div class="col-md-offset-5 ">
+                                                    @if (DisableAll == "Yes")
+                                                    {
+                                                        <input type="submit" value="Save" class="btn btn-success" disabled />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="submit" value="Save" class="btn btn-success" />
+                                                    }
+                                                    @*Edited by nana on 29/7*@ @Html.ActionLink("Back to List", "Index", "LabourSickDeath", null, htmlAttributes: new { @class = "btn btn-warning" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    
+                                </div>
+
+
+                            </table>
+
+                        }
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Sick Death Labour Info</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.Action("_LabourSickDeathDetail", new { LabourID = Model.fld_ID })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $('#datetimepicker1').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+
+    var HealthStatus = $('#fld_HealthStatus').val();
+    if (HealthStatus === "06") {
+        $("#fld_DeathDT").prop('disabled', true);
+    } else {
+        $("#fld_DeathDT").prop('disabled', false);
+    }
+
+    $("#fld_HealthStatus").change(function () {
+        var HealthStatus = $('#fld_HealthStatus').val();
+        if (HealthStatus === "06") {
+            $("#fld_DeathDT").prop('disabled', true);
+        } else {
+            $("#fld_DeathDT").prop('disabled', false);
+        }
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

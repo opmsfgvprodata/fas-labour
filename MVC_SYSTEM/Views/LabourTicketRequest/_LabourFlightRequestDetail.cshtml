@@ -1,0 +1,70 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.vw_LbrFlightRequest>
+@{
+    GetConfig GetConfig = new GetConfig();
+    string[] WebConfigFilter = new string[] { "flighttype" };
+}
+<div class="modal-body">
+    <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+        <thead>
+            <tr>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerNo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerIDNo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerName)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_FlightCode)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_DestinationCode)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_RequestDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_RequestDT2)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var GetConfigData = GetConfig.GetConfigDesc(item.fld_NegaraID, item.fld_SyarikatID, WebConfigFilter);
+                var GetFlightDestination = GetConfig.GetFlightDestination(item.fld_NegaraID, item.fld_SyarikatID);
+                <tr>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerNo)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetConfigData.Where(x => x.fldOptConfFlag1 == "flighttype" && x.fldOptConfValue == item.fld_FlightCode).Select(s => s.fldOptConfDesc).FirstOrDefault()</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetFlightDestination.Where(x => x.fld_ID == item.fld_DestinationCode).Select(s => s.fld_DestinationName).FirstOrDefault()</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_RequestDT)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_RequestDT2)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                        @if (item.fld_Deleted == false)
+                        {
+                            if (item.fld_ApprovedStatus == null)
+                            {
+                                @Html.ActionLink("Panding Approval", "ApproveFlightRequest", new { id = item.fld_ID })
+                                <br />
+                                @Html.ActionLink("Cancel", "CancelFlightRequest", new { id = item.fld_ID })
+                            }
+                            else if (item.fld_ApprovedStatus == true)
+                            {
+                                @Html.Raw("Flight Requested Approved")
+                                <br />
+                                @Html.ActionLink("Cancel", "CancelFlightRequest", new { id = item.fld_ID })
+                            }
+                            else
+                            {
+                                @Html.Raw("Not Approve")
+                            }
+                        }
+                        else
+                        {
+                            @Html.Raw("Cancellation Flight Request")
+                        }
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="8" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">No Data</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

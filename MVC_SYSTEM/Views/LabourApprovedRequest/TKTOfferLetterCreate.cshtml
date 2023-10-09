@@ -1,0 +1,109 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrTKTProcess
+@{
+    /**/
+
+    ViewBag.Title = "TKT Offer Letter Create";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetConfig GetConfig = new GetConfig();
+    string dateformat = GetConfig.GetData("dateformat");
+    string DisableAll = ViewBag.DisableAll;
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Letter Offer: @Model.fld_NoIC - @Model.fld_Nama</div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                            <input type="hidden" id="fld_LbrRefID" name="fld_LbrRefID" value="@Model.fld_ID" />
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_NoIC, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_NoIC, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_Nama, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_Nama, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Letter Address *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextArea("fld_LtrAdd", null, 8, 100, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Start Working *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input id="fld_WorkingSrtDT" name="fld_WorkingSrtDT" class="form-control" value="" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Daily Rate *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("fld_DailyPayRate", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    @if (DisableAll == "Yes")
+                                    {
+                                        <input type="submit" value="Save" class="btn btn-success" disabled />
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" value="Save" class="btn btn-success" />
+                                    }
+                                    @Html.ActionLink("Back to List", "Index", "LabourSickDeath", null, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    @*Edited by nana on 29/7*@<div class="panel-heading">Offer Letter Info</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.Action("_TKTOfferLetterDetail", new { LabourID = Model.fld_ID })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $('#datetimepicker1').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+

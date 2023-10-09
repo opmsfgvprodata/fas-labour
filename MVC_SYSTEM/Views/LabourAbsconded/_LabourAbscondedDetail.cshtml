@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.vw_LbrAbsconded>
+@{
+    GetConfig GetConfig = new GetConfig();
+    string[] WebConfigFilter = new string[] { "fomematype", "acknwldmnttype", "sector", "negeri", "result" };
+}
+<div class="modal-body">
+    <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+        <thead>
+            <tr>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerNo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerIDNo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerName)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_AbscndDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ReportPoliceNo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ReportPoliceDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var GetConfigData = GetConfig.GetConfigDesc(item.fld_NegaraID, item.fld_SyarikatID, WebConfigFilter);
+                <tr>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerNo)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_AbscndDT)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_ReportPoliceNo)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_ReportPoliceDT)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                        @if (item.fld_Deleted == false)
+                        {
+
+                            @Html.ActionLink("Cancel", "CancelLabourAbsconded", new { id = item.fld_ID })
+                            <br />
+                            @Html.ActionLink("Upload/Download File", "UpDownloadFileLabourAbsconded", "LabourAbsconded", new { id = item.fld_ID }, null)
+                        }
+                        else
+                        {
+                            @Html.Raw("Cancellation Absconded")
+                        }
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">No Data</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+

@@ -1,0 +1,208 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrDataInfo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_WorkerIDNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_WorkerNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_WorkerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_WorkerAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Postcode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_State)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Country)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_PhoneNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_SexType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Race)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Religion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_BOD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Nationality)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_MarriedStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_FeldaRelated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_ActiveStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_InactiveReason)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_InactiveDT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Notes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_WorkingStartDT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_ConfirmationDT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_WorkerType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_WorkCtgry)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_NegaraID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_SyarikatID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_WilayahID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_LadangID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_DivisionID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_LbrProcessID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_WorkerIDNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_WorkerNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_WorkerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_WorkerAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Postcode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_State)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Country)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_PhoneNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_SexType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Race)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Religion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_BOD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Age)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Nationality)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_MarriedStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_FeldaRelated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_ActiveStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_InactiveReason)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_InactiveDT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Notes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_WorkingStartDT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_ConfirmationDT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_WorkerType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_WorkCtgry)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_NegaraID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_SyarikatID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_WilayahID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_LadangID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_DivisionID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_LbrProcessID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.fld_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.fld_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.fld_ID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,233 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+@{
+    GetConfig GetConfig = new GetConfig();
+    ViewBag.Title = "Update Menu";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    string[] WebConfigFilter = new string[] { "sbbTakAktif" };
+    var GetConfigData = GetConfig.GetConfigDesc(Model.fld_NegaraID, Model.fld_SyarikatID, WebConfigFilter);
+    var GetFlightStatus = GetConfigData.Where(x => x.fldOptConfValue == Model.fld_InactiveReason).Count();
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" style="width:900px">
+        <div class="modal-body" style="width:auto">
+            <div class="form-horizontal">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">@Model.fld_WorkerIDNo - @Model.fld_WorkerName</div>
+                    <div class="panel-body" style="width:auto">
+
+                        @*Added by Shazana on 20/4/2021*@
+                        @if (ViewBag.RoleUser == 8)
+                        {
+                            <table class="table table-bordered" style="font-size: 14px;" border="0" width="50%">
+                                <tr>
+                                    <td align="left" style="vertical-align:middle !important;border:1px solid groove;" border="1"> Step 1 <br /> Labour First Registration </td>
+                                    <td colspan="6">
+                                        @Html.ActionLink("1.Update Personal Detail", "TKAFullInformation", new { id = Model.fld_ID })
+                                        <br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" style="vertical-align:middle !important;border:1px groove;" border="1"> Step 2 <br /> Labour COM Registration </td>
+                                    <td colspan="6">
+                                        2. Register End Contract <br />
+
+
+                                        3. Register On Leave<br />
+
+
+                                        4. Labour Flight Request<br />
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+                        else
+                        {
+                            @*Close Added by Shazana on 20/4/2021*@
+
+                            @*@if (Model.fld_Nationality == "MA") //Commented by Shazana on 20/4/2021*@
+                            if (Model.fld_Nationality == "MA")  //Added by Shazana on 20/4/2021
+                            {
+                                <table class="table table-bordered" style="font-size: 14px;" border="0" width="100%">
+                                    <tr>
+                                        @*Edited by nana on 29/7*@
+                                        <td align="left" style="vertical-align:middle !important;border:1px solid groove;" border="1"> Step 1 <br /> Labour First Registration</td>
+                                        <td>
+                                            @Html.ActionLink("1. Update Personal Detail", "TKTFullInformation", new { id = Model.fld_ID })
+                                            <br />
+                                            @Html.ActionLink("2. Sync To Checkroll", "Index", "LabourToCheckroll", new { id = Model.fld_ID }, null)
+                                            <br />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" style="vertical-align:middle !important;border:1px solid groove;" border="1"> <b>Step 2</b> <br /> Labour Management </td>
+                                        <td>
+                                            @Html.ActionLink("3. Labour Transfer", "Index", "LabourTransfer", new { id = Model.fld_ID }, null)
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            }
+                            else
+                            {
+                                if (Model.fld_ActiveStatus == "1")
+                                {
+                                    <table class="table table-bordered" style="font-size: 14px;" border="0" width="100%">
+                                        <tr>
+                                            @*Edited by nana on 29/7*@
+                                            <td align="left" style="vertical-align:middle !important;border:1px solid groove;" border="1"> <b>Step 1</b> <br /> Labour First Registration </td>
+                                            <td>
+                                                @Html.ActionLink("1. Update Personal Detail", "TKAFullInformation", new { id = Model.fld_ID })
+                                                <br />
+                                                @Html.ActionLink("2. Sync To Checkroll", "Index", "LabourToCheckroll", new { id = Model.fld_ID }, null)
+                                                <br />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left" style="vertical-align:middle !important;border:1px solid groove;" border="1"> <b>Step 2</b> <br /> Labour Management </td>
+                                            <td>
+
+                                                @Html.ActionLink("3. Labour Transfer", "Index", "LabourTransfer", new { id = Model.fld_ID }, null)
+                                                <br />
+                                                @Html.ActionLink("4. Permit Update", "PermitUpdate", "LabourPrmtPsprt", new { id = Model.fld_ID }, null)
+                                                <br />
+                                                @Html.ActionLink("5. Passport Update", "PassportUpdate", "LabourPrmtPsprt", new { id = Model.fld_ID }, null)
+                                                <br />
+                                                @Html.ActionLink("6. Register Fomema", "FomemaRegister", "LabourFomema", new { id = Model.fld_ID }, null)
+                                                <br />
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            @*Edited by nana on 29/7*@
+                                            <td align="left" style="vertical-align:middle !important;border:1px solid groove;" border="1"> <b>Step 3</b> <br /> Labour COM Registration</td>
+                                            <td>
+
+                                                @Html.ActionLink("7. Register Absconded", "AbscondedRegister", "LabourAbsconded", new { id = Model.fld_ID }, null)<br />
+                                                @Html.ActionLink("8. Register End Contract", "EndContractRegister", "LabourEndContract", new { id = Model.fld_ID }, null)<br />
+                                                @Html.ActionLink("9. Register Sick Death", "SickDeathRegister", "LabourSickDeath", new { id = Model.fld_ID }, null)<br />
+                                                @Html.ActionLink("10. Register On Leave", "OnLeaveRegister", "LabourOnLeave", new { id = Model.fld_ID }, null) <br />
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                }
+
+                                else
+                                {
+                                    <table class="table table-bordered" style="font-size: 14px;" border="0" width="50%">
+                                        <tr>
+                                            @*Edited by nana on 29/7*@
+                                            <td align="left" style="vertical-align:middle !important;border:1px solid groove;" border="1"> Step 1 <br /> Labour First Registration </td>
+                                            <td colspan="6">
+                                                @Html.ActionLink("1. Update Personal Detail", "TKAFullInformation", new { id = Model.fld_ID })
+                                                <br />
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+
+                                            @*Edited by nana on 29/7*@
+                                            <td align="left" style="vertical-align:middle !important;border:1px groove;" border="1"> Step 2 <br /> Labour COM Registration </td>
+                                            <td colspan="6">
+                                                @Html.ActionLink("2. Register End Contract", "EndContractRegister", "LabourEndContract", new { id = Model.fld_ID }, null) <br />
+
+
+                                                @Html.ActionLink("3. Register On Leave", "OnLeaveRegister", "LabourOnLeave", new { id = Model.fld_ID }, null)<br />
+
+
+                                                @Html.ActionLink("4. Labour Flight Request", "TicketRequestRegister", "LabourTicketRequest", new { id = Model.fld_ID }, null)<br />
+                                            </td>
+
+                                        </tr>
+                                    </table>
+                                }
+                            }
+                        } @*Added by Shazana on 20/4/2021*@
+
+
+                        @* if (Model.fld_OnLeaveStatus == false || Model.fld_OnLeaveStatus == null)
+        {
+            if (Model.fld_InactiveReason == "08" || Model.fld_InactiveReason == null)
+            {
+        @Html.ActionLink("6. Register Fomema", "FomemaRegister", "LabourFomema", new { id = Model.fld_ID }, null)
+        < br />
+        }
+        else
+        {
+        @Html.Raw("6. Register Fomema")
+        < br />
+        }
+
+        if (Model.fld_InactiveReason == "02" || Model.fld_InactiveReason == null)
+        {
+        @Html.ActionLink("7. Register Absconded", "AbscondedRegister", "LabourAbsconded", new { id = Model.fld_ID }, null)
+        < br />
+        }
+        else
+        {
+        @Html.Raw("7. Register Absconded")
+        < br />
+        }
+
+        if (Model.fld_InactiveReason == "07" || Model.fld_InactiveReason == "05" || Model.fld_InactiveReason == null)
+        {
+        @Html.ActionLink("8. Register End Contract", "EndContractRegister", "LabourEndContract", new { id = Model.fld_ID }, null)
+        < br />
+        }
+        else
+        {
+        @Html.Raw("8. Register End Contract")
+        < br />
+        }
+
+        if (Model.fld_InactiveReason == "03" || Model.fld_InactiveReason == "06" || Model.fld_InactiveReason == null)
+        {
+        @Html.ActionLink("9. Register Sick Death", "SickDeathRegister", "LabourSickDeath", new { id = Model.fld_ID }, null)
+        < br />
+        }
+        else
+        {
+        @Html.Raw("9. Register Sick Death")
+        < br />
+        }
+
+        @Html.ActionLink("10. Register On Leave", "OnLeaveRegister", "LabourOnLeave", new { id = Model.fld_ID }, null)
+        < br />
+        }
+
+
+        else
+        {
+        @Html.Raw("6. Register Fomema")
+        < br />
+        @Html.Raw("7. Register Absconded")
+        < br />
+        @Html.Raw("8. Register End Contract")
+        < br />
+        @Html.Raw("9. Register Sick Death")
+        < br />
+        @Html.ActionLink("10. Register On Leave", "OnLeaveRegister", "LabourOnLeave", new { id = Model.fld_ID }, null)
+        < br />
+        }
+
+        if (GetFlightStatus > 0)
+        {
+        @Html.ActionLink("11. Labour Flight Request", "TicketRequestRegister", "LabourTicketRequest", new { id = Model.fld_ID }, null)
+        < br />
+        }
+        else
+        {
+        @Html.Raw("11. Labour Flight Request")
+        < br />
+        }
+        }*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,75 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrTKTProcess
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tbl_LbrTKTProcess</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_Nama)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_Nama)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_NoIC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_NoIC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_PhoneNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_PhoneNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_SexType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_SexType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_Age)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_Age)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_LbrRqstID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_LbrRqstID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_ProcessStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_ProcessStatus)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.fld_UniqueID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

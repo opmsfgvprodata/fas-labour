@@ -1,0 +1,326 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+
+@{
+    ViewBag.Title = "TKT Full Information";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetConfig GetConfig = new GetConfig();
+    string dateformat = GetConfig.GetData("dateformat");
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <section class="content-wrapper main-content clear-fix">
+        <div class="well" id="well">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                @Html.HiddenFor(model => model.fld_ID)
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Estate Labour Information</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerIDNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_WorkerIDNo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_WorkerName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.fld_WorkerAddress, 8, 100, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_WorkerAddress, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_Postcode, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_Postcode, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_Postcode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_State, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_State", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_State, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_Country, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_Country", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_Country, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_PhoneNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    Enter Phone No without any symbol '-'
+                                    @Html.EditorFor(model => model.fld_PhoneNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_PhoneNo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_SexType, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_SexType", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_SexType, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_Race, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_Race", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_Race, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_Religion, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_Religion", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_Religion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_BOD, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        @Html.EditorFor(model => model.fld_BOD, new { htmlAttributes = new { @class = "form-control" } })
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_Age, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_Age, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_Age, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_Nationality, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_Nationality", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_Nationality, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_MarriedStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_MarriedStatus", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_MarriedStatus, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerType, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_WorkerType", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_WorkerType, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkCtgry, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_WorkCtgry", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_WorkCtgry, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_BankCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_BankCode", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_BankCode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_BankAcc, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_BankAcc, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_BankAcc, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_PerkesoNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_PerkesoNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_PerkesoNo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.fld_Notes, 8, 100, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_Notes, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkingStartDT, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker3'>
+                                        @Html.EditorFor(model => model.fld_WorkingStartDT, new { htmlAttributes = new { @class = "form-control" } })
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_ConfirmationDT, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker4'>
+                                        @Html.EditorFor(model => model.fld_ConfirmationDT, new { htmlAttributes = new { @class = "form-control" } })
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_PaymentMode, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_PaymentMode", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_PaymentMode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_Last4Pan, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_Last4Pan, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.fld_Last4Pan, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-success" />
+                                    <a data-modal1='' href='@Url.Action("_LabourRelationshipDetail", "LabourDetail", new { LabourID = Model.fld_ID})' class='btn btn-success'>Relationship Data</a>
+                                    @Html.ActionLink("Sync To Checkroll", "Index", "LabourToCheckroll", new { id = Model.fld_ID }, htmlAttributes: new { @class = "btn btn-success" })
+                                    @Html.ActionLink("Back", "UpdateMenu", "LabourDetail", new { id = Model.fld_ID }, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<div id='myModal1' class='modal fade in'>
+    <div class="modal-dialog modal-lg" style="width: 60%">
+        <div class="modal-content">
+            <div id='myModalContent1'></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#datetimepicker1').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+    $('#datetimepicker2').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+    $('#datetimepicker3').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+    $('#datetimepicker4').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+
+    $("#datetimepicker1").on("dp.change", function (e) {
+        var SelectDate = $('#datetimepicker1').data("DateTimePicker").date();
+        $("#fld_Age").val(getAge(SelectDate));
+    });
+    function getAge(DOB) {
+        var today = new Date();
+        var birthDate = new Date(DOB);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age = age - 1;
+        }
+
+        return age;
+    }
+
+    @*$("#GenWorkerNo").click(function () {
+        var ID = $("#fld_ID").val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetWorkerNo", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ ID: ID });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $('#fld_WorkerNo').val(result);
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });*@
+
+    @*$("#TrnsfrCheckrll").click(function () {
+        var ID = $("#fld_ID").val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("TransferToCheckRoll", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ ID: ID });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $.simplyToast(result.msg, result.statusmsg);
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });*@
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Asset/Scripts/AjaxModal.js")
+}

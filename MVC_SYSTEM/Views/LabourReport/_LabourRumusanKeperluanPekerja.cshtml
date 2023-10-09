@@ -1,0 +1,730 @@
+﻿@using System.Collections.Generic
+@model IEnumerable<MVC_SYSTEM.CustomModels.CustMod_RumKeperluanPekerjaRpt>
+@{
+    ViewBag.Title = "RUMUSAN KEPERLUAN DAN KEDUDUKAN TENAGA KERJA LADANG TAHUN ";
+    ViewBag.DateScriptAdv = 1;
+    GetTriager GetTriager = new GetTriager();
+    GetConfig getconfig = new GetConfig();
+    string dateformat = getconfig.GetData("dateformat");
+    decimal TotalArea = 0;
+    int TotalKeperluan = 0;
+    int TotalIndon = 0;
+    int TotalBangla = 0;
+    int TotalIndia = 0;
+    int TotalNepal = 0;
+    int TotalTKA = 0;
+    int TotalPOL = 0;
+    int TotalTK = 0;
+    decimal TotalKedudukan = 0;
+    int TotalKekuranganSemasa = 0;
+    int TotalPeratusKekuranganSemasa = 0;
+    int TotalAgihan = 0;
+
+    decimal TotalArea1 = 0;
+    int TotalKeperluan1 = 0;
+    int TotalIndon1 = 0;
+    int TotalBangla1 = 0;
+    int TotalIndia1 = 0;
+    int TotalNepal1 = 0;
+    int TotalTKA1 = 0;
+    int TotalPOL1 = 0;
+    int TotalTK1 = 0;
+    decimal TotalKedudukan1 = 0;
+    int TotalKekuranganSemasa1 = 0;
+    int TotalPeratusKekuranganSemasa1 = 0;
+    int TotalAgihan1 = 0;
+
+    decimal TotalAreaK = 0;
+    int TotalKeperluanK = 0;
+    int TotalIndonK = 0;
+    int TotalBanglaK = 0;
+    int TotalIndiaK = 0;
+    int TotalNepalK = 0;
+    int TotalTKAK = 0;
+    int TotalPOLK = 0;
+    int TotalTKK = 0;
+    decimal TotalKedudukanK = 0;
+    int TotalKekuranganSemasaK = 0;
+    int TotalPeratusKekuranganSemasaK = 0;
+    int TotalAgihanK = 0;
+
+    int JumTotalIndon = 0;
+    int JumTotalBangla = 0;
+    int JumTotalIndia = 0;
+    int JumTotalNepal = 0;
+    int JumTotalPOL = 0;
+    int JumTKA = 0;
+    int JumT = 0;
+    int JumAll = 0;
+
+    int i = 1;
+    //get wilayah id in model - shah 08/07/2020
+    var getwlyh = new List<int>();
+    if (Model.Count() > 0)
+    {
+        getwlyh = Model.Select(s => s.fld_WilayahID.Value).Distinct().ToList();
+    }
+
+}
+<style>
+    .well {
+        overflow-x: unset !important;
+    }
+
+    #summary {
+        font-family: Arial;
+        font-size: 11px;
+        border: 1px solid black;
+    }
+
+        #summary td, #summary th {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        #summary th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+        }
+</style>
+@if (Model != null && Model.Count() != 0)
+{
+    <div id="scrollArea2" class="modal-body">
+
+        <logo />
+        @*//* commented by nana: 20.07.2020*@
+        @*<label style="float:right ;font-size: 8pt; font-family: Arial; border:none;">opms_lr_lab006</label>*@
+        @*//* commented closed by nana: 20.07.2020*@
+
+
+        <table class="table table-bordered" style="font-size: 11px;" border="0" width="100%" cellspacing="0">
+            <thead>
+                @*//* commented by nana: 20.07.2020*@
+                <tr>
+                    <th colspan="14" style="text-align:center;vertical-align:middle; border:none;">
+                        <br />
+
+                    </th>
+                    <th colspan="2" style="border:none" ; align="left">
+                        <div style="float:left ;font-size: 8px; border:none; ">
+                            <span id="page_number"></span>
+                            <div style="float:left ;font-size: 8px; border:none; "><span id="content"></span> </div>
+                        </div>
+                        <label style="float:left ;font-size: 8px; border:none;"><span></span> &nbsp;</label>
+                        <label style="float:left ;font-size: 8px; border:none;"><span></span> &nbsp;</label>
+                        <label style="float:left ;font-size: 8px; border:none;">&nbsp;|&nbsp;@ViewBag.Tarikh&nbsp;| &nbsp;</label>
+                        <label style="float:left ;font-size: 8px; border:none;"><span id="time"></span></label><br />
+                    </th>
+                </tr>
+
+                <tr>
+                    @*//* commented by nana: 20.07.2020*@
+                    @*<th colspan="22" style="text-align:left;vertical-align:middle; border:none;">
+                            <label>TAJUK   : </label>@ViewBag.Title.<br />
+                            <label>WILAYAH : </label>@ViewBag.Region<br />
+                            <label>LADANG  : </label>@ViewBag.Estate
+                        </th>*@
+                    @*//* commented closed by nana: 20.07.2020*@
+
+                    @*//* added by nana: 20.07.2020*@
+                    <td colspan="1" style="text-align:left;vertical-align:middle; border-left:inherit; border-right:inherit; border-bottom:none; border-top:none">
+                        <label>TAJUK</label>
+                        <br />
+                        <label>WILAYAH</label>
+                        <br />
+                        <label>LADANG</label>
+                        <br />
+                        <label>RUMUSAN</label>
+
+                    </td>
+
+                    <td colspan="15" style="text-align:left;vertical-align:middle; border-left:inherit; border-right:inherit; border-bottom:none; border-top:none">
+                        <label>: @ViewBag.Title  @ViewBag.Tahun</label>
+                        <br />
+                        <label>: @ViewBag.Region</label>
+                        <br />
+                        <label>: @ViewBag.Estate</label>
+                        <br />
+                        <label>SEHINGGA @ViewBag.Tarikh</label>
+                        <br />
+                    </td>
+
+                    @*//* added closed by nana: 20.07.2020*@
+                </tr>
+
+
+                <tr>
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">BIL</th>
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">LADANG</th>
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">LUAS (HEK.)</th>
+                    @*Commented by Shazana on 28/12
+                        <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">KEPERLUAN <br />LADANG <br />1:11</th>
+                        Close Commented by Shazana on 28/12*@
+                    @*Added by Shazana on 28/12*@
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">KEPERLUAN <br />LADANG <br />1:10</th>
+                    @*Close Added by Shazana on 28/12*@
+                    <th colspan="4" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">TKA SEMASA</th>
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">JUMLAH TKA <br />(SEMASA)</th>
+                    <th rowspan="2" bgcolor="#aed6f1" style="color: white;text-align: center;vertical-align: middle !important;border:1px solid black;color: black;" border="1">POL</th>
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">KONTRAKTOR/<br />TUMPANG</th>
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">KESELURUHAN <br />TENAGA <br />KERJA</th>
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">(%) KEDUDUKAN <br />T. KERJA</th>
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">KEKURANGAN <br />SEMASA <br />TENAGA</th>
+                    @*Commented by Shazana on 28/12
+                        <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">(%) KEDUDUKAN <br />T. KERJA</th>
+                        Close Commented by Shazana on 28/12*@
+                    @*Added by Shazana on 28/12*@
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">(%) KEKURANGAN <br />T. KERJA</th>
+                    @*Close Added by Shazana on 28/12*@
+                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">AGIHAN / <br>PENERIMAAN <br />LADANG</th>
+
+                <tr>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">INDON.</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">BANGLA</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">INDIA</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">NEPAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var wlyh in getwlyh)
+                {
+                    //virable get total each wilayah - shah 08/07/2020
+                    var TotalAreaW = 0m;
+                    var TotalKeperluanW = 0;
+                    var TotalIndonW = 0;
+                    var TotalBanglaW = 0;
+                    var TotalIndiaW = 0;
+                    var TotalNepalW = 0;
+                    var TotalTKAW = 0;
+                    var TotalPOLW = 0;
+                    var TotalTKW = 0;
+                    var TotalKedudukanW = 0m;
+                    var TotalKekuranganSemasaW = 0;
+                    var TotalPeratusKekuranganSemasaW = 0;
+                    var TotalAgihanW = 0;
+                    //Added by Shazana on 28/12
+                    String Jumlah = "";
+                    //Close Added by Shazana on 28 / 12
+                    @*if (Model.Where(x => x.fld_EstateSize > 0 && x.fld_WilayahID == wlyh).Count() > 0)
+                        {
+                            <tr>
+                                <td align="center" colspan="16" style="vertical-align:middle !important;border:1px solid black;" border="1">LADANG -  ( Keperluan Tenaga Kerja adalah mengikut keperluan semasa  & tidak mengikut kadar 1:10 )</td>
+                            </tr>
+                        }*@
+                    foreach (var item in Model.Where(x => x.fld_EstateSize > 0 && x.fld_WilayahID == wlyh))
+                    {
+
+                        <tr>
+                            <td align="left" style="vertical-align:middle !important;border:1px solid black;" border="1">@i</td>
+                            <td align="left" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_EstateName.ToUpper()</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(item.fld_EstateSize)</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Keperluan</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Indon</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Bangla</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_India</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Nepal</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKA</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_POL</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTK</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Kedudukan.ToString("0.00")</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_KekuranganSemasa</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_PeratusKekuranganSemasa</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Agihan</td>
+
+                        </tr>
+                        i++;
+                        TotalArea = TotalArea + item.fld_EstateSize;
+                        TotalKeperluan = TotalKeperluan + item.fld_Keperluan;
+                        TotalIndon = TotalIndon + item.fld_Indon;
+                        TotalBangla = TotalBangla + item.fld_Bangla;
+                        TotalIndia = TotalIndia + item.fld_India;
+                        TotalNepal = TotalNepal + item.fld_Nepal;
+                        TotalTKA = TotalTKA + item.fld_TotalTKA;
+                        TotalPOL = TotalPOL + item.fld_POL;
+                        TotalTK = TotalTK + item.fld_TotalTK;
+                        TotalKedudukan = TotalKedudukan + item.fld_Kedudukan;
+                        TotalKekuranganSemasa = TotalKekuranganSemasa + item.fld_KekuranganSemasa;
+                        TotalPeratusKekuranganSemasa = TotalPeratusKekuranganSemasa + item.fld_PeratusKekuranganSemasa;
+                        TotalAgihan = TotalAgihan + item.fld_Agihan;
+                        TotalAreaW += item.fld_EstateSize;
+                        TotalKeperluanW += item.fld_Keperluan;
+                        TotalIndonW += item.fld_Indon;
+                        TotalBanglaW += item.fld_Bangla;
+                        TotalIndiaW += item.fld_India;
+                        TotalNepalW += item.fld_Nepal;
+                        TotalTKAW += item.fld_TotalTKA;
+                        TotalPOLW += item.fld_POL;
+                        TotalTKW += item.fld_TotalTK;
+                        TotalKedudukanW += item.fld_Kedudukan;
+                        TotalKekuranganSemasaW += item.fld_KekuranganSemasa;
+                        TotalPeratusKekuranganSemasaW += item.fld_PeratusKekuranganSemasa;
+                        TotalAgihanW += item.fld_Agihan;
+
+                    }
+
+                    //Added by Shazana on 28/12
+                    if (wlyh == 1)
+                    {
+                        Jumlah = "JUMLAH LADANG SEMENANJUNG";
+
+                    }
+                    else
+                    {
+                        { Jumlah = "JUMLAH LADANG SABAH"; }
+                    }
+                    //Close Added by Shazana on 28/12
+
+                    if (Model.Where(x => x.fld_EstateSize > 0 && x.fld_WilayahID == wlyh).Count() > 0)
+                    {
+                        <tr style="font-weight:bold">
+                            <td align="right" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                            @*Commented by Shazana on 28/12
+                                <td align="right" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">Jumlah</td>
+                                Close Commented by Shazana on 28/12*@
+                            @*Added by Shazana on 28/12*@
+                            <td align="right" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@Jumlah</td>
+                            @*Close Added by Shazana on 28/12*@
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(TotalAreaW)</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKeperluanW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalIndonW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBanglaW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalIndiaW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNepalW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKAW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPOLW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKedudukanW.ToString("0.00")</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKekuranganSemasaW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPeratusKekuranganSemasaW</td>
+                            <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAgihanW</td>
+
+                        </tr>
+                    }
+
+                }
+                @if (Model.Where(x => x.fld_EstateSize > 0).Count() > 0)
+                {
+                    <tr style="font-weight:bold">
+                        <td align="right" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                        <td align="right" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">JUMLAH BESAR LADANG</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(TotalArea)</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKeperluan</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalIndon</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBangla</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalIndia</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNepal</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKA</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPOL</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKedudukan.ToString("0.00")</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKekuranganSemasa</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPeratusKekuranganSemasa</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAgihan</td>
+
+                    </tr>
+                }
+
+                <tr>
+                    @*Commented by Shazana on 28/12
+                        <td align="center" colspan="16" style="vertical-align:middle !important;border:1px solid black;" border="1">BUKAN   LADANG -  ( Keperluan Tenaga Kerja adalah mengikut keperluan semasa  & tidak mengikut kadar 1:11 )</td>
+                        Close commented by Shazana on 28/12*@
+                    @*Added by Shazana on 28/12*@
+                    <td align="center" colspan="16" style="vertical-align:middle !important;border:1px solid black;" border="1">BUKAN   LADANG -  ( Keperluan Tenaga Kerja adalah mengikut keperluan semasa  & tidak mengikut kadar 1:10 )</td>
+                    @*Close Added by Shazana on 28/12*@
+                </tr>
+
+                @foreach (var wlyh in getwlyh)
+                {
+
+                    foreach (var item in Model.Where(x => x.fld_EstateSize == 0 && x.fld_WilayahID == wlyh))
+                    {
+                        <tr>
+                            <td align="left" style="vertical-align:middle !important;border:1px solid black;" border="1">@i</td>
+                            <td align="left" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_EstateName.ToUpper()</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(item.fld_EstateSize)</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Keperluan</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Indon</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Bangla</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_India</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Nepal</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKA</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_POL</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTK</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Kedudukan</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_KekuranganSemasa</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_PeratusKekuranganSemasa</td>
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Agihan</td>
+                        </tr>
+                        i++;
+                        TotalArea1 = TotalArea1 + item.fld_EstateSize;
+                        TotalKeperluan1 = TotalKeperluan1 + item.fld_Keperluan;
+                        TotalIndon1 = TotalIndon1 + item.fld_Indon;
+                        TotalBangla1 = TotalBangla1 + item.fld_Bangla;
+                        TotalIndia1 = TotalIndia1 + item.fld_India;
+                        TotalNepal1 = TotalNepal1 + item.fld_Nepal;
+                        TotalTKA1 = TotalTKA1 + item.fld_TotalTKA;
+                        TotalPOL1 = TotalPOL1 + item.fld_POL;
+                        TotalTK1 = TotalTK1 + item.fld_TotalTK;
+                        TotalKedudukan1 = TotalKedudukan1 + item.fld_Kedudukan;
+                        TotalKekuranganSemasa1 = TotalKekuranganSemasa1 + item.fld_KekuranganSemasa;
+                        TotalPeratusKekuranganSemasa1 = TotalPeratusKekuranganSemasa1 + item.fld_PeratusKekuranganSemasa;
+                        TotalAgihan1 = TotalAgihan1 + item.fld_Agihan;
+
+                    }
+
+                }
+                @if (Model.Where(x => x.fld_EstateSize == 0).Count() > 0)
+                {
+                    <tr style="font-weight:bold">
+                        <td align="right" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                        <td align="right" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">JUMLAH BUKAN LADANG</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(TotalArea1)</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKeperluan1</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalIndon1</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBangla1</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalIndia1</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNepal1</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKA1</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPOL1</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTK1</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKedudukan1.ToString("0.00")</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKekuranganSemasa1</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPeratusKekuranganSemasa1</td>
+                        @*Commented by Shazana on 28/12*@
+                        @*<td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAgihan</td>*@
+                        @*Close Commented by Shazana on 28/12*@
+                        @*Added by Shazana on 28/12*@
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAgihan1</td>
+                        @*Close Added by Shazana on 28/12*@
+
+                    </tr>
+
+                }
+
+                @{
+                    TotalAreaK = TotalArea1 + TotalArea;
+                    TotalKeperluanK = TotalKeperluan1 + TotalKeperluan;
+                    TotalIndonK = TotalIndon1 + TotalIndon;
+                    TotalBanglaK = TotalBangla1 + TotalBangla;
+                    TotalIndiaK = TotalIndia1 + TotalIndia;
+                    TotalNepalK = TotalNepal1 + TotalNepal;
+                    TotalTKAK = TotalTKA1 + TotalTKA;
+                    TotalPOLK = TotalPOL1 + TotalPOL1;
+                    TotalTKK = TotalTK1 + TotalTK;
+                    TotalKedudukanK = TotalKedudukan + TotalKedudukan1;
+                    TotalKekuranganSemasaK = TotalKekuranganSemasa1 + TotalKekuranganSemasa;
+                    TotalPeratusKekuranganSemasaK = TotalPeratusKekuranganSemasa1 + TotalPeratusKekuranganSemasa;
+                    TotalAgihanK = TotalAgihan1 + TotalAgihan;
+                }
+
+                @if (Model.Where(x => x.fld_EstateSize == 0).Count() > 0)
+                {
+                    <tr style="font-weight:bold">
+                        <td align="right" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                        <td align="right" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">JUMLAH KESELURUHAN</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(TotalAreaK)</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKeperluanK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalIndonK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBanglaK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalIndiaK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNepalK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKAK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPOLK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKedudukanK.ToString("0.00")</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalKekuranganSemasaK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPeratusKekuranganSemasaK</td>
+                        <td align="center" bgcolor="#aed6f1" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAgihanK</td>
+
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+        <br />
+
+        @{
+            JumTotalIndon = TotalIndon + TotalIndon1;
+            JumTotalBangla = TotalBangla + TotalBangla1;
+            JumTotalIndia = TotalIndia + TotalIndia1;
+            JumTotalNepal = TotalNepal + TotalNepal1;
+            JumTotalPOL = TotalPOL + TotalPOL1;
+            JumTKA = JumTotalIndon + JumTotalBangla + JumTotalIndia + JumTotalNepal;
+            JumT = JumTotalPOL;
+            JumAll = JumTKA + JumT;
+        }
+        <table>
+            <tr style="width:100%"><td></td></tr>
+            <tr>
+                <td width="50%">
+                    <table border="1" cellpadding="3">
+                        <tr>
+                            <td colspan="2">INDONESIA</td>
+                            <td width="100px" align="center">@JumTotalIndon</td>
+                            <td>POL / TEMPATAN</td>
+                            <td width="100px" align="center">@JumTotalPOL</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">BANGLADESH</td>
+                            <td align="center">@JumTotalBangla</td>
+                            <td>KONTRAK</td>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">INDIA</td>
+                            <td align="center">@JumTotalIndia</td>
+                            <td>          </td>
+                            <td>          </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">NEPAL</td>
+                            <td align="center">@JumTotalNepal</td>
+                            <td>          </td>
+                            <td>          </td>
+                        </tr>
+                        <tr style="font-weight:bold">
+                            <td colspan="2">JUMLAH</td>
+                            <td align="center">@JumTKA</td>
+                            <td></td>
+                            <td align="center">@JumT</td>
+                        </tr>
+                        <tr style="font-weight:bold" bgcolor="#aed6f1">
+                            <td colspan="2">JUMLAH BESAR</td>
+                            <td colspan="3" align="center">@JumAll</td>
+                        </tr>
+
+                    </table>
+                    @*//* commented by nana: 21.07.2020*@
+                    <table style="font-family:Arial; font-size:8pt" width="100%">
+                        <tr>
+                            <td><label></label></td>
+                        </tr>
+                    </table>
+                </td>
+                <td><label style="width:100%"></label></td>
+                <td><label style="width:100%"></label></td>
+                <td><label style="width:100%"></label></td>
+                <td><label style="width:100%"></label></td>
+                <td><label style="width:100%"></label></td>
+                <td><label style="width:100%"></label></td>
+                <td><label style="width:100%"></label></td>
+                <td><label style="width:100%"></label></td>
+                <td><label style="width:100%"></label></td>
+
+                @*<td><label style="width:100%"></label></td>*@
+
+                <td style="font-family:Arial; font-size:11px ; " valign="top" colspan="2">
+                    Disediakan Oleh:
+                    <br />
+                    <br />
+                    <br />
+                    <b>Unit Tenaga Kerja Asing </b><br />
+                    <b>FGV Agri. Services Sdn Bhd </b><br />
+                    <b>Ibu Pejabat.</b>
+                </td>
+            </tr>
+        </table>
+
+        @*//* commented by nana: 21.07.2020*@
+        <table style="font-family:Arial; font-size:8pt" width="100%">
+            <tr>
+                <td colspan="8">G7 adalah tidak diambil kira sebagai buruh sepertimana sebelum ini kerana ia telah diambil kira sebagai kakitangan tetap</td>
+            </tr>
+        </table>
+
+
+
+    </div>
+    if (ViewBag.Print == null)
+    {
+
+        <div style="text-align:right; margin-top:10px" id="AllDownload">
+            <a class="btn btn-default btn-sm" href="#" id="downloadpdf">
+                <span><img src="~/Asset/Images/pdf-icon.png" width="20px" height="20px" /></span> Download PDF
+            </a>
+            <a class="btn btn-default btn-sm" href="#" id="HTMLtoExcel">
+                <span><img src="~/Asset/Images/excel-icon.png" width="20px" height="20px" /></span>download Excel
+            </a>
+        </div>
+    }
+}
+
+else
+{
+    <div id="scrollArea2" class="modal-body" style="text-align: center">
+        <p style="color: red">@ViewBag.Message</p>
+
+    </div>
+}
+
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    /*Edited by Shazana on 4/9*/
+    thead {
+        display: table-header-group
+    }
+
+    tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+
+
+    #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after {
+        content: "";
+        counter-increment: pagenumber;
+        content: "Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+</style>
+
+<script>
+    var dt = new Date();
+    document.getElementById("date").innerHTML = dt.toLocaleDateString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+</script>
+
+
+<script>
+    var dt = new Date();
+    document.getElementById("datetime").innerHTML = dt.toLocaleString();
+</script>
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+
+
+    $('#datetimepicker1').datetimepicker({
+        timepicker: false,
+        format: '@dateformat'
+    });
+
+    $('#datetimepicker2').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+
+    });
+
+</script>
+
+
+<script>
+
+        $("#HTMLtoExcel").click(function () {
+
+            var blob = new Blob([document.getElementById('scrollArea2').innerHTML], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+            })
+            saveAs(blob, 'LabourRumusanKeperluanPekerja' + ".xls");
+
+        });
+
+    $(document).ready(function () {
+        $("#printpage").click(function () {
+            var DivElement = document.getElementById("scrollArea2").innerHTML;
+            var page_number;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = DivElement;
+            window.print();
+            document.body.innerHTML = oldPage;
+            document.getElementById("content").innerHTML = page_number.toString();
+            window.toLocaleString.print();
+
+        })
+
+        $("#downloadpdf").click(function () {
+
+            //var RadioGroup = $('input[name=RadioGroup]:checked').val();
+            $("#AllDownload").attr("style", "display:none");
+            var WilayahIDList = $("#WilayahIDList").val();
+            var LadangIDList = $("#LadangIDList").val();
+            var FreeText = $("#FreeText").val();
+            var CurrDate = $("#CurrDate").val();
+
+            var param = '/?WilayahIDList=' + WilayahIDList + '&LadangIDList=' + LadangIDList + '&CurrDate=' + CurrDate + '&FreeText=' + FreeText ;
+            var controller = 'LabourReport';
+            var action = 'PrintWorkerPdfRumusanKeperluanPekerja';
+
+            var ajxfn = {};
+            ajxfn.url = "@Url.Action("PDFIndetifier", "PdfCreator")";
+            ajxfn.type = "POST";
+            ajxfn.data = JSON.stringify({ controller: controller, action: action, param: param });
+            ajxfn.datatype = "json";
+            ajxfn.contentType = "application/json";
+            ajxfn.success = function (result)
+
+            {
+
+               // alert("Success!");
+
+                //var win = window.open(result.link, '_blank');
+                //win.focus();
+                PDFObject.embed(result.link, "#scrollArea2", { height: "450px" });
+            };
+
+
+            ajxfn.error = function () {
+                alert("Failed!");
+                $.simplyToast('@GlobalResEstate.msgError', 'danger');
+                $("#UpdateProgress1").css("display", "none");
+            };
+            $.ajax(ajxfn);
+
+            return false;
+        });
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

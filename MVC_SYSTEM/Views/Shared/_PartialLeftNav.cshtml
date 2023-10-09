@@ -1,0 +1,48 @@
+﻿@using MVC_SYSTEM.Class;
+@{
+    GetIdentity GetIdentity = new GetIdentity();
+    GetTriager GetTriager = new GetTriager();
+}
+@if (Request.IsAuthenticated)
+{
+    <div id="UpdateProgress1" style="display:none;">
+        <div class="progressTest">
+            <label>
+                @GlobalResGeneral.msgWait
+            </label>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-default sidebar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="glyphicon glyphicon-list"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li @ViewBag.Main><a href="@Url.Action("Index", "Main")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuHome<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                    <li @ViewBag.LabourQuota><a href="@Url.Action("Index", "LabourQuotaMenuList")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuLabourQuota<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-adjust"></span></a></li>
+                    <li @ViewBag.LabourRequest><a href="@Url.Action("Index", "LabourRequestMenuList")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuLabourRequest<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-arrow-up"></span></a></li>
+                    <li @ViewBag.LabourManagement><a href="@Url.Action("Index", "LabourDetail")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuLabourManagement<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-asterisk"></span></a></li>
+                    <li @ViewBag.LabourFomema><a href="@Url.Action("Index", "LabourFomema")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuLabourFomema<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-backward"></span></a></li>
+                    <li @ViewBag.LabourPrmtPsprt><a href="@Url.Action("Index", "LabourPrmtPsprt")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuLabourPrmtPsport<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-forward"></span></a></li>
+                    <li @ViewBag.LabourAbsconded><a href="@Url.Action("Index", "LabourAbsconded")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuLabourAbsconded<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-book"></span></a></li>
+                    <li @ViewBag.LabourEndContract><a href="@Url.Action("Index", "LabourEndContract")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuLabourEndContract<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-certificate"></span></a></li>
+                    <li @ViewBag.LabourOnLeave><a href="@Url.Action("Index", "LabourOnLeave")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuLabourOnLeave<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-check"></span></a></li>
+                    <li @ViewBag.LabourSickDeath><a href="@Url.Action("Index", "LabourSickDeath")" onclick="return DisplayProgressMessage2(this);">@GlobalResGeneral.menuLabourSickDeath<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-download"></span></a></li>
+                    <li @ViewBag.LabourReport><a href="@Url.Action("Index", "LabourReport")" onclick="return DisplayProgressMessage2(this);">Report<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity glyphicon glyphicon-repeat"></span></a></li>
+                    <li><a href="@Url.Action("ModulesSelection", "Modules")" onclick="return DisplayProgressMessage2(this);">OPMS Modules<span style="font-size:16px;padding-left:10px" class="pull-right hidden-xs showopacity"><i class='glyphicon glyphicon-dashboard'></i></span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+}
+<script>
+    function DisplayProgressMessage(ctl) {
+        $("#UpdateProgress1").css("display", "");
+        return true;
+    }
+</script>

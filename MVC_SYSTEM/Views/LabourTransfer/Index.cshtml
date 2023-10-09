@@ -1,0 +1,103 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+@using MVC_SYSTEM.Class;
+@{
+    ChangeTimeZone ChangeTimeZone = new ChangeTimeZone();
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    DateTime DT = ChangeTimeZone.gettimezone();
+    string Code = Model.fld_WorkerNo + "_" + DT.Day.ToString() + DT.Month.ToString() + DT.Year.ToString() + DT.Hour.ToString() + DT.Minute.ToString() + DT.Second.ToString();
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Transfer Worker </div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                            @Html.HiddenFor(model => model.fld_ID)
+                            <input type="hidden" id="TransCode" name="TransCode" value="@Code" />
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerIDNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Region To", new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_WilayahIDTo", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Estate To", new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_LadangIDTo", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-success" />
+                                    @Html.ActionLink("Back", "UpdateMenu", "LabourDetail", new { id = Model.fld_ID }, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Transfer Worker Info</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.Action("_LabourTransferDetail", new { WorkerTransferCode = Model.fld_WorkerTransferCode })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $("#fld_WilayahIDTo").change(function () {
+        var WilayahIDParam = $('#fld_WilayahIDTo').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#fld_LadangIDTo").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#fld_LadangIDTo").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

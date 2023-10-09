@@ -1,0 +1,191 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+
+@{
+    ViewBag.Title = "Ticket Request Register";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetConfig GetConfig = new GetConfig();
+    string dateformat = GetConfig.GetData("dateformat");
+    string DisableAll = ViewBag.DisableAll;
+    string[] WebConfigFilter = new string[] { "sbbTakAktif" };
+    int NegaraID = Model.fld_NegaraID.Value;
+    int SyarikatID = Model.fld_SyarikatID.Value;
+    var GetConfigData = GetConfig.GetConfigDesc(NegaraID, SyarikatID, WebConfigFilter);
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Flight Ticket Registration: @Model.fld_WorkerNo - @Model.fld_WorkerName</div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                            <input type="hidden" id="fld_LbrRefID" name="fld_LbrRefID" value="@Model.fld_ID" />
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerIDNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Request Reason", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("RequestReason", GetConfigData.Where(x => x.fldOptConfFlag1 == "sbbTakAktif" && x.fldOptConfValue == Model.fld_InactiveReason.ToString()).Select(s => s.fldOptConfDesc).FirstOrDefault(), null, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Destination", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_DestinationCode", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Flight Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_FlightCode", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Request Date Departure *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input id="fld_RequestDT" name="fld_RequestDT" class="form-control" value="" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Request Date Come Back *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <input id="fld_RequestDT2" name="fld_RequestDT2" class="form-control" value="" disabled />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    @if (DisableAll == "Yes")
+                                    {
+                                        <input type="submit" value="Save" class="btn btn-success" disabled />
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" value="Save" class="btn btn-success" />
+                                    }
+                                    @Html.ActionLink("Back", "UpdateMenu", "LabourDetail", new { id = Model.fld_ID }, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Flight Request Info</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.Action("_LabourFlightRequestDetail", new { LabourID = Model.fld_ID })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $('#datetimepicker1').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+
+    $('#datetimepicker2').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+
+    $("#fld_StateCode").change(function () {
+        var StateCode = $('#fld_StateCode').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetClinicList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ StateCode: StateCode });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#fld_ClinicID").empty();
+            for (var i = 0; i < result.ClinicList.length; i++) {
+                $("#fld_ClinicID").append("<option value=" + result.ClinicList[i].Value + ">" + result.ClinicList[i].Text + "</option>");
+            }
+            $("#DoctorName").empty();
+            $("#DoctorName").val(result.DoctorName);
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+
+    $("#fld_ClinicID").change(function () {
+        var ClinicID = $('#fld_ClinicID').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetClinicInfo", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ ClinicID: ClinicID });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#DoctorName").empty();
+            $("#DoctorName").val(result.DoctorName);
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+
+    var FlightCode = $('#fld_FlightCode').val();
+    if (FlightCode === "F01") {
+        $("#fld_RequestDT2").prop('disabled', true);
+    } else {
+        $("#fld_RequestDT2").prop('disabled', false);
+    }
+
+    $("#fld_FlightCode").change(function () {
+        var FlightCode = $('#fld_FlightCode').val();
+        if (FlightCode === "F01") {
+            $("#fld_RequestDT2").prop('disabled', true);
+        } else {
+            $("#fld_RequestDT2").prop('disabled', false);
+        }
+    });
+
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

@@ -1,0 +1,201 @@
+﻿@model IEnumerable<MVC_SYSTEM.CustomModels.CustMod_GajiKasar>
+
+
+@{
+    ViewBag.Title = "Labour Worker Bonus";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    GetIdentity GetIdentity = new GetIdentity();
+    GetNSWL GetNSWL = new GetNSWL();
+    GeneralFunc GeneralFunc = new GeneralFunc();
+    var LadangList = GetNSWL.GetLadang();
+    string LadangName = "";
+    string[] WebConfigFilter = new string[] { "krytnlist", "fomemarenew", "ratebonus" };
+    GetConfig GetConfig = new GetConfig();
+    string WilayahName = "";
+    GetTriager GetTriager = new GetTriager();
+    long YearEndPassport, YearEndPermit;
+    int i = 1;
+    string BonusPercent = "";
+
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "Get",
+        UpdateTargetId = "searchResultWorkerInfo",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "divLoading"
+    };
+}
+
+<script src="~/Asset/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<div id="divLoading" style="display:none;">
+    <div class="progressTest">
+        <label>
+            @GlobalResEstate.msgWait
+        </label>
+    </div>
+</div>
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+        @using (Ajax.BeginForm("_LabourWorkerBonus", "LabourReport", null, options, new { @id = "LabourWorkerBonus" }))
+
+        {
+            @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Region</label>
+                @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <label>Estate</label>
+                @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+            <div class="col-sm-2" id="divlist">
+                <label>Month</label>
+                @Html.DropDownList("Quarter", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2" id="divlist">
+                <label>Year</label>
+                @Html.DropDownList("YearList", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+            <div class="col-sm-2" style="padding-top:24px;">
+                <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+            </div>
+        </div>
+    }
+    </div>
+
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Labour Worker Bonus</div>
+            <div class="panel-body">
+                <div id="searchResultWorkerInfo">
+                    @Html.Action("_LabourWorkerBonus")
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    #content {
+        display: table;
+    }
+
+    #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after {
+        content: "";
+        counter-increment: pagenumber;
+        content: "Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+
+    thead, tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+</style>
+
+
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+@*<script>
+    $(document).ready(function () {
+        $("#printpage").click(function () {
+            var DivElement = document.getElementById("scrollArea2").innerHTML;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = DivElement;
+            window.print();
+            document.body.innerHTML = oldPage;
+        })
+
+        $("#downloadpdf").click(function () {
+            var RadioGroup = $('input[name=RadioGroup]:checked').val();
+            //var MonthList = $("#MonthList").val();
+            //var YearList = $("#YearList").val();
+            var SelectionList = $("#SelectionList").val();
+            var StatusList = $("#StatusList").val();
+            var JnsPkjList = $("#JnsPkjList").val();
+            //var WorkCategoryList = $("#WorkCategoryList").val();
+
+            //var StatusList = '';
+            //var WorkCategoryList = '';
+
+            var param = '/?RadioGroup=' + RadioGroup + '&SelectionList=' + SelectionList + '&StatusList=' + StatusList + '&JnsPkjList=' + JnsPkjList;
+            var controller = 'Report';
+            var action = 'PrintWorkerPdf';
+
+            var ajxfn = {};
+            ajxfn.url = "@Url.Action("PDFIndetifier", "PdfCreator")";
+            ajxfn.type = "POST";
+            ajxfn.data = JSON.stringify({ controller: controller, action: action, param: param });
+            ajxfn.datatype = "json";
+            ajxfn.contentType = "application/json";
+            ajxfn.success = function (result) {
+                //var win = window.open(result.link, '_blank');
+                //win.focus();
+                PDFObject.embed(result.link, "#searchResultWorkerInfo", { height: "450px" });
+            };
+
+            ajxfn.error = function () {
+                $.simplyToast('error', 'danger');
+                $("#UpdateProgress1").css("display", "none");
+            };
+            $.ajax(ajxfn);
+
+            return false;
+        });
+    });
+</script>*@
+<script>
+    var dt = new Date();
+    document.getElementById("date").innerHTML = dt.toLocaleDateString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+</script>
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>
+
+
+

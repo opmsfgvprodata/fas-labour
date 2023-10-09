@@ -1,0 +1,288 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+
+@{
+    ViewBag.Title = "Fomema Register";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetConfig GetConfig = new GetConfig();
+    string dateformat = GetConfig.GetData("dateformat");
+    string DoctorName = ViewBag.DoctorName;
+    string DisableAll = ViewBag.DisableAll;
+}
+
+<style>
+    div.ex1{
+        height:auto;
+        width:auto;
+        margin:auto;
+        background-color:aqua;
+    }
+    div.ex2{
+        padding-left:170px;
+        padding-top:10px;
+    }
+     div.ex3{
+        padding-left:150px;
+        padding-top:10px;
+    }
+
+</style>
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Fomema Registration: @Model.fld_WorkerNo - @Model.fld_WorkerName</div>
+           
+                    <div class="panel-body">
+                        
+                            @using (Html.BeginForm())
+                            {
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                                <input type="hidden" id="fld_LbrRefID" name="fld_LbrRefID" value="@Model.fld_ID" />
+                                @Html.AntiForgeryToken()
+                                <table>
+                                    <tr>
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:40px;  ">Worker ID: </label>
+                                            </div>
+                                            <div class="ex2">
+                                                <div class=" col-md-6">
+                                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @style = "float:right; margin-top: 30px", @readonly = "readonly" } })
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float: left; margin-right: 10px; padding-left: 40px; padding-top: 40px; ">Acknowledgement: </label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class=" col-md-9">
+                                                    @Html.DropDownList("fld_AcknoTypeCode", null, htmlAttributes: new { @class = "form-control", @style = "float:right; margin-top: 30px" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr style="padding-top:20px">
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-top:10px; padding-left:40px;">Worker Name: </label>
+                                            </div>
+                                            <div class="ex2">
+                                                <div class="col-md-6" >
+                                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @style = "float:right;  ", @readonly = "readonly" } })
+                                                    @Html.ValidationMessageFor(model => model.fld_WorkerName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:10px;   ">Clinic Name: </label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class="col-md-9">
+                                                    @Html.DropDownList("fld_ClinicID", null, htmlAttributes: new { @class = "form-control", @style = "float:right; " })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td  style="width:50%"></td>
+                                    </tr>
+
+                                    <tr style="padding-top:20px">
+
+                                        <td style="width:50%">
+                                            <div style="width:50%">
+                                                <label style="float:left; margin-right:10px ; padding-top:10px; padding-left:40px; "> Fomema Type: </label>
+                                            </div>
+                                            <div class="ex2">
+                                                <div class="col-md-6" >
+                                                    @Html.DropDownList("fld_FormemaTypeCode", null, htmlAttributes: new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:10px; ">Clinic State: </label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class="col-md-9" >
+                                                    @Html.DropDownList("fld_StateCode", null, htmlAttributes: new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width:50%"></td>
+                                    </tr>
+
+                                    <tr style="padding-top:20px">
+
+                                        <td style="width:50%">
+                                            <div style="width:50%">
+                                                <label style="float:left; margin-right:10px ; padding-top:10px; padding-left:40px; "> Examination Result: </label>
+                                            </div>
+                                            <div class="ex2">
+                                                <div class="col-md-6" >
+                                                    @Html.DropDownList("fld_FomemaResult", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                </div>
+                                            </div>
+                                        </td>
+
+
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:10px; ">Doctor Name: </label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class="col-md-9" >
+                                                    @Html.TextBox("DoctorName", DoctorName, htmlAttributes: new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width:50%"></td>
+                                    </tr>
+
+                                    <tr style="padding-top:20px">
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:10px; ">Result Date: </label>
+                                            </div>
+                                            <div class="ex2">
+                                                <div class="col-md-6" >
+                                                    <div class='input-group date' id='datetimepicker1'>
+                                                        <input id="fld_ResultDT" name="fld_ResultDT" class="form-control" value="" />
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:10px; ">Sector: </label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class="col-md-9" >
+                                                    @Html.DropDownList("fld_BizSectorCode", null, htmlAttributes: new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width:50%"></td>
+                                    </tr>
+
+                                    <tr style="padding-top:20px">
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px ; padding-top:10px;  ">Remarks: </label>
+                                            </div>
+                                            <div class="ex2">
+                                                <div class="col-md-6" style="padding-bottom:20px">
+                                                    @Html.TextArea("fld_Remark", null, 4, 100, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td style="width:50%">
+                                            <div class="form-group">
+                                                <div class="col-md-offset-5 col-md-10">
+                                                    @if (DisableAll == "Yes")
+                                                    {
+                                                        <input type="submit" value="Save" class="btn btn-success" disabled />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="submit" value="Save" class="btn btn-success" />
+                                                    }
+                                                    @Html.ActionLink("Back to List", "Index", "LabourFomema", null, htmlAttributes: new { @class = "btn btn-warning" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width:50%"></td>
+
+                                    </tr>
+                                </table>
+
+
+                            }
+
+                          
+                       
+                      
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Fomema Labour Info</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.Action("_LabourFomemaDetail", new { LabourID = Model.fld_ID })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $('#datetimepicker1').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+
+    $("#fld_StateCode").change(function () {
+        var StateCode = $('#fld_StateCode').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetClinicList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ StateCode: StateCode });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#fld_ClinicID").empty();
+            for (var i = 0; i < result.ClinicList.length; i++) {
+                $("#fld_ClinicID").append("<option value=" + result.ClinicList[i].Value + ">" + result.ClinicList[i].Text + "</option>");
+            }
+            $("#DoctorName").empty();
+            $("#DoctorName").val(result.DoctorName);
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+
+    $("#fld_ClinicID").change(function () {
+        var ClinicID = $('#fld_ClinicID').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetClinicInfo", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ ClinicID: ClinicID });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#DoctorName").empty();
+            $("#DoctorName").val(result.DoctorName);
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

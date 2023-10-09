@@ -1,0 +1,152 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    string Disable = "";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <section class="content-wrapper main-content clear-fix">
+        <div class="well" id="well">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                @Html.HiddenFor(model => model.fld_ID)
+                @Html.HiddenFor(model => model.fld_NegaraID)
+                @Html.HiddenFor(model => model.fld_SyarikatID)
+                @Html.HiddenFor(model => model.fld_WilayahID)
+                @Html.HiddenFor(model => model.fld_LadangID)
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Estate Labour Information</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerIDNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.fld_WorkerNo, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.fld_WorkerNo, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-2">
+                                    @if (!string.IsNullOrEmpty(Model.fld_WorkerNo))
+                                    {
+                                        Disable = "disabled";
+                                    }
+                                    <button type="button" id="GenWorkerNo" name="GenWorkerNo" class="btn btn-success" @Disable>Generate Worker No</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Cost Center", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_CostCenter", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-success" />
+                                    @if (ViewBag.GetExistingWorker > 0)
+                                    {
+                                        <button type="button" id="SyncCheckrll" name="TrnsfrCheckrll" class="btn btn-success">Sync To Checkroll</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" id="TrnsfrCheckrll" name="TrnsfrCheckrll" class="btn btn-success">Transfer To Checkroll</button>
+                                    }
+                                    @Html.ActionLink("Back", "UpdateMenu", "LabourDetail", new { id = Model.fld_ID }, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+    $("#GenWorkerNo").click(function () {
+        var ID = $("#fld_ID").val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetWorkerNo", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ ID: ID });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            if (result != '') {
+                $('#fld_WorkerNo').val(result);
+                $("#GenWorkerNo").attr("disabled", true); 
+            }
+            else {
+
+            }
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+
+    $("#TrnsfrCheckrll").click(function () {
+        var ID = $("#fld_ID").val();
+        var CostCenter = $("#fld_CostCenter").val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("TransferToCheckRoll", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ ID: ID, CostCenter: CostCenter });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $.simplyToast(result.msg, result.statusmsg);
+            $("#TrnsfrCheckrll").attr("disabled", true); 
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+
+    $("#SyncCheckrll").click(function () {
+        var ID = $("#fld_ID").val();
+        var CostCenter = $("#fld_CostCenter").val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("SyncToCheckRoll", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ ID: ID, CostCenter: CostCenter });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $.simplyToast(result.msg, result.statusmsg);
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

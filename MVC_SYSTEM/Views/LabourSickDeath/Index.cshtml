@@ -1,0 +1,118 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrDataInfo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    GetIdentity GetIdentity = new GetIdentity();
+    GetNSWL GetNSWL = new GetNSWL();
+    GetTriager GetTriager = new GetTriager();
+    var LadangList = GetNSWL.GetLadang();
+    string WilayahName = "";
+    string LadangName = "";
+    int i = 1;
+
+    var GetWorkerOnStatus = GetTriager.StatusWorker(4);
+
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "Get",
+        UpdateTargetId = "searchResultWorkerInfo",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "divLoading"
+    };
+}
+<script src="~/Asset/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+            @using (Ajax.BeginForm("_LabourSickDeath", "LabourSickDeath", null, options, new { @id = "Index" }))
+            {
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Region</label>
+                        @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Estate</label>
+                        @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Sick Death</label>
+                        @Html.DropDownList("sickdeathList", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Worker Passport/IC/Name/No</label>
+                        @Html.TextBox("FreeText", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-2" style="padding-top:24px;">
+                        <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+                    </div>
+                </div>
+            }
+        </div>
+
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Labour Sick Death</div>
+            <div class="panel-body">
+                <div id="searchResultWorkerInfo">
+                    @Html.Action("_LabourSickDeath")
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    #content {
+        display: table;
+    }
+
+    #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after {
+        content: "";
+        counter-increment: pagenumber;
+        content: "Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+
+    thead, tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+</style>
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>

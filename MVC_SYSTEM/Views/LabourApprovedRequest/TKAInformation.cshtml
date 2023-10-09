@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrTKAProcess>
+
+@{
+    ViewBag.Title = "TKAInformation";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Estate Labour Update Info</div>
+            <div class="panel-body">
+                <div id="searchResult">
+                    <div class="modal-body">
+                        <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_NoPassport)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Nama)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Age)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_BOD)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ArrivedDT)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Notes)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_CreatedDT)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ModifiedDT)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_NoPassport)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_Nama)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_Age)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_BOD)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_ArrivedDT)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_Notes)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_CreatedDT)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_ModifiedDT)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                                            @Html.ActionLink("Update Full Information", "TKAFullInformation", new { id = item.fld_ID, LadangIDList = item.fld_LadangID })
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+
+
+                        @*//Added by Shazana on 18/8*@
+                        <div style="text-align:right; margin-top:10px">
+                            @Html.ActionLink("Back to List", "Index", "LabourApprovedRequest", new { BatchNo = ViewBag.GetBatchNo }, htmlAttributes: new { @class = "btn btn-warning" })
+
+                        </div>
+
+                    </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+      
+
+</section>

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.vw_LbrTKTOffrLetter>
+
+<div class="modal-body">
+    <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+        <thead>
+            <tr>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">IC No</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Name</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Address</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Daily Rate</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Created Date</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_NoIC)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_Nama)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_LtrAdd)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_DailyPayRate)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_CreatedDT)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                    @Html.ActionLink("View Letter", "TKTOfferLetter", new { id = item.fld_ID }, new { target = "_blank" })
+                </td>
+            </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">No Data</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+

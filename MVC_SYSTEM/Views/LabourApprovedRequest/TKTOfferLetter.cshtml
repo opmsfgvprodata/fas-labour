@@ -1,0 +1,176 @@
+﻿@model MVC_SYSTEM.LabourModels.vw_LbrTKTOffrLetter
+@{
+    DateTime DT = new DateTime();
+    DT = DateTime.Now;
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <style type="text/css">
+        <!--
+        span.cls_003 {
+            font-family: Times,serif;
+            font-size: 12.1px;
+            color: rgb(0,0,0);
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        div.cls_003 {
+            font-family: Times,serif;
+            font-size: 12.1px;
+            color: rgb(0,0,0);
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        span.cls_004 {
+            font-family: Arial,serif;
+            font-size: 10.1px;
+            color: rgb(0,0,0);
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        div.cls_004 {
+            font-family: Arial,serif;
+            font-size: 10.1px;
+            color: rgb(0,0,0);
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        span.cls_005 {
+            font-family: Arial,serif;
+            font-size: 8.3px;
+            color: rgb(0,0,0);
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        div.cls_005 {
+            font-family: Arial,serif;
+            font-size: 8.3px;
+            color: rgb(0,0,0);
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        span.cls_002 {
+            font-family: Arial,serif;
+            font-size: 8.3px;
+            color: rgb(0,0,0);
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        div.cls_002 {
+            font-family: Arial,serif;
+            font-size: 8.3px;
+            color: rgb(0,0,0);
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        span.cls_007 {
+            font-family: Arial,serif;
+            font-size: 12.3px;
+            color: rgb(0,0,0);
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: underline
+        }
+
+        div.cls_007 {
+            font-family: Arial,serif;
+            font-size: 12.3px;
+            color: rgb(0,0,0);
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none
+        }
+        -->
+    </style>
+
+
+</head>
+<body>
+
+    <!--
+    content of this area will be the content of your PDF file
+    -->
+    <div id="HTMLtoPDF">
+
+
+        <div style="position:absolute;left:50%;margin-left:-297px;top:0px;width:680px;height:842px;">
+            <div style="position:absolute;left:0px;top:0px">
+                <img class="logo" src="~/Asset/Images/background1.jpg" width=595 height=842>
+            </div>
+            <div style="position:absolute;left:147.50px;top:38.00px" class="cls_002"><span class="cls_003">FGV AGRI SERVICES SDN. BHD.</span></div>
+            <div style="position:absolute;left:147.50px;top:55.00px" class="cls_003"><span class="cls_004">(Company No.: 974143-H)</span></div>
+            <div style="position:absolute;left:37.00px;top:83.00px" class="cls_003"><span class="cls_004">Bil</span></div>
+            <div style="position:absolute;left:90.57px;top:83.00px" class="cls_003"><span class="cls_004">:</span></div>
+            <div style="position:absolute;left:112.00px;top:83.00px" class="cls_003"><span class="cls_004">LNR066819020001</span></div>
+            <div style="position:absolute;left:37.00px;top:97.00px" class="cls_003"><span class="cls_004">Tarikh</span></div>
+            <div style="position:absolute;left:90.57px;top:97.00px" class="cls_003"><span class="cls_003">:</span></div>
+            <div style="position:absolute;left:112.00px;top:97.00px" class="cls_003"><span class="cls_004">@string.Format("{0:dd/MM/yyyy}", DT) </span></div>
+            <div style="position:absolute;left:37.00px;top:133.00px" class="cls_003"><span class="cls_004">Kepada,</span></div>
+            <div style="position:absolute;left:37.00px;top:158.00px" class="cls_003"><span class="cls_004">@Model.fld_Nama</span></div>
+            <div style="position:absolute;left:37.00px;top:172.00px" class="cls_003"><span class="cls_004">No K/P : @Model.fld_NoIC</span></div>
+            <div style="position:absolute;left:37.00px;top:186.00px" class="cls_003"><span class="cls_004">@Model.fld_LtrAdd</span></div>
+            <div style="position:absolute;left:37.00px;top:222.00px" class="cls_003"><span class="cls_004">Saudara,</span></div>
+            <div style="position:absolute;left:37.00px;top:247.00px" class="cls_007"><span class="cls_007">TAWARAN UNTUK BERKHIDMAT SEBAGAI PEKERJA LADANG TEMPATAN</span></div>
+            <div style="position:absolute;left:37.00px;top:277.00px" class="cls_003"><span class="cls_003">1.</span></div>
+            <div style="position:absolute;left:63.79px;top:278.00px" class="cls_003"><span class="cls_004">Sukacita dimaklumkan bahawa FGVPMSB bersetuju menawarkan Jawatan Pekerja Ladang Tempatan kepada</span></div>
+            <div style="position:absolute;left:63.79px;top:294.00px" class="cls_003"><span class="cls_004">saudara/ri mulai  </span><span class="cls_003">@string.Format("{0:dd/MM/yyyy}", Model.fld_WorkingSrtDT) </span><span class="cls_004">berdasarkan syarat-syarat berikut :</span></div>
+            <div style="position:absolute;left:63.79px;top:313.00px" class="cls_003"><span class="cls_004">a)</span></div>
+            <div style="position:absolute;left:90.57px;top:314.00px" class="cls_003"><span class="cls_004">Saudara akan dibayar gaji atas kadar  </span><span class="cls_003">RM @Model.fld_DailyPayRate sehari </span><span class="cls_004">atau kadar yang ditetapkan oleh Pengurus</span></div>
+            <div style="position:absolute;left:90.57px;top:330.00px" class="cls_003"><span class="cls_004">Ladang berasaskan kadaran (piece rate) seperti mana dalam Kadar Upah Pekerja Ladang.</span></div>
+            <div style="position:absolute;left:63.79px;top:349.00px" class="cls_003"><span class="cls_004">b)</span></div>
+            <div style="position:absolute;left:90.57px;top:350.00px" class="cls_003"><span class="cls_004">Saudara dikehendaki mencarum kepada Kumpulan Wang Simpanan Pekerja (KWSP) dan PERKESO</span></div>
+            <div style="position:absolute;left:90.57px;top:366.00px" class="cls_003"><span class="cls_004">seperti mana yang telah diwartakan dalam Undang-undang.</span></div>
+            <div style="position:absolute;left:63.79px;top:385.00px" class="cls_003"><span class="cls_004">c)</span></div>
+            <div style="position:absolute;left:90.57px;top:386.00px" class="cls_003"><span class="cls_004">Saudara dikehendaki mematuhi peraturan Ladang setiap masa seperti yang terdapat pada Syarat-syarat</span></div>
+            <div style="position:absolute;left:90.57px;top:402.00px" class="cls_003"><span class="cls_004">Perkhidmatan Pekerja Operasi Ladang Tempatan (POLT) dan Akta Kerja 1955.</span></div>
+            <div style="position:absolute;left:63.79px;top:421.00px" class="cls_003"><span class="cls_004">d)</span></div>
+            <div style="position:absolute;left:90.57px;top:422.00px" class="cls_003"><span class="cls_004">Saudara diberikan kemudahan rawatan perubatan, cuti tahunan dan lain-lain kemudahan selaras</span></div>
+            <div style="position:absolute;left:90.57px;top:438.00px" class="cls_003"><span class="cls_004">peruntukan dalam Syarat-syarat Perkhidmatan Pekerja Operasi Ladang Tempatan (POLT).</span></div>
+            <div style="position:absolute;left:37.00px;top:512.00px" class="cls_003"><span class="cls_003">2.</span></div>
+            <div style="position:absolute;left:63.79px;top:513.00px" class="cls_003"><span class="cls_004">Perkara-perkara berikut hendaklah disediakan terlebih dahulu dan diserahkan kepada Pengurus Ladang</span></div>
+            <div style="position:absolute;left:63.79px;top:529.00px" class="cls_003"><span class="cls_004">semasa saudara melaporkan diri untuk bertugas :</span></div>
+            <div style="position:absolute;left:63.79px;top:548.00px" class="cls_003"><span class="cls_004">a)</span></div>
+            <div style="position:absolute;left:90.57px;top:549.00px" class="cls_003"><span class="cls_004">Saudara hendaklah menjalani pemeriksaan kesihatan dan diakui sihat oleh Pengamal perubatan Hospital</span></div>
+            <div style="position:absolute;left:90.57px;top:565.00px" class="cls_003"><span class="cls_004">Kerajaan / Swasta. (Menggunakan borang Pemeriksaan Kesihatan yang dilampirkan)</span></div>
+            <div style="position:absolute;left:37.00px;top:639.00px" class="cls_003"><span class="cls_003">3.</span></div>
+            <div style="position:absolute;left:63.79px;top:640.00px" class="cls_003"><span class="cls_004">Saudara dikehendaki melapor diri pada :</span></div>
+            <div style="position:absolute;left:165.57px;top:653.00px" class="cls_003"><span class="cls_004">Tarikh</span></div>
+            <div style="position:absolute;left:219.14px;top:653.00px" class="cls_003"><span class="cls_004">:</span></div>
+            <div style="position:absolute;left:240.57px;top:653.00px" class="cls_003"><span class="cls_004">@string.Format("{0:dd/MM/yyyy}", Model.fld_WorkingSrtDT)</span></div>
+            <div style="position:absolute;left:165.57px;top:680.00px" class="cls_003"><span class="cls_004">Masa</span></div>
+            <div style="position:absolute;left:219.14px;top:680.00px" class="cls_003"><span class="cls_004">:</span></div>
+            <div style="position:absolute;left:240.57px;top:680.00px" class="cls_003"><span class="cls_004">07:22:00 AM</span></div>
+            <div style="position:absolute;left:37.00px;top:728.00px" class="cls_003"><span class="cls_003">4.</span></div>
+            <div style="position:absolute;left:63.79px;top:729.00px" class="cls_003"><span class="cls_004">Perbelanjaan melaporkan diri adalah atas tanggungan sendiri.</span></div>
+            <div style="position:absolute;left:37.00px;top:801.00px" class="cls_003"><span class="cls_003">5.</span></div>
+            <div style="position:absolute;left:63.79px;top:802.00px" class="cls_003"><span class="cls_004">Pihak pengurusan FASSB mengucapkan Tahniah dan Selamat Maju Jaya kerana saudara dipilih untuk</span></div>
+            <div style="position:absolute;left:63.79px;top:815.00px" class="cls_003"><span class="cls_004">bekerja di Ladang ini. Adalah diharapkan saudara akan memberikan perkhidmatan yang sebaik-baiknya</span></div>
+            <div style="position:absolute;left:63.79px;top:828.00px" class="cls_003"><span class="cls_004">kepada Ladang untuk kebaikan bersama.</span></div>
+            <div style="position:absolute;left:37.00px;top:870.00px" class="cls_003"><span class="cls_004">Sekian, terima kasih.</span></div>
+            <div style="position:absolute;left:37.00px;top:880.00px" class="cls_003"><span class="cls_004">Yang benar,</span></div>
+            <div style="position:absolute;left:37.00px;top:930.00px" class="cls_003"><span class="cls_004">Pengurus Ladang</span></div>
+            <div style="position:absolute;left:37.00px;top:950.00px" class="cls_003"><span class="cls_004">s.k -  Pengurus Besar Wilayah</span></div>
+
+
+            <div style="position:absolute;left:37.00px;top:980.00px" class="cls_006"><span class="cls_006">*Potong yang tidak berkenaan</span></div>
+        </div>
+</body>
+</html>

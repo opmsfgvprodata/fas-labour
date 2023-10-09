@@ -1,0 +1,235 @@
+﻿
+@model IEnumerable<MVC_SYSTEM.CustomModels.CustMod_MasterInfo>
+
+@{
+    ViewBag.Title = "Labour Master Data Info";
+    GetIdentity GetIdentity = new GetIdentity();
+    GetNSWL GetNSWL = new GetNSWL();
+    GeneralFunc GeneralFunc = new GeneralFunc();
+    var LadangList = GetNSWL.GetLadang();
+    string WilayahName = "";
+    string LadangName = "";
+
+    //Commented by Shazana 16/11
+    //string[] WebConfigFilter = new string[] { "krytnlist", "fomemarenew" };
+    //Added by Shazana on 16/11
+    string[] WebConfigFilter = new string[] { "krytnlist", "fomemarenew", "roc", "statusaktif" };
+    GetConfig GetConfig = new GetConfig();
+
+    int i = 1;
+
+    GetTriager GetTriager = new GetTriager();
+
+}
+
+@if (Model != null && Model.Count() != 0)
+{
+    <div id="scrollArea2" class="modal-body">
+        <table class="table table-hover" style="font-size: 11px;" border="0" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">No</th>
+                    @*Added by Shazana on 16/11*@
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Estate</th>
+                    @*Close Added by Shazana on 16/11**@
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Worker No.</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Worker Name</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Nationality</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Cost Center</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Status</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Gender</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">No Perkeso</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Date Arrived</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Date Passport End</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Date Permit End</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Permit No</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">ROC</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Agency</th>
+
+                </tr>
+            <thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    WilayahName = LadangList.Where(x => x.fld_WilayahID == item.fld_WilayahID).Select(s => s.fld_NamaWilayah).Distinct().FirstOrDefault();
+                    LadangName = LadangList.Where(x => x.fld_LadangID == item.fld_LadangID).Select(s => s.fld_NamaLadang).Distinct().FirstOrDefault();
+
+
+                    //Added by Shazana on 16/11
+                    var GetConfigData = GetConfig.GetConfigDesc(item.fld_NegaraID, item.fld_SyarikatID, WebConfigFilter);
+                    var GetStatus = GetConfigData.Where(x => x.fldOptConfValue == item.status && x.fldOptConfFlag1 == "statusaktif").Select(s => s.fldOptConfDesc).FirstOrDefault();
+
+                    //var Getroc = "0";
+                    //if (item.roc == null)
+                    //{ Getroc = "-"; }
+                    //elseitem.roc
+                    String ROC = Convert.ToString(item.roc);
+                    var Getroc = GetConfigData.Where(x => x.fldOptConfValue == ROC.ToString() && x.fldOptConfFlag1 == "roc").Select(s => s.fldOptConfDesc).FirstOrDefault();
+                    //var FormemaRenew = GetConfigData.Where(x => x.fldOptConfValue == YearStiker.ToString() && x.fldOptConfFlag1 == "fomemarenew").FirstOrDefault();
+                    //Close Added by Shazana on 16/11
+
+                    <tr>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@i</td>
+                        @*Added by Shazana on 16/11*@
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@LadangName</td>
+                        @*Close Added by Shazana on 16/11*@
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.nopkj</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.namepkj</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.nationality</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.costcenter</td>
+
+                        @*Commented by Shazana on 16/11
+                            <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.status</td>
+                            Added by Shazana on 16/11*@
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetStatus</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.gender</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.kwsp</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.tarikhMasuk)</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.passportTamat)</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.PermitTamat)</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.permitNo</td>
+
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Getroc</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetConfig.GetPembekal(item.agensi, item.fld_NegaraID.Value, item.fld_SyarikatID.Value)</td>
+
+                    </tr>
+                    i++;
+                }
+            </tbody>
+
+        </table>
+    </div>
+    if (ViewBag.Print == null)
+    {
+        @*<a href="#" onclick="HTMLtoExcel('LabourFomema')">Download Excel</a>*@
+
+        <div style="text-align:right; margin-top:10px" id="AllDownload">
+            @*<a class="btn btn-default btn-sm" href="#" id="printpage">
+                    <span class="glyphicon glyphicon-print"> </span>Print
+                </a>*@
+            <a class="btn btn-default btn-sm" href="#" id="downloadpdf">
+                <span><img src="~/Asset/Images/pdf-icon.png" width="20px" height="20px" /></span> Download PDF
+            </a>
+            <a class="btn btn-default btn-sm" href="#" id="HTMLtoExcel">
+                <span><img src="~/Asset/Images/excel-icon.png" width="20px" height="20px" /></span>download Excel
+            </a>
+        </div>
+    }
+
+
+}
+
+
+
+else
+{
+    <div id="scrollArea2" class="modal-body" style="text-align: center">
+        <p style="color: red">@ViewBag.Message</p>
+
+    </div>
+}
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    #content {
+        display: table;
+    }
+
+    #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after {
+        content: "";
+        counter-increment: pagenumber;
+        content: "Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+
+    thead, tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+</style>
+
+<script>
+
+
+    $("#HTMLtoExcel").click(function () {
+
+
+        var blob = new Blob([document.getElementById('scrollArea2').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        })
+        saveAs(blob, 'LabourMasterData' + ".xls");  //Edited by Shazana on 3/9
+
+    });
+
+    $(document).ready(function () {
+        $("#printpage").click(function () {
+            var DivElement = document.getElementById("scrollArea2").innerHTML;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = DivElement;
+            window.print();
+            document.body.innerHTML = oldPage;
+        })
+
+
+        $("#downloadpdf").click(function () {
+            $("#AllDownload").attr("style", "display:none");
+            var WilayahIDList = $("#WilayahIDList").val();
+            var LadangIDList = $("#LadangIDList").val();
+            var Supplier = $("#Supplier").val();
+            var Nationality = $("#Nationality").val();
+            var CostCenter = $("#CostCenter").val();
+            var Gender = $("#Gender").val();
+            var Status = $("#Status").val();
+
+            var param = '/?NegaraID=1' + '&SyarikatID=1' + '&WilayahIDList=' + WilayahIDList + '&LadangIDList=' + LadangIDList + '&Supplier=' + Supplier + '&Nationality=' + Nationality + '&CostCenter=' + CostCenter + '&Gender=' + Gender + '&Status=' + Status;
+            var controller = 'LabourReport';
+            var action = 'PrintWorkerPdfMasterData';
+
+            var ajxfn = {};
+            ajxfn.url = "@Url.Action("PDFIndetifier", "PdfCreator")";
+            ajxfn.type = "POST";
+            debugger
+            ajxfn.data = JSON.stringify({ controller: controller, action: action, param: param });
+            ajxfn.datatype = "json";
+            ajxfn.contentType = "application/json";
+            ajxfn.success = function (result) {
+                //var win = window.open(result.link, '_blank');
+                //win.focus();
+                PDFObject.embed(result.link, "#searchResultMasterData", { height: "450px" });
+            };
+
+            ajxfn.error = function () {
+                $.simplyToast('error', 'danger');
+                $("#UpdateProgress1").css("display", "none");
+            };
+            $.ajax(ajxfn);
+
+            return false;
+        });
+    });
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("date").innerHTML = dt.toLocaleDateString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+</script>
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+

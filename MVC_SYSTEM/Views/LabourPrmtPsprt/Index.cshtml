@@ -1,0 +1,224 @@
+﻿@using System.Collections.Generic
+@model IEnumerable<MVC_SYSTEM.CustomModels.CustMod_LabourPrmtPsprt>
+
+@{
+    /**/
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetTriager GetTriager = new GetTriager();
+    GetConfig GetConfig = new GetConfig();
+    string dateformat = GetConfig.GetData("dateformat");  //Shazana 15/9
+    GetIdentity GetIdentity = new GetIdentity();
+    GetNSWL GetNSWL = new GetNSWL();
+    GeneralFunc GeneralFunc = new GeneralFunc();
+    // string DisableAll = ViewBag.DisableAll;  //commented by wani 16.3.2020 (1)
+
+    var GetWorkerOnStatus = GetTriager.StatusWorker(1);
+    var LadangList = GetNSWL.GetLadang();
+    string WilayahName = "";
+    string LadangName = "";
+    string[] WebConfigFilter = new string[] { "krytnlist", "fomemarenew" };
+
+
+    bool FlagBr = false;
+    long YearEndPassport, YearEndPermit;
+    int i = 1;
+
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "Get",
+        UpdateTargetId = "searchResultWorkerInfo",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "divLoading"
+    };
+}
+
+@*//Added by Shazana ion 17/8*@
+@*<link href="~/Asset/ConfirmAlert/css/jquery-confirm.css" rel="stylesheet" />
+    <script src="~/Asset/ConfirmAlert/js/jquery-confirm.js"></script>*@
+<script src="~/Asset/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<div id="divLoading" style="display:none;">
+    <div class="progressTest">
+        <label>
+            @GlobalResEstate.msgWait
+        </label>
+    </div>
+</div>
+@*//Close added*@
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+        @*@using (Html.BeginForm("Index", "LabourPrmtPsprt", FormMethod.Get))*@ @*//Commented By Shazana on 17/8*@
+        @using (Ajax.BeginForm("_LabourPrmtPsprt", "LabourPrmtPsprt", null, options, new { @id = "Index" }))
+
+        {
+            @Html.AntiForgeryToken()
+        <div class="row">
+            @*Added by Shazana on 28/10*@
+            <div class="col-sm-2" id="RadioButton1">
+                @Html.RadioButton("RadioGroup", 0, new { @checked = "checked" })
+                @Html.Label("Permit")<br />
+                @Html.RadioButton("RadioGroup", 1)
+                @Html.Label("Passport")<br />
+                @Html.RadioButton("RadioGroup", 2)
+                @Html.Label("Permit & Passport")
+            </div>
+
+            @*Close Added by Shazana on 28/10*@
+
+            <div class="col-sm-2">
+                <label>Region</label>
+                @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <label>Estate</label>
+                @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="col-sm-3" id="divlist">
+                <label>Start Date</label>
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.TextBox("StartDate", null, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", onkeydown = "return false", @Value = DateTime.Now.ToString("dd/MM/yyyy") })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-3" id="divlist">
+                <label>End Date</label>
+                <div class='input-group date' id='datetimepicker3'>
+                    @Html.TextBox("EndDate", null, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", onkeydown = "return false", @Value = DateTime.Now.ToString("dd/MM/yyyy") })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            @*Added by Shazana on 28/10*@
+            <div class="col-sm-2">
+            </div>
+            @*Close Added by Shazana on 28/10*@
+
+            <div class="col-sm-2">
+                <label>Worker Passport/IC/Name/No</label>
+                @Html.TextBox("FreeText", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+            <div class="col-sm-2" style="padding-top:24px;">
+                <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+            </div>
+        </div>
+                }
+            </div>
+
+
+            @*//Added By Shazana*@
+            <div class="well" style="margin-top:7px;">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Labour Permit Passport</div>
+                    <div class="panel-body">
+                        <div id="searchResultWorkerInfo">
+                            @Html.Action("_LabourPrmtPsprt")
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*Close added*@
+</section>
+<style>
+
+    .well {
+        overflow-x: unset !important;
+    }
+
+    #summary {
+        font-family: Arial;
+        font-size: 11px;
+        border: 1px solid black;
+    }
+
+        #summary td, #summary th {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        #summary th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+        }
+
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    thead, tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+</style>
+
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+
+<script>
+    var dt = new Date();
+    document.getElementById("date").innerHTML = dt.toLocaleDateString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+</script>
+
+<script>
+    var dt = new Date();
+    document.getElementById("datetime").innerHTML = dt.toLocaleString();
+</script>
+<script>
+       $('#datetimepicker2').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+       $('#datetimepicker3').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>       @*modified by wani 16.3.2020 (6)*@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,133 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrDataInfo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    GetIdentity GetIdentity = new GetIdentity();
+    GetNSWL GetNSWL = new GetNSWL();
+    GeneralFunc GeneralFunc = new GeneralFunc();
+    var LadangList = GetNSWL.GetLadang();
+    string WilayahName = "";
+    string LadangName = "";
+    int i = 1;
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+        @using (Html.BeginForm("Index", "LabourDetail", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Region</label>
+                    @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Estate</label>
+                    @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Worker Type</label>
+                    @Html.DropDownList("JnsPkjList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Worker Status</label>
+                    @Html.DropDownList("StatusList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Worker Passport/IC/Name/No</label>
+                    @Html.TextBox("FreeText", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2" style="padding-top:24px;">
+                    <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Worker Details</div>
+            <div class="panel-body">
+                <div id="searchResult">
+                    <div class="modal-body" id="scrollArea2">
+                        <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">No</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerNo)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerIDNo)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerName)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Age)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WilayahID)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_LadangID)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    WilayahName = LadangList.Where(x => x.fld_WilayahID == item.fld_WilayahID).Select(s => s.fld_NamaWilayah).Distinct().FirstOrDefault();
+                                    LadangName = LadangList.Where(x => x.fld_LadangID == item.fld_LadangID).Select(s => s.fld_NamaLadang).Distinct().FirstOrDefault();
+                                    var Age = GeneralFunc.CalAge(item.fld_BOD.Value);
+                                    <tr>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@i</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerNo)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Age</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@WilayahName</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@LadangName</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                                            @Html.ActionLink("Update", "UpdateMenu", new { id = item.fld_ID })
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @*<a href="#" onclick="HTMLtoExcel('LabourManagement')">Download Excel</a> Commented By Shazana on 13/1/2022*@
+
+                    @*Added by Shazana on 13/1/2022*@
+                    <a class="btn btn-default btn-sm" href="#" id="HTMLtoExcel">
+                        <span><img src="~/Asset/Images/excel-icon.png" width="20px" height="20px" /></span>Download Excel
+                    </a>
+                    @*Close Added by Shazana on 13/1/2022*@
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+
+    @*Added by Shazana on 13/1/2022*@
+    $("#HTMLtoExcel").click(function () {
+        var blob = new Blob([document.getElementById('scrollArea2').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        })
+        saveAs(blob, 'LabourManagement' + ".xls");
+    });
+    @*Close Added by Shazana on 13/1/2022*@
+</script>

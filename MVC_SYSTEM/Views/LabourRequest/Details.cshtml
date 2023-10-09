@@ -1,0 +1,171 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrRqst
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tbl_LbrRqst</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_BatchNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_BatchNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_LbrReqQty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_LbrReqQty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_AppReqQty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_AppReqQty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_TKAQty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_TKAQty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_TKTQty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_TKTQty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_Month)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_Month)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_Year)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_Year)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_ApprovedStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_ApprovedStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_ApprovedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_ApprovedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_ApprovedDT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_ApprovedDT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_NegaraID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_NegaraID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_SyarikatID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_SyarikatID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_WilayahID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_WilayahID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_LadangID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_LadangID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_CreatedDT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_CreatedDT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_ModifiedDT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_ModifiedDT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_Deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_Deleted)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.fld_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

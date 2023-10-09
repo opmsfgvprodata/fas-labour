@@ -1,0 +1,287 @@
+﻿@using System.Collections.Generic
+@model IEnumerable<MVC_SYSTEM.CustomModels.CustMod_RumKeperluanPekerjaRpt>
+@{
+    ViewBag.Title = "RUMUSAN KEPERLUAN DAN KEDUDUKAN TENAGA KERJA LADANG TAHUN ";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetTriager GetTriager = new GetTriager();
+    GetConfig getconfig = new GetConfig();
+    string dateformat = getconfig.GetData("dateformat");
+    decimal TotalArea = 0;
+    int TotalKeperluan = 0;
+    int TotalIndon = 0;
+    int TotalBangla = 0;
+    int TotalIndia = 0;
+    int TotalNepal = 0;
+    int TotalTKA = 0;
+    int TotalPOL = 0;
+    int TotalTK = 0;
+    decimal TotalKedudukan = 0;
+    int TotalKekuranganSemasa = 0;
+    int TotalPeratusKekuranganSemasa = 0;
+    int TotalAgihan = 0;
+
+    decimal TotalArea1 = 0;
+    int TotalKeperluan1 = 0;
+    int TotalIndon1 = 0;
+    int TotalBangla1 = 0;
+    int TotalIndia1 = 0;
+    int TotalNepal1 = 0;
+    int TotalTKA1 = 0;
+    int TotalPOL1 = 0;
+    int TotalTK1 = 0;
+    decimal TotalKedudukan1 = 0;
+    int TotalKekuranganSemasa1 = 0;
+    int TotalPeratusKekuranganSemasa1 = 0;
+    int TotalAgihan1 = 0;
+
+    decimal TotalAreaK = 0;
+    int TotalKeperluanK = 0;
+    int TotalIndonK = 0;
+    int TotalBanglaK = 0;
+    int TotalIndiaK = 0;
+    int TotalNepalK = 0;
+    int TotalTKAK = 0;
+    int TotalPOLK = 0;
+    int TotalTKK = 0;
+    decimal TotalKedudukanK = 0;
+    int TotalKekuranganSemasaK = 0;
+    int TotalPeratusKekuranganSemasaK = 0;
+    int TotalAgihanK = 0;
+
+    int JumTotalIndon = 0;
+    int JumTotalBangla = 0;
+    int JumTotalIndia = 0;
+    int JumTotalNepal = 0;
+    int JumTotalPOL = 0;
+    int JumTKA = 0;
+    int JumT = 0;
+    int JumAll = 0;
+
+    int i = 1;
+    //get wilayah id in model - shah 08/07/2020
+    var getwlyh = new List<int>();
+    if (Model.Count() > 0)
+    {
+        getwlyh = Model.Select(s => s.fld_WilayahID.Value).Distinct().ToList();
+    }
+
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "Get",
+        UpdateTargetId = "searchResultWorkerInfo",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "divLoading"
+    };
+}
+
+<script src="~/Asset/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+<style>
+    .well {
+        overflow-x: unset !important;
+    }
+
+    #summary {
+        font-family: Arial;
+        font-size: 11px;
+        border: 1px solid black;
+    }
+
+        #summary td, #summary th {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        #summary th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+        }
+</style>
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+        @using (Ajax.BeginForm("_LabourRumusanKeperluanPekerja", "LabourReport", null, options, new { @id = "LabourRumusanKeperluanPekerja" }))
+        {
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Region</label>
+                    @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Estate</label>
+                    @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+
+                @*<div class="col-sm-1" id="divlist">
+                        <label>Month</label>
+                        @Html.DropDownList("MonthList", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-1" id="divlist">
+                        <label>Year</label>
+                        @Html.DropDownList("YearList", null, htmlAttributes: new { @class = "form-control" })
+                    </div>*@
+                <div class="col-sm-3" id="divlist">
+                    <label>Date</label>
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.TextBox("CurrDate", null, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", onkeydown = "return false", @Value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-2" style="padding-top:24px;">
+                    <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Labour Rumusan Keperluan Pekerja</div>
+            <div class="panel-body">
+                <div id="searchResultWorkerInfo">
+                    @Html.Action("_LabourRumusanKeperluanPekerja")
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    thead, tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+
+
+    #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after {
+        content: "";
+        counter-increment: pagenumber;
+        content: "Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+</style>
+
+<script>
+    var dt = new Date();
+    document.getElementById("date").innerHTML = dt.toLocaleDateString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#printpage").click(function () {
+            var DivElement = document.getElementById("scrollArea2").innerHTML;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = DivElement;
+            window.print();
+            document.body.innerHTML = oldPage;
+        })
+
+        $("#downloadpdf").click(function () {
+            var RadioGroup = $('input[name=RadioGroup]:checked').val();
+            //var MonthList = $("#MonthList").val();
+            //var YearList = $("#YearList").val();
+            var SelectionList = $("#SelectionList").val();
+            var StatusList = $("#StatusList").val();
+            var JnsPkjList = $("#JnsPkjList").val();
+            //var WorkCategoryList = $("#WorkCategoryList").val();
+
+            //var StatusList = '';
+            //var WorkCategoryList = '';
+            
+            var param = '/?RadioGroup=' + RadioGroup + '&SelectionList=' + SelectionList + '&StatusList=' + StatusList + '&JnsPkjList=' + JnsPkjList;
+            var controller = 'Report';
+            var action = 'PrintWorkerPdf';
+
+            var ajxfn = {};
+            ajxfn.url = "@Url.Action("PDFIndetifier", "PdfCreator")";
+            ajxfn.type = "POST";
+            ajxfn.data = JSON.stringify({ controller: controller, action: action, param: param });
+            ajxfn.datatype = "json";
+            ajxfn.contentType = "application/json";
+            ajxfn.success = function (result) {
+                //var win = window.open(result.link, '_blank');
+                //win.focus();
+                PDFObject.embed(result.link, "#searchResultWorkerInfo", { height: "450px" });
+            };
+
+            ajxfn.error = function () {
+                $.simplyToast('error', 'danger');
+                $("#UpdateProgress1").css("display", "none");
+            };
+            $.ajax(ajxfn);
+
+            return false;
+        });
+    });
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("datetime").innerHTML = dt.toLocaleString();
+</script>
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+
+
+    $('#datetimepicker1').datetimepicker({
+        timepicker: false,
+        format: '@dateformat'
+    });
+
+    $('#datetimepicker2').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+
+    });
+
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

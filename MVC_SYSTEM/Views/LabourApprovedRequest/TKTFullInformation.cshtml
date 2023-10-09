@@ -1,0 +1,382 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+
+@{
+    ViewBag.Title = "TKTFullInformation";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetConfig GetConfig = new GetConfig();
+    string dateformat = GetConfig.GetData("dateformat");
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <section class="content-wrapper main-content clear-fix">
+        <div class="well" id="well">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                @Html.HiddenFor(model => model.fld_ID)
+                @Html.HiddenFor(model => model.fld_LbrProcessID)
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Estate Labour Information</div>
+                        <div class="panel-body">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:40px">Worker/Passport ID: </label> @*modified by faeza 20.04.2021*@
+                                            <div class="col-md-8" style="padding-left:20px ; padding-right:210px">
+                                                @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @style = "float:right; margin-top: 40px" } })
+                                                @Html.ValidationMessageFor(model => model.fld_WorkerIDNo, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:40px">Worker Type: </label>
+                                            <div class="col-md-6" style="padding-left:70px ; padding-right:70px">
+                                                @Html.DropDownList("fld_WorkerType", null, htmlAttributes: new { @class = "form-control", @style = "float:right; margin-top: 40px" })
+                                                @Html.ValidationMessageFor(model => model.fld_WorkerType, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px;">Worker Name: </label>
+                                            <div class="col-md-8" style="padding-left:52px">
+                                                @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @style = "float:right;" } })
+                                                @Html.ValidationMessageFor(model => model.fld_WorkerName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Worker Category: </label>
+                                            <div class="col-md-6" style="padding-left:50px ; padding-right:93px">
+                                                @Html.DropDownList("fld_WorkCtgry", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                @Html.ValidationMessageFor(model => model.fld_WorkCtgry, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Phone No: </label>
+                                            <div class="col-md-6" style="padding-left:71px ; padding-right: 78px ">
+                                                @Html.EditorFor(model => model.fld_PhoneNo, new { htmlAttributes = new { @class = "form-control", @style = "float:right;" } })
+                                                @Html.ValidationMessageFor(model => model.fld_PhoneNo, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px;padding-top:20px">Worker Address: </label>
+                                            <div class="col-md-8" style="padding-left:53px">
+                                                @Html.TextAreaFor(model => model.fld_WorkerAddress, 5, 100, new { htmlAttributes = new { @class = "form-control", @style = "float:right; " } })
+                                                @Html.ValidationMessageFor(model => model.fld_WorkerAddress, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Date of Birth: </label>
+                                            <div class="col-md-4" style="padding-left:57px">
+                                                <div class='input-group date' id='datetimepicker1'>
+                                                    @Html.EditorFor(model => model.fld_BOD, new { htmlAttributes = new { @class = "form-control", @style = "float:right;" } })
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Notes: </label>
+                                            <div class="col-md-8" style="padding-left:109px ; padding-right:70px ">
+                                                @Html.TextAreaFor(model => model.fld_Notes, 5, 100, new { htmlAttributes = new { @class = "form-control", @style = "float:right;" } })
+                                                @Html.ValidationMessageFor(model => model.fld_Notes, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Age: </label>
+                                            <div class="col-md-6" style="padding-left:102px ; padding-right:47px">
+                                                @Html.EditorFor(model => model.fld_Age, new { htmlAttributes = new { @class = "form-control", @style = "float:right;" } })
+                                                @Html.ValidationMessageFor(model => model.fld_Age, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">State: </label>
+                                            <div class="col-md-7" style="padding-left:112px ; ; padding-right:10px">
+                                                @Html.DropDownList("fld_State", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                @Html.ValidationMessageFor(model => model.fld_State, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Gender: </label>
+                                            <div class="col-md-6" style="padding-left:85px ; padding-right:65px">
+                                                @Html.DropDownList("fld_SexType", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                @Html.ValidationMessageFor(model => model.fld_SexType, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                    </td>
+
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Country: </label>
+                                            <div class="col-md-6" style="padding-left:97px ; padding-right:70px">
+                                                @Html.DropDownList("fld_Country", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                @Html.ValidationMessageFor(model => model.fld_Country, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Marital Status: </label>
+                                            <div class="col-md-6" style="padding-left:52px ; padding-right:100px">
+                                                @Html.DropDownList("fld_MarriedStatus", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                @Html.ValidationMessageFor(model => model.fld_MarriedStatus, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px;">Poscode: </label>
+                                            <div class="col-md-8" style="padding-left:93px ; padding-right:90px">
+                                                @Html.EditorFor(model => model.fld_Postcode, new { htmlAttributes = new { @class = "form-control", @style = "float:right;" } })
+                                                @Html.ValidationMessageFor(model => model.fld_Postcode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Religion: </label>
+                                            <div class="col-md-6" style="padding-left:80px ; padding-right:70px">
+                                                @Html.DropDownList("fld_Religion", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                @Html.ValidationMessageFor(model => model.fld_Religion, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Date of Confirmation: </label>
+                                            <div class="col-md-4" style="padding-left:31px ; padding-right:28px">
+                                                <div class='input-group date' id='datetimepicker4'>
+                                                    @Html.EditorFor(model => model.fld_ConfirmationDT, new { htmlAttributes = new { @class = "form-control", @style = "float:right;" } })
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Race: </label>
+                                            <div class="col-md-6" style="padding-left:98px ; padding-right:54px">
+                                                @Html.DropDownList("fld_Race", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                @Html.ValidationMessageFor(model => model.fld_Race, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Date of Working Started: </label>
+                                            <div class="col-md-4" style="padding-left:14px; padding-right:43px">
+                                                <div class='input-group date' id='datetimepicker3'>
+                                                    @Html.EditorFor(model => model.fld_WorkingStartDT, new { htmlAttributes = new { @class = "form-control", @style = "float:right;" } })
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Nationality: </label>
+                                            <div class="col-md-6" style="padding-left:68px ; padding-right:83px">
+                                                @Html.DropDownList("fld_Nationality", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                @Html.ValidationMessageFor(model => model.fld_Nationality, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                    @*added by faeza 20.04.2021*@
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px">Payment Mode: </label>
+                                            <div class="col-md-6" style="padding-left:60px ; padding-right:83px">
+                                                @Html.DropDownList("fld_PaymentMode", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                @Html.ValidationMessageFor(model => model.fld_PaymentMode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                                @*added by faeza 20.04.2021*@
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            @*<label style="float:left; margin-right:10px ; padding-left:40px">Nationality: </label>*@
+                                            <div class="col-md-6" style="padding-left:68px ; padding-right:83px">
+                                                @*@Html.DropDownList("fld_Nationality", null, htmlAttributes: new { @class = "form-control", @style = "float:right;" })
+                                                    @Html.ValidationMessageFor(model => model.fld_Nationality, "", new { @class = "text-danger" })*@
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px;">Last 4 PAN: </label>
+                                            <div class="col-md-6" style="padding-left:83px ; padding-right:63px">
+                                                @Html.EditorFor(model => model.fld_Last4Pan, new { htmlAttributes = new { @class = "form-control", @style = "float:right;" } })
+                                                @Html.ValidationMessageFor(model => model.fld_Last4Pan, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+                            </table>
+                            <div class="form-group">
+                                <div class="col-md-offset-9 col-md-3">
+                                    <input type="submit" value="Save" class="btn btn-success" />
+                                    @if (Model.fld_ID != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                                    {
+                                        @Html.ActionLink("Sync To Checkroll", "Index", "LabourToCheckroll", new { id = Model.fld_ID }, htmlAttributes: new { @class = "btn btn-success" })
+                                    }
+                                    @Html.ActionLink("Back to List", "TKTInformation", "LabourApprovedRequest", new { BatchNo = ViewBag.GetBatchNo }, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+    $('#datetimepicker1').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+    $('#datetimepicker2').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+    $('#datetimepicker3').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+    $('#datetimepicker4').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+
+    $("#datetimepicker1").on("dp.change", function (e) {
+        var SelectDate = $('#datetimepicker1').data("DateTimePicker").date();
+        $("#fld_Age").val(getAge(SelectDate));
+    });
+    function getAge(DOB) {
+        var today = new Date();
+        var birthDate = new Date(DOB);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age = age - 1;
+        }
+
+        return age;
+    }
+
+    @*$("#GenWorkerNo").click(function () {
+        var ID = $("#fld_ID").val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetWorkerNo", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ ID: ID });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $('#fld_WorkerNo').val(result);
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });*@
+
+    @*$("#TrnsfrCheckrll").click(function () {
+        var ID = $("#fld_ID").val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("TransferToCheckRoll", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ ID: ID });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $.simplyToast(result.msg, result.statusmsg);
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });*@
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

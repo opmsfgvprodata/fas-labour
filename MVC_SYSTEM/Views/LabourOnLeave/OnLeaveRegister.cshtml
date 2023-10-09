@@ -1,0 +1,139 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+
+@{
+    ViewBag.Title = "On Leave Register";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetConfig GetConfig = new GetConfig();
+    string dateformat = GetConfig.GetData("dateformat");
+    string DisableAll = ViewBag.DisableAll;
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">On Leave Registration: @Model.fld_WorkerNo - @Model.fld_WorkerName</div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                            <input type="hidden" id="fld_LbrRefID" name="fld_LbrRefID" value="@Model.fld_ID" />
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerIDNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Leave Start Date *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input id="fld_LeaveStartDT" name="fld_LeaveStartDT" class="form-control" value="" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Leave End Date *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <input id="fld_LeaveEndDT" name="fld_LeaveEndDT" class="form-control" value="" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("No of Day Leave", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("fld_LeaveTotalDay", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    @if (DisableAll == "Yes")
+                                    {
+                                        <input type="submit" value="Save" class="btn btn-success" disabled />
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" value="Save" class="btn btn-success" />
+                                    }
+                                    @Html.ActionLink("Back to List", "Index", "LabourOnLeave", null, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">On Leave Labour Info</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.Action("_LabourOnLeaveDetail", new { LabourID = Model.fld_ID })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $('#datetimepicker1').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+    $('#datetimepicker2').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+
+    $("#datetimepicker1").on("dp.change", function (e) {
+        var SelectDate1 = $('#datetimepicker1').data("DateTimePicker").date();
+        var SelectDate2 = $('#datetimepicker2').data("DateTimePicker").date();
+       
+        $("#fld_LeaveTotalDay").val(date_diff_indays(SelectDate1, SelectDate2));
+    });
+
+    $("#datetimepicker2").on("dp.change", function (e) {
+        var SelectDate1 = $('#datetimepicker1').data("DateTimePicker").date();
+        var SelectDate2 = $('#datetimepicker2').data("DateTimePicker").date();
+
+        $("#fld_LeaveTotalDay").val(date_diff_indays(SelectDate1, SelectDate2));
+    });
+
+    var date_diff_indays = function (date1, date2) {
+        dt1 = new Date(date1);
+        dt2 = new Date(date2);
+        return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
+    }
+    
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+

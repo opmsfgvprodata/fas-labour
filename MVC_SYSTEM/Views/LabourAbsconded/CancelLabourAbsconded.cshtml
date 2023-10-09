@@ -1,0 +1,76 @@
+﻿@model MVC_SYSTEM.LabourModels.vw_LbrAbsconded
+@{
+    ViewBag.Title = "Cancel Labour Absconded";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Cancel Absconded Registration: @Model.fld_WorkerNo - @Model.fld_WorkerName</div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                            <input type="hidden" id="id" name="id" value="@Model.fld_ID" />
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerIDNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Absconded Date *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input id="fld_AbscndDT" name="fld_AbscndDT" class="form-control" value="@string.Format("{0:dd/MM/yyyy}", Model.fld_AbscndDT)" readonly" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Police Report No", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("fld_ReportPoliceNo", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Police Report Date *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <input id="fld_ReportPoliceDT" name="fld_ReportPoliceDT" class="form-control" value="@string.Format("{0:dd/MM/yyyy}", Model.fld_ReportPoliceDT)" readonly />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Proceed" class="btn btn-success" />
+                                    @Html.ActionLink("Back", "AbscondedRegister", "LabourAbsconded", new { id = Model.fld_LbrRefID }, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

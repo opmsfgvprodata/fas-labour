@@ -1,0 +1,376 @@
+﻿@model IEnumerable<MVC_SYSTEM.CustomModels.CustMod_GajiKasar>
+
+
+@{
+    ViewBag.Title = "Labour Worker Bonus";
+    //Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    GetIdentity GetIdentity = new GetIdentity();
+    GetNSWL GetNSWL = new GetNSWL();
+    GeneralFunc GeneralFunc = new GeneralFunc();
+    var LadangList = GetNSWL.GetLadang();
+    string LadangName = "";
+    string[] WebConfigFilter = new string[] { "krytnlist", "fomemarenew", "ratebonus" };
+    GetConfig GetConfig = new GetConfig();
+    string WilayahName = "";
+    GetTriager GetTriager = new GetTriager();
+    long YearEndPassport, YearEndPermit;
+    int i = 1;
+    string BonusPercent = "";
+}
+
+@if (Model != null && Model.Count() != 0)
+{
+    <div id="scrollArea2" class="modal-body">
+
+        <table class="table table-bordered" style="font-size: 11px; border:none" border="0" width="100%">
+
+            <tbody>
+                <tr>
+                    <td>
+                        <table style="float: left; width: 100%; font-size: 11px;" class="table" border="0" cellspacing="0" id="table1">
+                            <tr>
+                                <td colspan="10" style="text-align:center;vertical-align:middle; border:none;">
+                                    @ViewBag.NamaSyarikat
+                                    <br />
+                                    (@ViewBag.NoSyarikat)
+
+                                </td>
+                                <td colspan="3" style="border:none" ; align="left">
+                                    <label style="font-size: 8px; border:none;">LabourWorkerBonus</label> <br />
+                                    <div style="float:left ;font-size: 8px; border:none; ">
+                                        <span id="page_number"></span> &nbsp;
+                                        <div style="float:left ;font-size: 8px; border:none; "><span id="content"></span> </div>
+                                    </div>
+                                    <label style="float:left ;font-size: 8px; border:none;"><span></span> &nbsp;</label>
+                                    <label style="float:left ;font-size: 8px; border:none;"><span></span> &nbsp;</label>
+                                    <label style="float:left ;font-size: 8px; border:none;">[<span id="date"></span>] &nbsp;</label>
+                                    <label style="float:left ;font-size: 8px; border:none;">[<span id="time"></span>]</label><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" style="text-align:left;vertical-align:middle; border:none;">
+                                    <label>Title</label> @*modified by wani 2/2/2020 (2) *@
+                                    <br />
+                                    <label>Region/Estate</label>  @*modified by wani 2/2/2020 (3) *@
+                                    <br />
+                                </td>
+                                <td colspan="9" style="text-align:left;vertical-align:middle; border:none;">
+                                    <label>: @ViewBag.Title</label> @*modified by wani 2/2/2020 (4) *@
+                                    <br />
+                                    <label>: @ViewBag.Region/@ViewBag.Estate</label>  @*modified by wani 2/2/2020 (5) *@
+                                    <br />
+                                </td>
+
+                                <td colspan=3 align="left" style="text-align:left;vertical-align:middle; border:none; font-size: 8px; font-weight:bold">
+                                    <label>Duration:</label>@ViewBag.Duration
+                                </td>
+                            </tr>
+                            <tr>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">BIL</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">LADANG/UNIT</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">NAMA</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">NO PASPORT</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">NO NPA</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">TARIKH MASUK</th>
+                                <th colspan="3" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">TEMPOH KHIDMAT</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">GAJI KASAR SETAHUN</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">PURATA PENDAPATAN SETAHUN</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">KADAR BAYARAN BONUS (%)</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">JUMLAH BONUS INDIVIDU</th>
+                                <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">JUMLAH BONUS UNIT/LDG</th>
+                            </tr>
+                            <tr>
+
+                                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Year</th>  @*modified by wani 5/2/2020  (2) *@
+                                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Month</th> @*modified by wani 5/2/2020  (3) *@
+                                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Day</th>  @*modified by wani 5/2/2020  (4) *@
+
+                            </tr>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    var bil = 1;
+                                    var YearStiker = GeneralFunc.CalAge(item.fld_ArrivedDT.Value);
+                                    if (YearStiker >= 4)
+                                    {
+                                        YearEndPassport = 0;
+                                        YearEndPermit = 0;
+                                        WilayahName = LadangList.Where(x => x.fld_WilayahID == item.fld_WilayahID).Select(s => s.fld_NamaWilayah).Distinct().FirstOrDefault();
+                                        LadangName = LadangList.Where(x => x.fld_LadangID == item.fld_LadangID).Select(s => s.fld_NamaLadang).Distinct().FirstOrDefault();
+                                        var GetConfigData = GetConfig.GetConfigDesc(item.fld_NegaraID, item.fld_SyarikatID, WebConfigFilter);
+                                        var GetKerayatan = GetConfigData.Where(x => x.fldOptConfValue == item.fld_Nationality && x.fldOptConfFlag1 == "krytnlist").Select(s => s.fldOptConfDesc).FirstOrDefault();
+                                        var Age = GeneralFunc.CalAge(item.fld_BOD.Value);
+                                        var TotalDayServiceYMD = GeneralFunc.TimeSpanToDate(item.fld_ArrivedDT.Value);
+                                        var months = GeneralFunc.TimeSpanToMonth(item.fld_ArrivedDT.Value);
+                                        var days = GeneralFunc.TimeSpanToDay(item.fld_ArrivedDT.Value);
+                                        var FormemaRenew = GetConfigData.Where(x => x.fldOptConfValue == YearStiker.ToString() && x.fldOptConfFlag1 == "fomemarenew").FirstOrDefault();
+                                        BonusPercent = YearStiker <= 10 ? GetConfigData.Where(x => x.fldOptConfFlag2 == YearStiker.ToString() && x.fldOptConfFlag1 == "ratebonus").Select(s => s.fldOptConfFlag3).FirstOrDefault()
+                                        :
+                                        GetConfigData.Where(x => x.fldOptConfFlag2 == "10" && x.fldOptConfFlag1 == "ratebonus").Select(s => s.fldOptConfFlag3).FirstOrDefault()
+                                        ;
+                                        if (item.fld_PassportEndDT != null && item.fld_PermitEndDT != null)
+                                        {
+                                            YearEndPassport = GeneralFunc.CalEndDate(item.fld_PassportEndDT.Value);
+                                            YearEndPermit = GeneralFunc.CalEndDate(item.fld_PermitEndDT.Value);
+                                        }
+
+                                        //var BonusIndividu = item.fld_GajiKasarSetahun * decimal.Parse(BonusPercent) / 100;
+                                        /// var PurataPendapatanSetahun = Decimal.Parse(item.fld_GajiKasarSetahun) / 12;
+
+                                        var PurataPendapatanSetahun = String.Format("{0:N2}", item.PurataPendapatanSetahun);
+                                        var BonusIndividu = String.Format("{0:N2}", item.BonusIndividu);
+                                        var Ladang = item.fld_LadangID;
+                                        var JumlahBonusLadang = String.Format("{0:N2}", @Model.Where(x => x.fld_LadangID == Ladang).Sum(x => x.BonusIndividu));
+                                        <tr>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@i</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@LadangName</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;"></td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@Html.DisplayFor(modelItem => item.fld_ArrivedDT)</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@TotalDayServiceYMD</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@months</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@days</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@Html.DisplayFor(modelItem => item.fld_GajiKasarSetahun)</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@PurataPendapatanSetahun.ToString()  </td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@BonusPercent</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@BonusIndividu.ToString()</td>
+                                            <td align="center" style="color:black;text-align:center;vertical-align:middle !important;color:black;padding:1px; border-top: 1px solid black;  border-bottom: 1px solid black; border-left: 1px solid black;  border-right: 1px solid black;">@JumlahBonusLadang</td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </td>
+                </tr>
+
+
+
+
+
+            </tbody>
+
+        </table>
+    </div>
+    if (ViewBag.Print == null)
+    {
+        @*<a href="#" onclick="HTMLtoExcel('LabourFomema')">Download Excel</a>*@
+
+        <div style="text-align:right; margin-top:10px" id="AllDownload">
+            @*<a class="btn btn-default btn-sm" href="#" id="printpage">
+                    <span class="glyphicon glyphicon-print"> </span>Print
+                </a>*@
+            <a class="btn btn-default btn-sm" href="#" id="downloadpdf">
+                <span><img src="~/Asset/Images/pdf-icon.png" width="20px" height="20px" /></span> Download PDF
+            </a>
+            <a class="btn btn-default btn-sm" href="#" id="HTMLtoExcel">
+                <span><img src="~/Asset/Images/excel-icon.png" width="20px" height="20px" /></span>download Excel
+            </a>
+        </div>
+    }
+
+}
+
+else
+{
+    <div id="scrollArea2" class="modal-body" style="text-align: center">
+        <p style="color: red">@ViewBag.Message</p>
+
+    </div>
+}
+
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: avoid
+    }
+
+    #content {
+        display: table;
+    }
+
+    #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after {
+        content: "";
+        counter-increment: pagenumber;
+        content: "Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+
+    /*Edited by Shazana on 3/9*/
+    thead {
+        display: table-header-group
+    }
+
+    tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+</style>
+
+@*<script>
+        $(document).ready(function () {
+            $("#printpage").click(function () {
+                var DivElement = document.getElementById("scrollArea2").innerHTML;
+                var oldPage = document.body.innerHTML;
+                document.body.innerHTML = DivElement;
+                window.print();
+                document.body.innerHTML = oldPage;
+            })
+
+            $("#downloadpdf").click(function () {
+                var RadioGroup = $('input[name=RadioGroup]:checked').val();
+                //var MonthList = $("#MonthList").val();
+                //var YearList = $("#YearList").val();
+                var SelectionList = $("#SelectionList").val();
+                var StatusList = $("#StatusList").val();
+                var JnsPkjList = $("#JnsPkjList").val();
+                //var WorkCategoryList = $("#WorkCategoryList").val();
+
+                //var StatusList = '';
+                //var WorkCategoryList = '';
+
+                var param = '/?RadioGroup=' + RadioGroup + '&SelectionList=' + SelectionList + '&StatusList=' + StatusList + '&JnsPkjList=' + JnsPkjList;
+                var controller = 'Report';
+                var action = 'PrintWorkerPdf';
+
+                var ajxfn = {};
+                ajxfn.url = "@Url.Action("PDFIndetifier", "PdfCreator")";
+                ajxfn.type = "POST";
+                ajxfn.data = JSON.stringify({ controller: controller, action: action, param: param });
+                ajxfn.datatype = "json";
+                ajxfn.contentType = "application/json";
+                ajxfn.success = function (result) {
+                    //var win = window.open(result.link, '_blank');
+                    //win.focus();
+                    PDFObject.embed(result.link, "#searchResultWorkerInfo", { height: "450px" });
+                };
+
+                ajxfn.error = function () {
+                    $.simplyToast('error', 'danger');
+                    $("#UpdateProgress1").css("display", "none");
+                };
+                $.ajax(ajxfn);
+
+                return false;
+            });
+        });
+    </script>*@
+<script>
+    var dt = new Date();
+    document.getElementById("date").innerHTML = dt.toLocaleDateString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+</script>
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>
+<script>
+
+    $("#HTMLtoExcel").click(function () {
+
+
+        var blob = new Blob([document.getElementById('scrollArea2').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        })
+        saveAs(blob, 'LabourWorkerBonus' + ".xls");  //Edited by Shazana on 3/9
+
+    });
+
+    $(document).ready(function () {
+        $("#printpage").click(function () {
+            var DivElement = document.getElementById("scrollArea2").innerHTML;
+            var page_number;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = DivElement;
+            window.print();
+            document.body.innerHTML = oldPage;
+            document.getElementById("content").innerHTML = page_number.toString();
+            window.toLocaleString.print();
+
+        })
+
+        $("#downloadpdf").click(function () {
+
+            //var RadioGroup = $('input[name=RadioGroup]:checked').val();
+            $("#AllDownload").attr("style", "display:none");
+            var WilayahIDList = $("#WilayahIDList").val();
+            var LadangIDList = $("#LadangIDList").val();
+            var Quarter = $("#Quarter").val();
+            var YearList = $("#YearList").val();
+            //var MonthList = $("#MonthList").val();
+            //var MonthList2 = $("#MonthList2").val();
+            //var YearList = $("#YearList").val();
+
+            var param = '/?WilayahIDList=' + WilayahIDList + '&LadangIDList=' + LadangIDList + '&Quarter=' + Quarter + '&YearList=' + YearList ;
+            var controller = 'LabourReport';
+            var action = 'PrintWorkerPdfLabourWorkerBonus';
+
+            var ajxfn = {};
+            ajxfn.url = "@Url.Action("PDFIndetifier", "PdfCreator")";
+            ajxfn.type = "POST";
+            ajxfn.data = JSON.stringify({ controller: controller, action: action, param: param });
+            ajxfn.datatype = "json";
+            ajxfn.contentType = "application/json";
+            ajxfn.success = function (result)
+
+            {
+
+               // alert("Success!");
+
+                //var win = window.open(result.link, '_blank');
+                //win.focus();
+                PDFObject.embed(result.link, "#scrollArea2", { height: "450px" });
+            };
+
+
+            ajxfn.error = function () {
+                alert("Failed!");
+                $.simplyToast('@GlobalResEstate.msgError', 'danger');
+                $("#UpdateProgress1").css("display", "none");
+            };
+            $.ajax(ajxfn);
+
+            return false;
+        });
+    });
+</script>
+
+
+

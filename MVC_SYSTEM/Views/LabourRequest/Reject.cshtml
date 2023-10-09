@@ -1,0 +1,44 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrRqst
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <section class="content-wrapper main-content clear-fix">
+        <div class="well" id="well">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Are you sure you want to reject this batch?</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.Label("Batch No", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_BatchNo, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    @if (ViewBag.DisabledBtn == false)
+                                    {
+                                        <input type="submit" value="Delete" class="btn btn-danger" />
+                                    }
+                                    @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

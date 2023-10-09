@@ -1,0 +1,114 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrDataInfo>
+@{
+    ViewBag.Title = "Labour Info";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    GetIdentity GetIdentity = new GetIdentity();
+    GetNSWL GetNSWL = new GetNSWL();
+    var LadangList = GetNSWL.GetLadang();
+    string WilayahName = "";
+    string LadangName = "";
+    string[] WebConfigFilter = new string[] { "krytnlist" };
+    GetConfig GetConfig = new GetConfig();
+    
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+        @using (Html.BeginForm("LabourInfo", "LabourReport", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Region</label>
+                    @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-3">
+                    <label>Estate</label>
+                    @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-4" style="padding-top:24px;">
+                    <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Labour Information</div>
+            <div class="panel-body">
+                <div id="searchResult">
+                    <div id="scrollArea2" class="modal-body">
+
+                        <logo />
+                        <table class="table table-bordered" style="font-size: 11px;" border="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th colspan="7" style="text-align:center;vertical-align:middle; border:none;">
+                                        @ViewBag.NamaSyarikat
+                                        <br />
+                                        (No Company : @ViewBag.NoSyarikat)
+                                        <br />
+                                        Labour Information
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerNo)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerIDNo)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerName)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Age)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Kerakyatan</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WilayahID)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_LadangID)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    var GetConfigData = GetConfig.GetConfigDesc(item.fld_NegaraID, item.fld_SyarikatID, WebConfigFilter);
+                                    var GetKerayatan = GetConfigData.Where(x => x.fldOptConfValue == item.fld_Nationality).Select(s => s.fldOptConfDesc).FirstOrDefault();
+                                    WilayahName = LadangList.Where(x => x.fld_WilayahID == item.fld_WilayahID).Select(s => s.fld_NamaWilayah).Distinct().FirstOrDefault();
+                                    LadangName = LadangList.Where(x => x.fld_LadangID == item.fld_LadangID).Select(s => s.fld_NamaLadang).Distinct().FirstOrDefault();
+                                    <tr>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerNo)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_Age)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetKerayatan</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@WilayahName</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@LadangName</td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>
+

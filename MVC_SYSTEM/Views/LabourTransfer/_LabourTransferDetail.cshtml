@@ -1,0 +1,50 @@
+﻿@model MVC_SYSTEM.LabourModels.vw_LbrTrnsferData
+@{ 
+    GetNSWL GetNSWL = new GetNSWL();
+}
+<div class="modal-body">
+    <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+        <thead>
+            <tr>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_OldWorkerNo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WilayahIDFrom)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_LadangIDFrom)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WilayahIDTo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_LadangIDTo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @if (Model != null)
+                {
+                    var LadangList = GetNSWL.GetLadang();
+                    var WilayahNameAsl = LadangList.Where(x => x.fld_WilayahID == Model.fld_WilayahIDFrom).Select(s => s.fld_NamaWilayah).Distinct().FirstOrDefault();
+                    var LadangNameAsl = LadangList.Where(x => x.fld_LadangID == Model.fld_LadangIDFrom).Select(s => s.fld_NamaLadang).Distinct().FirstOrDefault();
+                    var WilayahNameKe = LadangList.Where(x => x.fld_WilayahID == Model.fld_WilayahIDTo).Select(s => s.fld_NamaWilayah).Distinct().FirstOrDefault();
+                    var LadangNameKe = LadangList.Where(x => x.fld_LadangID == Model.fld_LadangIDTo).Select(s => s.fld_NamaLadang).Distinct().FirstOrDefault();
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => modelItem.fld_OldWorkerNo)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@WilayahNameAsl</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@LadangNameAsl</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@WilayahNameKe</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@LadangNameKe</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                        @if (Model.fld_TransferToChckrollWorkerTransferStatus == true)
+                        {
+                            @Html.Raw("Labour Alreary Transfered")
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Transfer Detail", "TransferLabourDetail", new { id = Model.fld_ID })
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td colspan="6" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">No Data</td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
+

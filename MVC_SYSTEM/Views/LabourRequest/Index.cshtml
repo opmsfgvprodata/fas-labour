@@ -1,0 +1,161 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrRqst>
+@using MVC_SYSTEM.Class
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    bool Admin = false;
+    GetIdentity GetIdentity = new GetIdentity();
+    if (GetIdentity.SuperPowerAdmin(User.Identity.Name) || GetIdentity.SuperAdmin(User.Identity.Name) || GetIdentity.Admin1(User.Identity.Name) || GetIdentity.Admin2(User.Identity.Name))
+    {
+        Admin = true;
+    }
+    else
+    {
+        Admin = false;
+    }
+    GetNSWL GetNSWL = new GetNSWL();
+    var LadangList = GetNSWL.GetLadang();
+    string WilayahName = "";
+    string LadangName = "";
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+        @using (Html.BeginForm("Index", "LabourRequest", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Year</label>
+                    @Html.DropDownList("Year", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-3">
+                    <label>Region</label>
+                    @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-3">
+                    <label>Estate</label>
+                    @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-4" style="padding-top:24px;">
+                    <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+                    @*@Html.ActionLink("New Request", "CreateRoute", null, htmlAttributes: new { @class = "btn btn-success" ,@id = "SubmitName" })*@
+                </div>
+            </div>
+        }
+    </div>
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Estate Labour Request</div>
+            <div class="panel-body">
+                <div id="searchResult">
+                    <div class="modal-body">
+                        <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Year)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_BatchNo)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_AppReqQty)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_TKTQty)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_TKAQty)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ApprovedStatus)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WilayahID)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_LadangID)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_CreatedDT)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ModifiedDT)</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    WilayahName = LadangList.Where(x => x.fld_WilayahID == item.fld_WilayahID).Select(s => s.fld_NamaWilayah).Distinct().FirstOrDefault();
+                                    LadangName = LadangList.Where(x => x.fld_LadangID == item.fld_LadangID).Select(s => s.fld_NamaLadang).Distinct().FirstOrDefault();
+                                    <tr>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_Year)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_BatchNo)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_AppReqQty)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_TKTQty)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_TKAQty)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_ApprovedStatus)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@WilayahName</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@LadangName</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_CreatedDT)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_ModifiedDT)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                                            @if (Admin && item.fld_ApprovedStatus != 1)
+                                            {
+                                                @Html.ActionLink("Approve", "Approve", new { id = item.fld_ID })
+                                                <br />
+                                            }
+                                            @if (Admin && (item.fld_ApprovedStatus == 1 || item.fld_ApprovedStatus == 0) && item.fld_ApprovedStatus != 2)
+                                            {
+                                                @Html.ActionLink("Reject", "Reject", new { id = item.fld_ID })
+                                                <br />
+                                            }
+                                            @if (item.fld_ApprovedStatus == 1 && item.fld_TKTQty > 0)
+                                            {
+                                                @Html.ActionLink("TKT Process", "Create", "LabourTKTProcess", new { BatchNo = item.fld_BatchNo }, null)
+                                                <br />
+                                            }
+                                            @if (item.fld_ApprovedStatus == 1 && item.fld_TKAQty > 0)
+                                            {
+                                                @Html.ActionLink("TKA Process", "Create", "LabourTKAProcess", new { BatchNo = item.fld_BatchNo }, null)
+                                                <br />
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @using (Html.BeginForm("Index", "LabourRequest", FormMethod.Get))
+        {
+    <div class="row">
+        <div class="col-sm-12" style="padding-top:24px;text-align:right">
+            @Html.ActionLink("New Request", "CreateRoute", null, htmlAttributes: new { @class = "btn btn-success", @id = "SubmitName" })
+
+        </div>
+        <br />
+    </div>
+        }
+    </div>
+
+</section>
+
+<script>
+
+    //Added by Shazana on 17/8
+    $('#SubmitName').click(function () {
+        
+        var WilayahIDList = $('#WilayahIDList').val();
+        var LadangIDList = $('#LadangIDList').val();
+        var path = '@Url.Content("~/LabourRequest/CreateRoute")' + "?CodeWilayahID=" + WilayahIDList + "&CodeLadangID=" + LadangIDList
+        $(this).attr("href", path);
+    });
+
+
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>

@@ -1,0 +1,235 @@
+﻿ @model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrEstQuota>
+
+@{
+    ViewBag.Title = "Index";
+    GetNSWL GetNSWL = new GetNSWL();
+    var LadangList = GetNSWL.GetLadang();
+    string WilayahName = "";
+    string LadangName = "";
+    int totalQuota = 0;
+    int i = 1;
+    GetTriager GetTriager = new GetTriager();
+    ChangeTimeZone ChangeTimeZone = new ChangeTimeZone();
+    DateTime Todaydate = ChangeTimeZone.gettimezone();
+    string uniquefilename = "EstLabourQouta" + ViewBag.UserID + "_" + Todaydate.Year.ToString() + Todaydate.Month.ToString() + Todaydate.Day.ToString() + Todaydate.Hour.ToString() + Todaydate.Minute.ToString() + Todaydate.Second.ToString();
+
+}
+
+@if (Model != null && Model.Count() != 0)
+{
+    <div class="modal-body" id="scrollArea2">
+        <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+            <thead>
+                <tr>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">No</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Year)</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_LbrEstQuota)</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WilayahID)</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_LadangID)</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_CreatedDT)</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ModifiedDT)</th>
+                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    WilayahName = LadangList.Where(x => x.fld_WilayahID == item.fld_WilayahID).Select(s => s.fld_NamaWilayah).Distinct().FirstOrDefault();
+                    LadangName = LadangList.Where(x => x.fld_LadangID == item.fld_LadangID).Select(s => s.fld_NamaLadang).Distinct().FirstOrDefault();
+
+                    <tr>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@i</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_Year)</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_LbrEstQuota)</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@WilayahName</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@LadangName</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_CreatedDT)</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_ModifiedDT)</td>
+                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.fld_ID }, htmlAttributes: new { @class = "btn btn-warning" })
+                            @*@Html.ActionLink("Delete", "Delete", new { id = item.fld_ID }, htmlAttributes: new { @class = "btn btn-danger" })*@
+                        </td>
+                    </tr>
+
+                    totalQuota = totalQuota + item.fld_LbrEstQuota;
+                    i++;
+                }
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td bgcolor="#aed6f1" colspan="2" style="color:white;text-align:right;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Total Quota</td>
+                    <td bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@totalQuota</td>
+                    <td bgcolor="#aed6f1" colspan="5" style="color:white;text-align:right;vertical-align:middle !important;border:1px solid black;color:black;" border="1"></td>
+                </tr>
+
+                @*<a class="btn btn-default btn-sm" href="@Url.Action("ExportPDF","EstLabourQuota")">
+                    <span><img src="~/Asset/Images/pdf-icon.png" width="20px" height="20px" /></span> Download PDF
+                    </a>Commented By Shazana on 17/8*@
+
+
+            </tfoot>
+        </table>
+    </div>
+                //Added By Shazana on 17/8
+
+                if (ViewBag.Print == null)
+                {
+            <div style="text-align:right; margin-top:10px" id="AllDownload">
+            <a class="btn btn-default btn-sm" href="#" id="downloadpdf">
+                <span><img src="~/Asset/Images/pdf-icon.png" width="20px" height="20px" /></span> Download PDF
+            </a>
+            <a class="btn btn-default btn-sm" href="#" id="HTMLtoExcel">
+                <span><img src="~/Asset/Images/excel-icon.png" width="20px" height="20px" /></span>download Excel
+            </a>
+        </div>
+    }
+
+}
+
+else
+{
+    <div id="scrollArea2" class="modal-body" style="text-align: center">
+        <p style="color: red">@ViewBag.Message</p>
+
+    </div>
+}
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    #content {
+        display: table;
+    }
+
+    #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after {
+        content: "";
+        counter-increment: pagenumber;
+        content: "Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+    thead {
+        display: table-header-group
+    }
+
+    tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+</style>
+
+
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>
+
+<script>
+    $("#HTMLtoExcel").click(function () {
+
+        var blob = new Blob([document.getElementById('scrollArea2').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        })
+        saveAs(blob, 'EstLabourQuota' + ".xls");
+
+    });
+
+    $(document).ready(function () {
+        $("#printpage").click(function () {
+            var DivElement = document.getElementById("scrollArea2").innerHTML;
+            var page_number;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = DivElement;
+            window.print();
+            document.body.innerHTML = oldPage;
+            document.getElementById("content").innerHTML = page_number.toString();
+            window.toLocaleString.print();
+
+        })
+
+        $("#downloadpdf").click(function () {
+
+            //var RadioGroup = $('input[name=RadioGroup]:checked').val();
+            $("#AllDownload").attr("style", "display:none");
+            var WilayahIDList = $("#WilayahIDList").val();
+            var LadangIDList = $("#LadangIDList").val();
+            var Year = $("#Year").val();
+
+            var param = '/?WilayahIDList=' + WilayahIDList + '&LadangIDList=' + LadangIDList + '&Year=' + Year;
+            var controller = 'EstLabourQuota';
+            var action = 'PrintWorkerPdf';
+            var ajxfn = {};
+            ajxfn.url = "@Url.Action("PDFIndetifier", "PdfCreator")";
+            ajxfn.type = "POST";
+            ajxfn.data = JSON.stringify({ controller: controller, action: action, param: param });
+            ajxfn.datatype = "json";
+            ajxfn.contentType = "application/json";
+            ajxfn.success = function (result)
+
+            {
+
+               // alert("Success!");
+                //var win = window.open(result.link, '_blank');
+                //win.focus();
+                PDFObject.embed(result.link, "#scrollArea2", { height: "450px" });
+            };
+
+
+            ajxfn.error = function () {
+                alert("Failed!");
+                $.simplyToast('@GlobalResEstate.msgError', 'danger');
+                $("#UpdateProgress1").css("display", "none");
+            };
+            $.ajax(ajxfn);
+
+            return false;
+        });
+    });
+</script>
+
+
+
+<script>
+    function DisplayProgressMessage(ctl) {
+        //$("body").addClass("submit-progress-bg");
+        //$(".submit-progress").removeClass("hidden");
+        $("#UpdateProgress1").css("display", "");
+        return true;
+    }
+</script>
+
+

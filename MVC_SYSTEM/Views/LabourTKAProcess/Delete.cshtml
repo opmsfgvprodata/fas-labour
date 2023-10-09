@@ -1,0 +1,185 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrTKAProcess
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tbl_LbrTKAProcess</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_Nama)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_Nama)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_NoPassport)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_NoPassport)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_BOD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_BOD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_Age)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_Age)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_OriginBatchNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_OriginBatchNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_QueueNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_QueueNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_SexType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_SexType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_LbrRqstID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_LbrRqstID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_ProcessStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_ProcessStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_SuccessStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_SuccessStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_UnsuccessReason)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_UnsuccessReason)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_Notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_NegaraID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_NegaraID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_SyarikatID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_SyarikatID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_WilayahID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_WilayahID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_LadangID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_LadangID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_CreatedDT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_CreatedDT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fld_ModifiedDT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fld_ModifiedDT)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

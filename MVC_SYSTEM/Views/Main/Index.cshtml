@@ -1,0 +1,17 @@
+﻿@using MVC_SYSTEM.Class
+@{
+    ViewBag.Title = "Main";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    GetIdentity getidentity = new GetIdentity();
+    GetConfig getconfig = new GetConfig();
+}
+
+<h2><font color="black">@GlobalResGeneral.lblWelcome @getconfig.GetData("sysname")</font></h2>
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent' data-refresh="true"></div>
+        </div>
+    </div>
+</div>
+

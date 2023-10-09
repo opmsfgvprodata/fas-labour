@@ -1,0 +1,517 @@
+﻿@model IEnumerable<MVC_SYSTEM.CustomModels.CustMod_StatusMovementRpt>
+@{
+    ViewBag.Title = "Labour Worker Movement Status";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    GetTriager GetTriager = new GetTriager();
+    decimal TotalArea = 0;
+    int TotalNeed = 0;
+    int TotalLastMonth = 0;
+    int TotalAbscondedBI = 0;
+    int TotalAbscondedHK = 0;
+    int TotalCOMBI = 0;
+    int TotalCOMHK = 0;
+    int TotalBalance = 0;
+    int TotalNewWorkerBI = 0;
+    int TotalNewWorkerHK = 0;
+    int TotalTransferIn = 0;
+    int TotalTansferOut = 0;
+    int TotalBalanceBI = 0;
+    int TotalTKI = 0;
+    int TotalTKB = 0;
+    int TotalTKD = 0;
+    int TotalTKN = 0;
+    int TotalPOL = 0;
+    int TotalWorker = 0;
+    int TotalApp = 0;
+    int TotalAppRatio = 0;
+
+    decimal TotalArea1 = 0;
+    int TotalNeed1 = 0;
+    int TotalLastMonth1 = 0;
+    int TotalAbscondedBI1 = 0;
+    int TotalAbscondedHK1 = 0;
+    int TotalCOMBI1 = 0;
+    int TotalCOMHK1 = 0;
+    int TotalBalance1 = 0;
+    int TotalNewWorkerBI1 = 0;
+    int TotalNewWorkerHK1 = 0;
+    int TotalTransferIn1 = 0;
+    int TotalTansferOut1 = 0;
+    int TotalBalanceBI1 = 0;
+    int TotalTKI1 = 0;
+    int TotalTKB1 = 0;
+    int TotalTKD1 = 0;
+    int TotalTKN1 = 0;
+    int TotalPOL1 = 0;
+    int TotalWorker1 = 0;
+    int TotalApp1 = 0;
+    int TotalAppRatio1 = 0;
+    int i = 1;
+
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+        @using (Html.BeginForm("LabourWorkerMovementStatus", "LabourReport", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Region</label>
+                    @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Estate</label>
+                    @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+
+                <div class="col-sm-2" id="divlist">
+                    <label>Month</label>
+                    @Html.DropDownList("MonthList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2" id="divlist">
+                    <label>Year</label>
+                    @Html.DropDownList("YearList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+
+                <div class="col-sm-2" style="padding-top:24px;">
+                    <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Labour Worker Movement Status</div>  @*modified by wani 2/2/2020 (1) *@
+            <div class="panel-body">
+                <div id="searchResult">
+                    <div id="scrollArea2" class="modal-body">
+
+                        @*<logo />
+                            <label style="float:right ;font-size: 9px; border:none;">opms_rl_stamov1</label>*@
+
+                        <table class="table table-bordered" style="font-size: 11px;" border="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th colspan="22" style="text-align:center;vertical-align:middle; border:none;">
+                                        @ViewBag.NamaSyarikat
+                                        <br />
+                                        (@ViewBag.NoSyarikat)
+
+                                    </th>
+                                    <th colspan="3" style="border:none" ; align="left">
+                                        <label style="font-size: 8px; border:none;">opms_cr</label> <br />
+                                        <div style="float:left ;font-size: 8px; border:none; ">
+                                            <span id="page_number"></span>
+                                            <div style="float:left ;font-size: 8px; border:none; "><span id="content"></span> </div>
+                                        </div>
+                                        <label style="float:left ;font-size: 8px; border:none;"><span></span> &nbsp;</label>
+                                        <label style="float:left ;font-size: 8px; border:none;"><span></span> &nbsp;</label>
+                                        <label style="float:left ;font-size: 8px; border:none;">[<span id="date"></span>] &nbsp;</label>
+                                        <label style="float:left ;font-size: 8px; border:none;">[<span id="time"></span>]</label><br />
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="1" style="text-align:left;vertical-align:middle; border:none;">
+                                        <label>Title</label>   @*modified by wani 2/2/2020 (2) *@
+                                        <br />
+                                        <label>Region/Estate</label>   @*modified by wani 2/2/2020 (3) *@
+                                        <br />
+                                    </td>
+                                    <td colspan="21" style="text-align:left;vertical-align:middle; border:none;">
+                                        <label>: @ViewBag.Title</label>   @*modified by wani 2/2/2020 (4) *@
+                                        <br />
+                                        <label>: @ViewBag.Region/@ViewBag.Estate</label>   @*modified by wani 2/2/2020 (5) *@
+                                        <br />
+                                    </td>
+
+                                    <td colspan=3 align="left" style="text-align:left;vertical-align:middle; border:none; font-size:8px; font-weight:bold;">
+                                        <label style="font-size:8px">Duration:</label>@ViewBag.Month/@ViewBag.Year
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">NO</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">UNIT/STESEN</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">LUAS (HA) LADANG</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">KEPERLUAN @ViewBag.Year</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">NISBAH HA/PEKERJA</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">JUMLAH TKL BULAN LALU</th>
+                                    <th colspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">LARI </th>
+                                    <th colspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">BALIK/COM </th>
+
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">BAKI JUMLAH</th>
+                                    <th colspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">TKL BARU </th>
+                                    <th colspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">PINDAH </th>
+
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">JUMLAH TKL BLN INI</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">TKI</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">TKB</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">TKD</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">TKN</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">POL</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">JUMLAH KESELURUHAN</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">KURANG/LEBIH</th>
+                                    <th rowspan="2" bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">RATIO</th>
+                                </tr>
+                                <tr>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">B.I</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">H.K</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">B.I</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">H.K</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">B.I</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">H.K</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">MASUK</th>
+                                    <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">KELUAR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Where(x => x.fld_EstateSize > 0))
+                                {
+
+                                    <tr>
+                                        <td align="left" style="vertical-align:middle !important;border:1px solid black;" border="1">@i</td>
+                                        <td align="left" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_EstateName.ToUpper()</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(item.fld_EstateSize)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Need</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_RatioPerHa</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalLastMonth</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalAbscondedBI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalAbscondedHK</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalCOMBI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalCOMHK</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_WorkerBalance</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_NewWorkerBI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_NewWorkerHK</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TransferIn</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TransferOut</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_WorkerBalanceBI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKB</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKD</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKN</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalPOL</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalWorker</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Approximately</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_ApproximatelyRatio</td>
+                                    </tr>
+                                    i++;
+                                    TotalArea = TotalArea + item.fld_EstateSize;
+                                    TotalNeed = TotalNeed + item.fld_Need;
+                                    TotalLastMonth = TotalLastMonth + item.fld_TotalLastMonth;
+                                    TotalAbscondedBI = TotalAbscondedBI + item.fld_TotalAbscondedBI;
+                                    TotalAbscondedHK = TotalAbscondedHK + item.fld_TotalAbscondedHK;
+                                    TotalCOMBI = TotalCOMBI + item.fld_TotalCOMBI;
+                                    TotalCOMHK = TotalCOMHK + item.fld_TotalCOMHK;
+                                    TotalBalance = TotalBalance + item.fld_WorkerBalance;
+                                    TotalNewWorkerBI = TotalNewWorkerBI + item.fld_NewWorkerBI;
+                                    TotalNewWorkerHK = TotalNewWorkerHK + item.fld_NewWorkerHK;
+                                    TotalTransferIn = TotalTransferIn + item.fld_TransferIn;
+                                    TotalTansferOut = TotalTansferOut + item.fld_TransferOut;
+                                    TotalBalanceBI = TotalBalanceBI + item.fld_WorkerBalanceBI;
+                                    TotalTKI = TotalTKI + item.fld_TotalTKI;
+                                    TotalTKB = TotalTKB + item.fld_TotalTKB;
+                                    TotalTKD = TotalTKD + item.fld_TotalTKD;
+                                    TotalTKN = TotalTKN + item.fld_TotalTKN;
+                                    TotalPOL = TotalPOL + item.fld_TotalPOL;
+                                    TotalWorker = TotalWorker + item.fld_TotalWorker;
+                                    TotalApp = TotalApp + item.fld_Approximately;
+                                    TotalAppRatio = TotalAppRatio + item.fld_ApproximatelyRatio;
+                                }
+                                @if (Model.Where(x => x.fld_EstateSize > 0).Count() > 0)
+                                {
+                                    <tr>
+                                        <td align="right" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                                        <td align="right" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">JUMLAH</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(TotalArea)</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNeed</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalLastMonth</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAbscondedBI</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAbscondedHK</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalCOMBI</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalCOMHK</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBalance</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNewWorkerBI</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNewWorkerHK</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTransferIn</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTansferOut</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBalanceBI</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKI</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKB</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKD</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKN</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPOL</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalWorker</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalApp</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAppRatio</td>
+                                    </tr>
+                                }
+
+                                @if (Model.Where(x => x.fld_EstateSize > 0).Count() > 0)
+                                {
+                                    <tr>
+                                        <td align="center" colspan="23" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                                    </tr>
+                                }
+                                @foreach (var item in Model.Where(x => x.fld_EstateSize == 0))
+                                {
+                                    <tr>
+                                        <td align="left" style="vertical-align:middle !important;border:1px solid black;" border="1">@i</td>
+                                        <td align="left" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_EstateName.ToUpper()</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(item.fld_EstateSize)</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Need</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_RatioPerHa</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalLastMonth</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalAbscondedBI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalAbscondedHK</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalCOMBI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalCOMHK</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_WorkerBalance</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_NewWorkerBI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_NewWorkerHK</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TransferIn</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TransferOut</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_WorkerBalanceBI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKI</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKB</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKD</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalTKN</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalPOL</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_TotalWorker</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_Approximately</td>
+                                        <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@item.fld_ApproximatelyRatio</td>
+                                    </tr>
+                                    i++;
+                                    TotalArea1 = TotalArea1 + item.fld_EstateSize;
+                                    TotalNeed1 = TotalNeed1 + item.fld_Need;
+                                    TotalLastMonth1 = TotalLastMonth1 + item.fld_TotalLastMonth;
+                                    TotalAbscondedBI1 = TotalAbscondedBI1 + item.fld_TotalAbscondedBI;
+                                    TotalAbscondedHK1 = TotalAbscondedHK1 + item.fld_TotalAbscondedHK;
+                                    TotalCOMBI1 = TotalCOMBI1 + item.fld_TotalCOMBI;
+                                    TotalCOMHK1 = TotalCOMHK1 + item.fld_TotalCOMHK;
+                                    TotalBalance1 = TotalBalance1 + item.fld_WorkerBalance;
+                                    TotalNewWorkerBI1 = TotalNewWorkerBI1 + item.fld_NewWorkerBI;
+                                    TotalNewWorkerHK1 = TotalNewWorkerHK1 + item.fld_NewWorkerHK;
+                                    TotalTransferIn1 = TotalTransferIn1 + item.fld_TransferIn;
+                                    TotalTansferOut1 = TotalTansferOut1 + item.fld_TransferOut;
+                                    TotalBalanceBI1 = TotalBalanceBI1 + item.fld_WorkerBalanceBI;
+                                    TotalTKI1 = TotalTKI1 + item.fld_TotalTKI;
+                                    TotalTKB1 = TotalTKB1 + item.fld_TotalTKB;
+                                    TotalTKD1 = TotalTKD1 + item.fld_TotalTKD;
+                                    TotalTKN1 = TotalTKN1 + item.fld_TotalTKN;
+                                    TotalPOL1 = TotalPOL1 + item.fld_TotalPOL;
+                                    TotalWorker1 = TotalWorker1 + item.fld_TotalWorker;
+                                    TotalApp1 = TotalApp1 + item.fld_Approximately;
+                                    TotalAppRatio1 = TotalAppRatio1 + item.fld_ApproximatelyRatio;
+                                }
+                                @if (Model.Where(x => x.fld_EstateSize == 0).Count() > 0)
+                                {
+                                    <tr>
+                                        <td align="right" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                                        <td align="right" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">JUMLAH</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(TotalArea1)</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNeed1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalLastMonth1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAbscondedBI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAbscondedHK1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalCOMBI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalCOMHK1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBalance1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNewWorkerBI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNewWorkerHK1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTransferIn1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTansferOut1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBalanceBI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKB1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKD1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKN1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPOL1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalWorker1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalApp1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAppRatio1</td>
+                                    </tr>
+
+                                }
+                                @*<tr>
+                                        <td align="right" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">JUMLAH BESAR</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetTriager.GetTotalForMoney(TotalArea1)</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNeed1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1"></td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalLastMonth1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAbscondedBI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAbscondedHK1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalCOMBI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalCOMHK1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBalance1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNewWorkerBI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalNewWorkerHK1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTransferIn1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTansferOut1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalBalanceBI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKI1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKB1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKD1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalTKN1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalPOL1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalWorker1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalApp1</td>
+                                        <td align="center" bgcolor="#ffcc80" style="vertical-align:middle !important;border:1px solid black;" border="1">@TotalAppRatio1</td>
+                                    </tr>*@
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="text-align:right; margin-top:10px">
+                        <a class="btn btn-default btn-sm" href="#" id="printpage">
+                            <span class="glyphicon glyphicon-print"> </span>Print
+                        </a>
+                        <a class="btn btn-default btn-sm" href="#" id="downloadpdf">
+                            <span><img src="~/Asset/Images/pdf-icon.png" width="20px" height="20px" /></span> Download PDF
+                        </a>
+                        <a class="btn btn-default btn-sm" href="#"  id="HTMLtoExcel">
+                            <span><img src="~/Asset/Images/excel-icon.png" width="20px" height="20px" /></span>download Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: avoid
+    }
+
+    #content {
+        display: table;
+    }
+
+    #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after {
+        content: "";
+        counter-increment: pagenumber;
+        content: "Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+
+    /*Edited by Shazana on 3/9*/
+    thead {
+        display: table-header-group
+    }
+
+    tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+</style>
+
+<script>
+    var dt = new Date();
+    document.getElementById("date").innerHTML = dt.toLocaleDateString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+</script>
+
+<script>
+
+    $("#HTMLtoExcel").click(function () {
+
+
+        var blob = new Blob([document.getElementById('scrollArea2').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        })
+        saveAs(blob, 'LabourWorkerMovementStatus' + ".xls");  //Edited by Shazana on 3/9
+
+    });
+
+    $(document).ready(function () {
+        $("#printpage").click(function () {
+            var DivElement = document.getElementById("scrollArea2").innerHTML;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = DivElement;
+            window.print();
+            document.body.innerHTML = oldPage;
+        })
+
+        $("#downloadpdf").click(function () {
+            var RadioGroup = $('input[name=RadioGroup]:checked').val();
+            //var MonthList = $("#MonthList").val();
+            //var YearList = $("#YearList").val();
+            var SelectionList = $("#SelectionList").val();
+            var StatusList = $("#StatusList").val();
+            var JnsPkjList = $("#JnsPkjList").val();
+            //var WorkCategoryList = $("#WorkCategoryList").val();
+
+            //var StatusList = '';
+            //var WorkCategoryList = '';
+
+            var param = '/?RadioGroup=' + RadioGroup + '&SelectionList=' + SelectionList + '&StatusList=' + StatusList + '&JnsPkjList=' + JnsPkjList;
+            var controller = 'Report';
+            var action = 'PrintWorkerPdf';
+
+            var ajxfn = {};
+            ajxfn.url = "@Url.Action("PDFIndetifier", "PdfCreator")";
+            ajxfn.type = "POST";
+            ajxfn.data = JSON.stringify({ controller: controller, action: action, param: param });
+            ajxfn.datatype = "json";
+            ajxfn.contentType = "application/json";
+            ajxfn.success = function (result) {
+                //var win = window.open(result.link, '_blank');
+                //win.focus();
+                PDFObject.embed(result.link, "#searchResultWorkerInfo", { height: "450px" });
+            };
+
+            ajxfn.error = function () {
+                $.simplyToast('error', 'danger');
+                $("#UpdateProgress1").css("display", "none");
+            };
+            $.ajax(ajxfn);
+
+            return false;
+        });
+    });
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("datetime").innerHTML = dt.toLocaleString();
+</script>
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>
+

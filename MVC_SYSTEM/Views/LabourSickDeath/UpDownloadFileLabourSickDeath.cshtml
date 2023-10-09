@@ -1,0 +1,120 @@
+﻿@model MVC_SYSTEM.LabourModels.vw_LbrSickDeath
+@{
+    ViewBag.Title = "Upload Download File Labour SickDeath";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    GetConfig GetConfig = new GetConfig();
+    string[] WebConfigFilter = new string[] { "sickstatus" };
+    var GetConfigData = GetConfig.GetConfigDesc(Model.fld_NegaraID, Model.fld_SyarikatID, WebConfigFilter);
+    string HealthStatus = GetConfigData.Where(x => x.fldOptConfFlag1 == "sickstatus" && x.fldOptConfValue == Model.fld_HealthStatus).Select(s => s.fldOptConfDesc).FirstOrDefault();
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Upload/Download File Sick Death Registration: @Model.fld_WorkerNo - @Model.fld_WorkerName</div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm("UpDownloadFileLabourSickDeath", "LabourSickDeath", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                            @Html.HiddenFor(model => model.fld_ID)
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerIDNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("HealthStatus", HealthStatus, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Death Date *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input id="fld_DeathDT" name="fld_DeathDT" class="form-control" value="@string.Format("{0:dd/MM/yyyy}", Model.fld_DeathDT)" readonly />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Remarks *", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextArea("fld_Remark", null, 8, 100, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("File Upload", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <input type="file" id="FileUpload" name="FileUpload" class="form-control" onchange="CheckFileValidFormat();" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input class="btn btn-primary" type="submit" name="btnupload" id="btnupload" value="Upload" />
+                                    @Html.ActionLink("Back", "SickDeathRegister", "LabourSickDeath", new { id = Model.fld_LbrRefID }, htmlAttributes: new { @class = "btn btn-warning", @disabled = "disabled" })
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Sick Death Labour Info</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.Action("_LabourSickDeathUploadedFileDetail", new { ID = Model.fld_ID })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $('#btnupload').attr("disabled", true);
+    function CheckFileValidFormat() {
+        var _validFileExtensions = [".pdf"];
+        var arrInputs = document.getElementsByTagName("input");
+        for (var i = 0; i < arrInputs.length; i++) {
+            var oInput = arrInputs[i];
+            if (oInput.type == "file") {
+                var sFileName = oInput.value;
+                if (sFileName.length > 0) {
+                    for (var j = 0; j < _validFileExtensions.length; j++) {
+                        var sCurExtension = _validFileExtensions[j];
+                        var fileext = sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase();
+                        if (fileext == '.pdf') {
+                            $('#btnupload').attr("disabled", false);
+                            break;
+                        }
+                        else {
+                            alert("Sorry you cannot upload this file")
+                            $('#btnupload').attr("disabled", true);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+

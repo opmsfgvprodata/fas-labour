@@ -1,0 +1,29 @@
+﻿@model IEnumerable<MVC_SYSTEM.MasterModels.tblMenuList>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well">
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Request Labour</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                @foreach (var item in Model)
+                                {
+                                    <a href="@Url.Action("Index",item.fld_Val)">@item.fld_Desc</a>
+                                    <br />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

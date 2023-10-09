@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrTKAProcess>
+
+<div class="modal-body">
+    <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+        <thead>
+            <tr>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_NoPassport)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Nama)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ArrivedDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_Notes)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ModifiedDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_NoPassport)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_Nama)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_ArrivedDT)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_Notes)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_ModifiedDT)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                        @if (item.fld_ProcessStatus != 3)
+                        {
+                            @Html.ActionLink("Update Process", "Edit", new { id = item.fld_ID })
+                            <br />
+                        }
+                        @if ((item.fld_ProcessStatus == 2 || item.fld_ProcessStatus == 3) && (item.fld_SuccessStatus == true || item.fld_SuccessStatus == false || item.fld_SuccessStatus == null))
+                        {
+                            @Html.ActionLink("Approve/Reject", "ApproveReject", new { id = item.fld_ID })
+                            <br />
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

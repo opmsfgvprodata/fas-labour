@@ -1,0 +1,98 @@
+﻿@model MVC_SYSTEM.LabourModels.vw_LbrFlightRequest
+@{
+    ViewBag.Title = "Approve Flight Request";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    GetConfig GetConfig = new GetConfig();
+    string[] WebConfigFilter = new string[] { "flighttype" };
+    var GetConfigData = GetConfig.GetConfigDesc(Model.fld_NegaraID, Model.fld_SyarikatID, WebConfigFilter);
+    var GetFlightDestination = GetConfig.GetFlightDestination(Model.fld_NegaraID, Model.fld_SyarikatID);
+    string FlightType = GetConfigData.Where(x => x.fldOptConfFlag1 == "flighttype" && x.fldOptConfValue == Model.fld_FlightCode).Select(s => s.fldOptConfDesc).FirstOrDefault();
+    string FlightDestination = GetFlightDestination.Where(x => x.fld_ID == Model.fld_DestinationCode).Select(s => s.fld_DestinationName).FirstOrDefault();
+}
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Approve Flight Request: @Model.fld_WorkerNo - @Model.fld_WorkerName</div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                            @Html.HiddenFor(model => model.fld_ID)
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerIDNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Flight Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("FlightType", FlightType, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Flight Destination", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("FlightDestination", FlightDestination, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Request Date Departure", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input id="fld_ResultDT" name="fld_ResultDT" class="form-control" value="@string.Format("{0:dd/MM/yyyy}", Model.fld_RequestDT)" readonly />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Request Date Come Back", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input id="fld_ResultDT" name="fld_ResultDT" class="form-control" value="@string.Format("{0:dd/MM/yyyy}", Model.fld_RequestDT2)" readonly />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fld_ApprovedStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("fld_ApprovedStatus", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.fld_ApprovedStatus, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Proceed" class="btn btn-success" />
+                                    @Html.ActionLink("Back", "TicketRequestRegister", "LabourTicketRequest", new { id = Model.fld_LbrRefID }, htmlAttributes: new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

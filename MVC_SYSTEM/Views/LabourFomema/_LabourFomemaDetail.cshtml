@@ -1,0 +1,63 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.vw_LbrFomemaRslt>
+@{
+    GetConfig GetConfig = new GetConfig();
+    string[] WebConfigFilter = new string[] { "fomematype", "acknwldmnttype", "sector", "negeri", "result" };
+}
+<div class="modal-body">
+    <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
+        <thead>
+            <tr>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerNo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerIDNo)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerName)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_FormemaTypeCode)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_FomemaResult)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_ResultDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var GetConfigData = GetConfig.GetConfigDesc(item.fld_NegaraID, item.fld_SyarikatID, WebConfigFilter);
+                <tr>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerNo)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetConfigData.Where(x => x.fldOptConfFlag1 == "fomematype" && x.fldOptConfValue == item.fld_FormemaTypeCode).Select(s => s.fldOptConfDesc).FirstOrDefault()</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@GetConfigData.Where(x => x.fldOptConfFlag1 == "result" && x.fldOptConfValue == item.fld_FomemaResult.ToString()).Select(s => s.fldOptConfDesc).FirstOrDefault()</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_ResultDT)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                        @if (item.fld_Deleted == false)
+                        {
+                            if (item.fld_FomemaResult == false)
+                            {
+                                @Html.ActionLink("Cancel", "CancelLabourFomema", new { id = item.fld_ID })
+                                <br />
+                                @Html.ActionLink("Flight Ticket", "TicketRequestRegister", "LabourTicketRequest", new { id = item.fld_LbrRefID }, null)
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Cancel", "CancelLabourFomema", new { id = item.fld_ID })
+                                <br />
+                                @Html.ActionLink("Update Permit", "TKAFullInformation", "LabourDetail", new { id = item.fld_LbrRefID }, null)
+                            }
+                        }
+                        else
+                        {
+                            @Html.Raw("Cancellation Fomema")
+                        }
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">No Data</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

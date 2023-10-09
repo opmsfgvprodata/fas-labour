@@ -1,0 +1,181 @@
+﻿
+@model IEnumerable<MVC_SYSTEM.CustomModels.CustMod_MasterInfo>
+
+@{
+    ViewBag.Title = "Labour Master Data Info";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    GetIdentity GetIdentity = new GetIdentity();
+    GetNSWL GetNSWL = new GetNSWL();
+    GeneralFunc GeneralFunc = new GeneralFunc();
+    var LadangList = GetNSWL.GetLadang();
+    string WilayahName = "";
+    string LadangName = "";
+
+    //Commented by Shazana 16/11
+    //string[] WebConfigFilter = new string[] { "krytnlist", "fomemarenew" };
+    //Added by Shazana on 16/11
+    string[] WebConfigFilter = new string[] { "krytnlist", "fomemarenew", "roc", "statusaktif" };
+    GetConfig GetConfig = new GetConfig();
+
+    int i = 1;
+
+    GetTriager GetTriager = new GetTriager();
+
+
+
+    //Added by Shazana on 16/11
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "Get",
+        UpdateTargetId = "searchResultMasterData",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "divLoading"
+    };
+
+
+}
+
+<script src="~/Asset/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<div id="divLoading" style="display:none;">
+    <div class="progressTest">
+        <label>
+            @GlobalResEstate.msgWait
+        </label>
+    </div>
+</div>
+@*//Close Added by Shazana on 16/11*@
+<section class="content-wrapper main-content clear-fix">
+    <div class="well bottom" style="padding-bottom:16px;">
+        @using (Ajax.BeginForm("_LabourMasterData", "LabourReport", null, options, new { @id = "LabourMasterData" }))
+        {
+            <div class="row">
+                <div class="col-sm-2" id="divlist">
+                    <label>Region</label>
+                    @Html.DropDownList("WilayahIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2" id="divlist">
+                    <label>Estate</label>
+                    @Html.DropDownList("LadangIDList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-1" id="divlist">
+                    <label>Supplier</label>
+                    @Html.DropDownList("Supplier", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-1" id="divlist">
+                    <label>Nationality</label>
+                    @Html.DropDownList("Nationality", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2" id="divlist">
+                    <label>Cost Center</label>
+                    @Html.DropDownList("CostCenter", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-1" id="divlist">
+                    <label>Gender</label>
+                    @Html.DropDownList("Gender", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-sm-1" id="divlist">
+                    <label>Status</label>
+                    @Html.DropDownList("Status", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+
+                <div class="col-sm-2" style="padding-top:24px;">
+                    <input class="btn btn-primary" type="submit" name="Find" id="btnSubmit" value="Find" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="well" style="margin-top:7px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Labour Master Data Info</div> @*modified by wani 2/2/2020 (1) *@
+            <div class="panel-body">
+                <div id="searchResultMasterData">
+                    @Html.Action("_LabourMasterData")
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+<style>
+    #page td {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    #content {
+        display: table;
+    }
+
+    #pageFooter {
+        display: table-footer-group;
+    }
+
+    #page_number:after {
+        content: "";
+        counter-increment: pagenumber;
+        content: "Page" counter(pagenumber) "of" counter(pagenumber);
+    }
+
+    thead, tfoot {
+        display: table-row-group
+    }
+
+    tr {
+        page-break-inside: avoid
+    }
+</style>
+
+
+<script>
+
+
+    $("#HTMLtoExcel").click(function () {
+
+
+        var blob = new Blob([document.getElementById('scrollArea2').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        })
+        saveAs(blob, 'LabourMasterData' + ".xls");  //Edited by Shazana on 3/9
+
+    });
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("date").innerHTML = dt.toLocaleDateString();
+</script>
+<script>
+    var dt = new Date();
+    document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+</script>
+<script src="~/Asset/Scripts/FromHTML.js"></script>
+<script src="~/Asset/Scripts/FileSaver.js"></script>
+<script>
+    $("#WilayahIDList").change(function () {
+        var WilayahIDParam = $('#WilayahIDList').val();
+        var ajxfn = {};
+        ajxfn.url = "@Url.Action("GetLadangList", "AjaxRequest")";
+        ajxfn.type = "POST";
+        ajxfn.data = JSON.stringify({ WilayahIDParam: WilayahIDParam });
+        ajxfn.datatype = "json";
+        ajxfn.contentType = "application/json";
+        ajxfn.success = function (result) {
+            $("#LadangIDList").empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#LadangIDList").append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+            }
+            $("#UpdateProgress1").css("display", "none");
+        };
+        ajxfn.error = function () {
+            $.simplyToast('@GlobalResGeneral.lblContactTechnical', 'danger');
+            $("#UpdateProgress1").css("display", "none");
+        };
+        $.ajax(ajxfn);
+    });
+</script>

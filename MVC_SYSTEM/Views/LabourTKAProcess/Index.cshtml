@@ -1,0 +1,148 @@
+﻿@model IEnumerable<MVC_SYSTEM.LabourModels.tbl_LbrTKAProcess>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Nama)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_NoPassport)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_BOD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_OriginBatchNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_QueueNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_SexType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_LbrRqstID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_ProcessStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_SuccessStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_UnsuccessReason)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_Notes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_NegaraID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_SyarikatID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_WilayahID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_LadangID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_CreatedDT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_ModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fld_ModifiedDT)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Nama)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_NoPassport)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_BOD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Age)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_OriginBatchNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_QueueNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_SexType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_LbrRqstID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_ProcessStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_SuccessStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_UnsuccessReason)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_Notes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_NegaraID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_SyarikatID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_WilayahID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_LadangID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_CreatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_CreatedDT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_ModifiedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fld_ModifiedDT)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.fld_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.fld_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.fld_ID })
+        </td>
+    </tr>
+}
+
+</table>

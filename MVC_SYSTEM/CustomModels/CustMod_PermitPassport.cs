@@ -1,12 +1,15 @@
-namespace MVC_SYSTEM.LabourModels
-{
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
-    public partial class tbl_LbrPrmtPsprtUpdate
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Spatial;
+
+namespace MVC_SYSTEM.CustomModels
+{
+    public class CustMod_PermitPassport
     {
         [Key]
         public long fld_ID { get; set; }
@@ -46,8 +49,8 @@ namespace MVC_SYSTEM.LabourModels
         public int? fld_DeletedBy { get; set; }
 
         public DateTime? fld_DeletedDT { get; set; }
-
-        //Added by Shazana 8/3/2024
+        public DateTime? fld_PassportStartDT { get; set; }
+        public DateTime? fld_PermitStartDT { get; set; }
         public string fld_PassportStatus { get; set; }
         public string fld_PassportRenewalStatus { get; set; }
         public DateTime? fld_PassportRenewalStartDate { get; set; }
@@ -56,9 +59,5 @@ namespace MVC_SYSTEM.LabourModels
         public DateTime? fld_PermitRenewalStartDate { get; set; }
         public DateTime? fld_ContractStartDate { get; set; }
         public DateTime? fld_ContractExpiryDate { get; set; }
-        public DateTime? fld_ModifiedDT { get; set; }
-        public int? fld_ModifiedBy { get; set; }
-        
-
     }
 }

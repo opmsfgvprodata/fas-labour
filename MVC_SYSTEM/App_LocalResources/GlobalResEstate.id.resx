@@ -2250,4 +2250,16 @@
   <data name="msgChooseOnLeave" xml:space="preserve">
     <value>Sila pilih wilayah, ladang dan status bercuti</value>
   </data>
+  <data name="lblhdrContractInfo" xml:space="preserve">
+    <value>MAKLUMAT KONTRAK</value>
+  </data>
+  <data name="lblhdrPassportInfo" xml:space="preserve">
+    <value>MAKLUMAT PASSPORT</value>
+  </data>
+  <data name="lblhdrPermitInfo" xml:space="preserve">
+    <value>MAKLUMAT PERMIT</value>
+  </data>
+  <data name="lblhdrServiceInfo" xml:space="preserve">
+    <value>MAKLUMAT SERVIS</value>
+  </data>
 </root>

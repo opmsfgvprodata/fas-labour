@@ -1,0 +1,116 @@
+﻿@model MVC_SYSTEM.LabourModels.tbl_LbrDataInfo
+
+@{
+    ViewBag.Title = "Permit Edit Info";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    ViewBag.DateScriptAdv = 1;
+    GetConfig GetConfig = new GetConfig();
+    ChangeTimeZone ChangeTimeZone = new ChangeTimeZone();
+    var DateNow = ChangeTimeZone.gettimezone();
+    string dateformat = GetConfig.GetData("dateformat");
+    Model.fld_PermitEndDT = string.IsNullOrEmpty(Model.fld_PermitEndDT.ToString()) ? DateNow : Model.fld_PermitEndDT;
+    if (Model.fld_PermitEndDT == null)
+    {
+        Model.fld_PermitEndDT = DateNow;
+    }
+}
+
+<style>
+    div.ex0 {
+        height: auto;
+        width: 100px;
+        margin: 100px;
+        background-color: purple;
+    }
+
+    div.ex2 {
+        padding-left: 160px;
+        padding-top: 10px;
+    }
+
+    div.ex3 {
+        padding-left: 190px;
+        padding-top: 10px;
+    }
+</style>
+
+<section class="content-wrapper main-content clear-fix">
+    <div class="well" id="well">
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Permit Update: @Model.fld_WorkerNo - @Model.fld_WorkerName</div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = ViewBag.MsgColor })
+                            <input type="hidden" id="fld_LbrRefID" name="fld_LbrRefID" value="@Model.fld_ID" />
+                            @Html.AntiForgeryToken()
+
+                            <table style="width:80%">
+
+                                <tr>
+                                    <td style:"form-group">
+                                        <div class="col-sm-5">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:40px; ">Worker ID:</label>
+                                        </div>
+                                        @*<div class="ex3">*@
+                                            <div class="col-sm-6">
+                                                @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            </div>
+                                        @*</div>*@
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style:"form-group">
+                                        <div class="col-sm-5">
+                                            <label style="float: left; margin-right: 10px; padding-left: 40px; padding-top: 40px; ">Worker Name:</label>
+                                        </div>
+                                        <div class="ex3">
+                                            <div class="col-sm-8">
+                                                @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                                <tr style="padding-top:20px">
+                                    <td>
+                                        <div class="col-sm-5">
+                                            <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:20px; ">Renewal Permit Status:</label>
+                                        </div>
+                                        <div class="ex3">
+                                            <div class="col-sm-8">
+                                                @Html.DropDownList("fld_PermitRenewalStatus", null, htmlAttributes: new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.fld_PermitRenewalStatus, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <div style="text-align:right;align-items:end; float:inline-end">
+                                            <div class="col-sm-10" style="display: flex; justify-content: flex-end">
+                                                <input type="submit" value="Save" class="btn btn-success" />
+                                                @Html.ActionLink("Back to List", "Index", "LabourPrmtPsprt", null, htmlAttributes: new { @class = "btn btn-warning" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

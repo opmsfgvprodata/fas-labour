@@ -8,7 +8,7 @@
     ChangeTimeZone ChangeTimeZone = new ChangeTimeZone();
     var DateNow = ChangeTimeZone.gettimezone();
     string dateformat = GetConfig.GetData("dateformat");
-    Model.fld_PassportEndDT = string.IsNullOrEmpty(Model.fld_PassportEndDT.ToString()) ? DateNow : Model.fld_PermitEndDT;
+    Model.fld_PassportEndDT = string.IsNullOrEmpty(Model.fld_PassportEndDT.ToString()) ? DateNow : Model.fld_PassportEndDT;
     if (Model.fld_PassportEndDT == null)
     {
         Model.fld_PassportEndDT = DateNow;
@@ -47,115 +47,165 @@
                             <input type="hidden" id="fld_LbrRefID" name="fld_LbrRefID" value="@Model.fld_ID" />
                             @Html.AntiForgeryToken()
 
-                            @*<div class="form-group">
-                                @Html.LabelFor(model => model.fld_WorkerIDNo, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                            <table>
-                                <div>
-                                    <tr>
-                                        <td style="form-group">
-                                            <div>
-                                                <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:40px; ">Worker ID:</label>
-                                            </div>
-                                            <div class="ex2">
-                                                <div class="col-md-7">
-                                                    @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                                </div>
-                                            </div>
-                                        </td>
+                    <table style="width:100%">
 
-                                        @*<div class="form-group">
-                                            @Html.LabelFor(model => model.fld_WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                                        <td style="form-group">
-                                            <div>
-                                                <label style="float: left; margin-right: 10px; padding-left: 40px; padding-top: 40px; ">Worker Name:</label>
-                                            </div>
-                                            <div class="ex3">
-                                                <div class=" col-md-7">
-                                                    @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-
-                                    @*<div class="form-group">
-                                        @Html.Label("Current Passport No", htmlAttributes: new { @class = "control-label col-md-2" })*@
-                                    <tr>
-                                        <td style="width:50%">
-                                            <div>
-                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px; ">Current Passport No:</label>
-                                            </div>
-                                            <div class="ex2">
-                                                <div class="col-md-7">
-                                                    @Html.TextBox("fld_OldPrmtPsprtNo", Model.fld_WorkerIDNo, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
-                                                </div>
-                                            </div>
-                                        </td>
-                                        @*<div class="form-group">
-                                            @Html.Label("Current Passport Exp Date", htmlAttributes: new { @class = "control-label col-md-2" })*@
-                                        <td style="width:50%">
-                                            <div>
-                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Current Passport Exp Date:</label>
-                                            </div>
-                                            <div class="ex3">
-                                                <div class="col-md-7">
-                                                    <div class='input-group date' id='datetimepicker1'>
-                                                        @Html.TextBox("fld_OldPrmtPsrtEndDT", Model.fld_PassportEndDT, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
-                                                        <span class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    @*<div class="form-group">
-                                        @Html.Label("New Passport No *", htmlAttributes: new { @class = "control-label col-md-2" })*@
-                                    <tr style="padding-top:20px">
-
-                                        <td>
-                                            <div>
-                                                <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:20px; "> New Passport No:</label>
-                                            </div>
-                                            <div class="ex2">
-                                                <div class="col-md-7">
-                                                    @Html.TextBox("fld_NewPrmtPsprtNo", null, htmlAttributes: new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        @*<div class="form-group">
-                                            @Html.Label("New Passport Exp Date *", htmlAttributes: new { @class = "control-label col-md-2" })*@
-                                        <td style="width:50%">
-                                            <div>
-                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">New Passport Exp Date:</label>
-                                            </div>
-                                            <div class="ex3">
-                                                <div class="col-md-7">
-                                                    <div class='input-group date' id='datetimepicker2'>
-                                                        @Html.TextBox("fld_NewPrmtPsrtEndDT", Model.fld_PassportEndDT.Value.AddYears(3), "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control" })
-                                                        <span class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
+                        <tr>
+                            <td style:"form-group">
+                                <div class="col-sm-5">
+                                    <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:40px; ">Worker ID:</label>
                                 </div>
-
-
-                            </table>
-                            <div class="form-group">
-                                <div class="col-md-offset-8 col-md-10">
-                                    <input type="submit" value="Save" class="btn btn-success" />
-                                    @Html.ActionLink("Back to List", "Index", "LabourPrmtPsprt", null, htmlAttributes: new { @class = "btn btn-warning" })
-                                    @Html.ActionLink("Upload File", "UpDownloadFilePrmtPsprt", "LabourPrmtPsprt", new { LabourID = Model.fld_ID }, htmlAttributes: new { @class = "btn btn-primary" })
-                                   
+                                <div class="ex3">
+                                    <div class="col-sm-6">
+                                        @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    </div>
                                 </div>
-                            </div>
+                            </td>
+
+                            <td style:"form-group">
+                                <div class="col-sm-5">
+                                    <label style="float: left; margin-right: 10px; padding-left: 40px; padding-top: 40px; ">Worker Name:</label>
+                                </div>
+                                <div class="ex3">
+                                    <div class="col-sm-8">
+                                        @Html.EditorFor(model => model.fld_WorkerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="col-sm-5">
+                                    <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px; ">Current Passport No:</label>
+                                </div>
+                                <div class="ex3">
+                                    <div class="col-sm-6">
+                                        @Html.TextBox("fld_OldPrmtPsprtNo", Model.fld_WorkerIDNo, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col-sm-5">
+                                    <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:20px; "> New Passport No:</label>
+                                </div>
+                                <div class="ex3">
+                                    <div class="col-sm-8">
+                                        @Html.TextBox("fld_NewPrmtPsprtNo", null, htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr style="padding-top:20px">
+                            <td>
+                                <div class="col-sm-5">
+                                    <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:20px; "> Current Passport Start Date:</label>
+                                </div>
+                                <div class="ex3">
+                                    <div class="col-sm-6">
+                                        @*<div class='input-group date' id='datetimepicker3'>*@
+                                        @Html.TextBox("fld_PassportStartDT", Model.fld_PassportStartDT, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                        @*</div>*@
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col-sm-5">
+                                    <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Current Passport Exp Date:</label>
+                                </div>
+                                <div class="ex3">
+                                    <div class="col-sm-8">
+                                        <div class='input-group date' id='datetimepicker1'>
+                                            @Html.TextBox("fld_OldPrmtPsrtEndDT", Model.fld_PassportEndDT, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td></td>
+
+
+                        </tr>
+
+
+                        <tr style="padding-top:20px">
+                            <td>
+                                <div class="col-sm-5">
+                                    <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Renewal Passport Start Date:</label>
+                                </div>
+                                <div class="ex3">
+                                    <div class="col-sm-6">
+                                        <div class='input-group date' id='datetimepicker2'>
+                                            @Html.TextBox("fld_PassportRenewalStartDate", Model.fld_PassportRenewalStartDate, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control" })
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="col-sm-5">
+                                    <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">New Passport Exp Date:</label>
+                                </div>
+                                <div class="ex3">
+                                    <div class="col-sm-8">
+                                        <div class='input-group date' id='datetimepicker2'>
+                                            @Html.TextBox("fld_NewPrmtPsrtEndDT", Model.fld_PassportEndDT.Value.AddYears(3), "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control" })
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td></td>
+
+                        </tr>
+
+                        <tr style="padding-top:20px">
+                            <td>
+                                <div class="col-sm-5">
+                                    <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Passport Status:</label>
+                                </div>
+                                <div class="ex3">
+                                    <div class="col-sm-6">
+                                        @Html.DropDownList("fld_PassportStatus", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.fld_PassportStatus, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col-sm-5">
+                                    <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:20px; ">Renewal Passport Status:</label>
+                                </div>
+                                <div class="ex3">
+                                    <div class="col-sm-8">
+                                        @Html.DropDownList("fld_PassportRenewalStatus", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.fld_PassportRenewalStatus, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div style="text-align:right;align-items:end; float:inline-end">
+                                    <div class="col-sm-10" style="display: flex; justify-content: flex-end">
+                                        <input type="submit" value="Save" class="btn btn-success" />
+                                        @Html.ActionLink("Back to List", "Index", "LabourPrmtPsprt", null, htmlAttributes: new { @class = "btn btn-warning" })
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                          
                         }
                     </div>
 
@@ -185,7 +235,15 @@
         format: '@dateformat',
         useCurrent: false
     });
+       $('#datetimepicker3').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
 
+    $('#datetimepicker4').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
 </script>
 
 @section Scripts {

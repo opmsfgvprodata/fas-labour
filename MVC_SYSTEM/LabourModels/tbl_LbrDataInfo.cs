@@ -134,6 +134,12 @@ namespace MVC_SYSTEM.LabourModels
 
         [Column(TypeName = "date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Date of Issued")]
+        public DateTime? fld_PermitStartDT { get; set; }
+        
+
+        [Column(TypeName = "date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date of Permit End")]
         public DateTime? fld_PermitEndDT { get; set; }
 
@@ -223,6 +229,15 @@ namespace MVC_SYSTEM.LabourModels
         [RegularExpression("^[0-9]+$", ErrorMessage = "Invalid Character.")]
         [Display(Name = "Last 4 PAN")]
         public string fld_Last4Pan { get; set; }
+
+        public string fld_PassportStatus { get; set; }
+        public string fld_PassportRenewalStatus { get; set; }
+        public DateTime? fld_PassportRenewalStartDate { get; set; }
+        public string fld_PermitStatus { get; set; }
+        public string fld_PermitRenewalStatus { get; set; }
+        public DateTime? fld_PermitRenewalStartDate { get; set; }
+        public DateTime? fld_ContractStartDate { get; set; }
+        public DateTime? fld_ContractExpiryDate { get; set; }
 
         internal Task<tbl_LbrDataInfo> FirstOrDefaultAsync()
         {

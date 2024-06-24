@@ -684,10 +684,6 @@ namespace MVC_SYSTEM.Controllers
 
             //}
 
-
-
-
-
             //Added by Shazana on 28/10
 
             ViewBag.workerNo = string.IsNullOrEmpty(sortOrder) ? "workerNo" : "";
@@ -1117,13 +1113,22 @@ namespace MVC_SYSTEM.Controllers
             db = MVC_SYSTEM_Models.ConnectToSqlServer(Host, Catalog, UserID, Pass);
             DT = ChangeTimeZone.gettimezone();
 
+            List<SelectListItem> PermitRenewalStatus = new List<SelectListItem>();
+            List<SelectListItem> PassportPermitStatus = new List<SelectListItem>();
+            PermitRenewalStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "permitrenewalstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text").ToList();
+            PermitRenewalStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            PassportPermitStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text").ToList();
+            PassportPermitStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            ViewBag.fld_PermitRenewalStatus = PermitRenewalStatus;
+            ViewBag.fld_PermitStatus = PassportPermitStatus;
+
             var LbrDataInfo = await db.tbl_LbrDataInfo.FindAsync(id);
             return View(LbrDataInfo);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> PermitUpdate(tbl_LbrPrmtPsprtUpdate tbl_LbrPrmtPsprtUpdate)
+        public async Task<ActionResult> PermitUpdate(CustMod_PermitPassport tbl_LbrPrmtPsprtUpdate)
         {
             //fld_PurposeIndicator = 1 is for permit
             ViewBag.LabourPrmtPsprt = "class = active";
@@ -1153,6 +1158,10 @@ namespace MVC_SYSTEM.Controllers
                     LbrPrmtPsprtUpdate.fld_SyarikatID = GetLabourDetails.fld_SyarikatID;
                     LbrPrmtPsprtUpdate.fld_WilayahID = GetLabourDetails.fld_WilayahID;
                     LbrPrmtPsprtUpdate.fld_Deleted = false;
+                    //Added by Shazana 8/4/2024
+                    LbrPrmtPsprtUpdate.fld_PermitRenewalStatus = tbl_LbrPrmtPsprtUpdate.fld_PermitRenewalStatus;
+                    LbrPrmtPsprtUpdate.fld_PermitStatus = tbl_LbrPrmtPsprtUpdate.fld_PermitStatus;
+                    LbrPrmtPsprtUpdate.fld_PermitRenewalStartDate = tbl_LbrPrmtPsprtUpdate.fld_PermitRenewalStartDate;
                     db.tbl_LbrPrmtPsprtUpdate.Add(LbrPrmtPsprtUpdate);
                     db.SaveChanges();
 
@@ -1160,11 +1169,24 @@ namespace MVC_SYSTEM.Controllers
                     GetLabourDetails.fld_PermitEndDT = tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsrtEndDT;
                     GetLabourDetails.fld_ModifiedBy = GetUserID;
                     GetLabourDetails.fld_ModifiedDT = DT;
+                    GetLabourDetails.fld_PermitRenewalStatus = tbl_LbrPrmtPsprtUpdate.fld_PermitRenewalStatus;
+                    GetLabourDetails.fld_PermitStatus = tbl_LbrPrmtPsprtUpdate.fld_PermitStatus;
+                    GetLabourDetails.fld_PermitRenewalStartDate = tbl_LbrPrmtPsprtUpdate.fld_PermitRenewalStartDate;
                     db.Entry(GetLabourDetails).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    SyncToCheckRollFunc(GetLabourDetails, 1);
 
+                    var GetPreviousPermit = db.tbl_LbrPrmtPsprtUpdate.Where(x => x.fld_LbrRefID == tbl_LbrPrmtPsprtUpdate.fld_LbrRefID && x.fld_NewPrmtPsprtNo != tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsprtNo && x.fld_PurposeIndicator ==1  && x.fld_Deleted == false).OrderByDescending(x => x.fld_CreatedDT).FirstOrDefault();
+                    if (GetPreviousPermit != null)
+                    {
+                        GetPreviousPermit.fld_Deleted = true;
+                        GetPreviousPermit.fld_DeletedBy = GetUserID;
+                        GetPreviousPermit.fld_DeletedDT = DT;
+                        db.Entry(GetPreviousPermit).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                    SyncToCheckRollFunc(GetLabourDetails, 1);
                     ModelState.AddModelError("", "Update Successfully");
                     ViewBag.MsgColor = "color: green";
                 }
@@ -1179,11 +1201,84 @@ namespace MVC_SYSTEM.Controllers
                 ModelState.AddModelError("", "Permit Already Renewed");
                 ViewBag.MsgColor = "color: orange";
             }
+            List<SelectListItem> PermitRenewalStatus = new List<SelectListItem>();
+            List<SelectListItem> PassportPermitStatus = new List<SelectListItem>();
+            PermitRenewalStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "permitrenewalstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrPrmtPsprtUpdate.fld_PermitRenewalStatus).ToList();
+            PermitRenewalStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            PassportPermitStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrPrmtPsprtUpdate.fld_PermitStatus).ToList();
+            PassportPermitStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            ViewBag.fld_PermitRenewalStatus = PermitRenewalStatus;
+            ViewBag.fld_PermitStatus = PassportPermitStatus;
 
             var LbrDataInfo = await db.tbl_LbrDataInfo.FindAsync(tbl_LbrPrmtPsprtUpdate.fld_LbrRefID);
             return View(LbrDataInfo);
         }
+        //Added by Shazana 8/4/2024
+        public ActionResult PermitEdit(Guid? id, int? fld_id)
+        {
+            ViewBag.LabourManagement = "class = active";
+            GetUserID = GetIdentity.ID(User.Identity.Name);
+            GetNSWL.GetData(out NegaraID, out SyarikatID, out WilayahID, out LadangID, GetUserID, User.Identity.Name);
+            Connection.GetConnection(out Host, out Catalog, out UserID, out Pass, WilayahID.Value, SyarikatID.Value, NegaraID.Value, Purpose);
+            db = MVC_SYSTEM_Models.ConnectToSqlServer(Host, Catalog, UserID, Pass);
+            DT = ChangeTimeZone.gettimezone();
+            var LbrDataInfo = db.tbl_LbrDataInfo.Find(id);
+            List<SelectListItem> PermitRenewalStatus = new List<SelectListItem>();
+            List<SelectListItem> PermitPermitStatus = new List<SelectListItem>();
+            PermitRenewalStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "permitrenewalstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", LbrDataInfo.fld_PermitRenewalStatus).ToList();
+            PermitRenewalStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            ViewBag.fld_PermitRenewalStatus = PermitRenewalStatus;
+            ViewBag.fld_id = fld_id;
+            return View(LbrDataInfo);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PermitEdit(CustMod_PermitPassport tbl_LbrPrmtPsprtUpdate)
+        {
+            //fld_PurposeIndicator = 2 is for passport
+            ViewBag.LabourPrmtPsprt = "class = active";
+            GetUserID = GetIdentity.ID(User.Identity.Name);
+            GetNSWL.GetData(out NegaraID, out SyarikatID, out WilayahID, out LadangID, GetUserID, User.Identity.Name);
+            Connection.GetConnection(out Host, out Catalog, out UserID, out Pass, WilayahID.Value, SyarikatID.Value, NegaraID.Value, Purpose);
+            db = MVC_SYSTEM_Models.ConnectToSqlServer(Host, Catalog, UserID, Pass);
+            DT = ChangeTimeZone.gettimezone();
+
+            var GetExistingPermit = db.tbl_LbrPrmtPsprtUpdate.Where(x => x.fld_LbrRefID == tbl_LbrPrmtPsprtUpdate.fld_LbrRefID && (x.fld_ID == tbl_LbrPrmtPsprtUpdate.fld_ID) && x.fld_PurposeIndicator == 1 && x.fld_Deleted == false).FirstOrDefault();
+            var GetLabourDetails = db.tbl_LbrDataInfo.Find(tbl_LbrPrmtPsprtUpdate.fld_LbrRefID);
+
+            if (GetLabourDetails != null)
+            {
+                GetExistingPermit.fld_LbrRefID = tbl_LbrPrmtPsprtUpdate.fld_LbrRefID;
+                GetExistingPermit.fld_PermitRenewalStatus = tbl_LbrPrmtPsprtUpdate.fld_PermitRenewalStatus;
+                GetExistingPermit.fld_NewPrmtPsprtNo = GetExistingPermit.fld_NewPrmtPsprtNo;
+                GetExistingPermit.fld_NewPrmtPsrtEndDT = GetExistingPermit.fld_NewPrmtPsrtEndDT;
+                GetExistingPermit.fld_ModifiedBy = GetUserID;
+                GetExistingPermit.fld_ModifiedDT = DT;
+                db.Entry(GetExistingPermit).State = EntityState.Modified;
+                db.SaveChanges();
+
+                GetLabourDetails.fld_ModifiedBy = GetUserID;
+                GetLabourDetails.fld_ModifiedDT = DT;
+                GetLabourDetails.fld_PermitRenewalStatus = tbl_LbrPrmtPsprtUpdate.fld_PermitRenewalStatus;
+                db.Entry(GetLabourDetails).State = EntityState.Modified;
+                db.SaveChanges();
+
+                SyncToCheckRollFunc(GetLabourDetails, 2);
+                ViewBag.MsgColor = "color: green";
+            }
+            List<SelectListItem> PermitRenewalStatus = new List<SelectListItem>();
+            List<SelectListItem> PassportPermitStatus = new List<SelectListItem>();
+            PermitRenewalStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "permitrenewalstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrPrmtPsprtUpdate.fld_PermitRenewalStatus).ToList();
+            PermitRenewalStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            PassportPermitStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrPrmtPsprtUpdate.fld_PermitStatus).ToList();
+            PassportPermitStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            ViewBag.fld_PermitRenewalStatus = PermitRenewalStatus;
+            ViewBag.fld_PermitStatus = PassportPermitStatus;
+            var LbrDataInfo = await db.tbl_LbrDataInfo.FindAsync(tbl_LbrPrmtPsprtUpdate.fld_LbrRefID);
+            return RedirectToAction("PermitUpdate", "LabourPrmtPsprt", new { id = LbrDataInfo.fld_ID });
+
+        }
         public ActionResult _LabourPermitDetail(Guid LabourID)
         {
             return View(db.vw_LbrPrmtPsprtUpdate.Where(x => x.fld_LbrRefID == LabourID && x.fld_PurposeIndicator == 1).ToList());
@@ -1198,13 +1293,23 @@ namespace MVC_SYSTEM.Controllers
             db = MVC_SYSTEM_Models.ConnectToSqlServer(Host, Catalog, UserID, Pass);
             DT = ChangeTimeZone.gettimezone();
 
+            //Added by Shazana 29/3/2024
+            List<SelectListItem> PassportRenewalStatus = new List<SelectListItem>();
+            List<SelectListItem> PassportPermitStatus = new List<SelectListItem>();
+            PassportRenewalStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportrenewalstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text").ToList();
+            PassportRenewalStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            PassportPermitStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text").ToList();
+            PassportPermitStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            ViewBag.fld_PassportRenewalStatus = PassportRenewalStatus;
+            ViewBag.fld_PassportStatus = PassportPermitStatus;
+
             var LbrDataInfo = await db.tbl_LbrDataInfo.FindAsync(id);
             return View(LbrDataInfo);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> PassportUpdate(tbl_LbrPrmtPsprtUpdate tbl_LbrPrmtPsprtUpdate)
+        public async Task<ActionResult> PassportUpdate(CustMod_PermitPassport tbl_LbrPrmtPsprtUpdate)
         {
             //fld_PurposeIndicator = 2 is for passport
             ViewBag.LabourPrmtPsprt = "class = active";
@@ -1214,9 +1319,10 @@ namespace MVC_SYSTEM.Controllers
             db = MVC_SYSTEM_Models.ConnectToSqlServer(Host, Catalog, UserID, Pass);
             DT = ChangeTimeZone.gettimezone();
 
-            var GetExistingPermit = db.tbl_LbrPrmtPsprtUpdate.Where(x => x.fld_LbrRefID == tbl_LbrPrmtPsprtUpdate.fld_LbrRefID && (x.fld_NewPrmtPsprtNo == tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsprtNo || x.fld_OldPrmtPsprtNo == tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsprtNo) && x.fld_PurposeIndicator == 2 && x.fld_Deleted == false).Count();
+            var GetExistingPassport = db.tbl_LbrPrmtPsprtUpdate.Where(x => x.fld_LbrRefID == tbl_LbrPrmtPsprtUpdate.fld_LbrRefID && (x.fld_NewPrmtPsprtNo == tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsprtNo || x.fld_OldPrmtPsprtNo == tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsprtNo) && x.fld_PurposeIndicator == 2 && x.fld_Deleted == false).Count();
             var GetLabourDetails = db.tbl_LbrDataInfo.Find(tbl_LbrPrmtPsprtUpdate.fld_LbrRefID);
-            if (GetExistingPermit == 0)
+
+            if (GetExistingPassport == 0)
             {
                 if (ModelState.IsValid)
                 {
@@ -1234,6 +1340,10 @@ namespace MVC_SYSTEM.Controllers
                     LbrPrmtPsprtUpdate.fld_SyarikatID = GetLabourDetails.fld_SyarikatID;
                     LbrPrmtPsprtUpdate.fld_WilayahID = GetLabourDetails.fld_WilayahID;
                     LbrPrmtPsprtUpdate.fld_Deleted = false;
+                    //Added by Shazana 8/4/2024
+                    LbrPrmtPsprtUpdate.fld_PassportRenewalStatus = tbl_LbrPrmtPsprtUpdate.fld_PassportRenewalStatus;
+                    LbrPrmtPsprtUpdate.fld_PassportStatus = tbl_LbrPrmtPsprtUpdate.fld_PassportStatus;
+                    LbrPrmtPsprtUpdate.fld_PassportRenewalStartDate = tbl_LbrPrmtPsprtUpdate.fld_PassportRenewalStartDate;
                     db.tbl_LbrPrmtPsprtUpdate.Add(LbrPrmtPsprtUpdate);
                     db.SaveChanges();
 
@@ -1241,8 +1351,23 @@ namespace MVC_SYSTEM.Controllers
                     GetLabourDetails.fld_PassportEndDT = tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsrtEndDT;
                     GetLabourDetails.fld_ModifiedBy = GetUserID;
                     GetLabourDetails.fld_ModifiedDT = DT;
+                    //Added by Shazana 8/4/2024
+                    GetLabourDetails.fld_PassportRenewalStatus = tbl_LbrPrmtPsprtUpdate.fld_PassportRenewalStatus;
+                    GetLabourDetails.fld_PassportStatus = tbl_LbrPrmtPsprtUpdate.fld_PassportStatus;
+                    GetLabourDetails.fld_PassportRenewalStartDate = tbl_LbrPrmtPsprtUpdate.fld_PassportRenewalStartDate;
                     db.Entry(GetLabourDetails).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    var GetPreviousPermit = db.tbl_LbrPrmtPsprtUpdate.Where(x => x.fld_LbrRefID == tbl_LbrPrmtPsprtUpdate.fld_LbrRefID && x.fld_NewPrmtPsprtNo != tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsprtNo && x.fld_PurposeIndicator == 2 && x.fld_Deleted == false).OrderByDescending(x => x.fld_CreatedDT).FirstOrDefault();
+                    if (GetPreviousPermit != null)
+                    {
+                        GetPreviousPermit.fld_Deleted = true;
+                        GetPreviousPermit.fld_DeletedBy = GetUserID;
+                        GetPreviousPermit.fld_DeletedDT = DT;
+                        db.Entry(GetPreviousPermit).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
 
                     SyncToCheckRollFunc(GetLabourDetails, 2);
 
@@ -1260,17 +1385,89 @@ namespace MVC_SYSTEM.Controllers
                 ModelState.AddModelError("", "Passport Already Renewed");
                 ViewBag.MsgColor = "color: orange";
             }
-
+            List<SelectListItem> PassportRenewalStatus = new List<SelectListItem>();
+            List<SelectListItem> PassportPermitStatus = new List<SelectListItem>();
+            PassportRenewalStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportrenewalstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrPrmtPsprtUpdate.fld_PassportRenewalStatus).ToList();
+            PassportRenewalStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            PassportPermitStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrPrmtPsprtUpdate.fld_PassportStatus).ToList();
+            PassportPermitStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            ViewBag.fld_PassportRenewalStatus = PassportRenewalStatus;
+            ViewBag.fld_PassportStatus = PassportPermitStatus;
             var LbrDataInfo = await db.tbl_LbrDataInfo.FindAsync(tbl_LbrPrmtPsprtUpdate.fld_LbrRefID);
             return View(LbrDataInfo);
         }
 
         public ActionResult _LabourPassportDetail(Guid LabourID)
         {
-            return View(db.vw_LbrPrmtPsprtUpdate.Where(x => x.fld_LbrRefID == LabourID && x.fld_PurposeIndicator == 2).ToList());
+            return View(db.vw_LbrPrmtPsprtUpdate.Where(x => x.fld_LbrRefID == LabourID && x.fld_PurposeIndicator == 2).OrderBy(x=>x.fld_CreatedDT).ToList());
         }
 
+        //Added by Shazana 8/4/2024
+        public ActionResult PassportEdit(Guid? id, int? fld_id)
+        {
+            ViewBag.LabourManagement = "class = active";
+            GetUserID = GetIdentity.ID(User.Identity.Name);
+            GetNSWL.GetData(out NegaraID, out SyarikatID, out WilayahID, out LadangID, GetUserID, User.Identity.Name);
+            Connection.GetConnection(out Host, out Catalog, out UserID, out Pass, WilayahID.Value, SyarikatID.Value, NegaraID.Value, Purpose);
+            db = MVC_SYSTEM_Models.ConnectToSqlServer(Host, Catalog, UserID, Pass);
+            DT = ChangeTimeZone.gettimezone();
+            var LbrDataInfo = db.tbl_LbrDataInfo.Find(id);
+            List<SelectListItem> PassportRenewalStatus = new List<SelectListItem>();
+            List<SelectListItem> PassportPermitStatus = new List<SelectListItem>();
+            PassportRenewalStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportrenewalstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", LbrDataInfo.fld_PassportRenewalStatus).ToList();
+            PassportRenewalStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            ViewBag.fld_PassportRenewalStatus = PassportRenewalStatus;
+            ViewBag.fld_id = fld_id;
+            return View(LbrDataInfo);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PassportEdit(CustMod_PermitPassport tbl_LbrPrmtPsprtUpdate)
+        {
+            //fld_PurposeIndicator = 2 is for passport
+            ViewBag.LabourPrmtPsprt = "class = active";
+            GetUserID = GetIdentity.ID(User.Identity.Name);
+            GetNSWL.GetData(out NegaraID, out SyarikatID, out WilayahID, out LadangID, GetUserID, User.Identity.Name);
+            Connection.GetConnection(out Host, out Catalog, out UserID, out Pass, WilayahID.Value, SyarikatID.Value, NegaraID.Value, Purpose);
+            db = MVC_SYSTEM_Models.ConnectToSqlServer(Host, Catalog, UserID, Pass);
+            DT = ChangeTimeZone.gettimezone();
+
+            var GetExistingPassport = db.tbl_LbrPrmtPsprtUpdate.Where(x => x.fld_LbrRefID == tbl_LbrPrmtPsprtUpdate.fld_LbrRefID && (x.fld_ID == tbl_LbrPrmtPsprtUpdate.fld_ID) && x.fld_PurposeIndicator == 2 && x.fld_Deleted == false).FirstOrDefault();
+            var GetLabourDetails = db.tbl_LbrDataInfo.Find(tbl_LbrPrmtPsprtUpdate.fld_LbrRefID);
+  
+            if (GetLabourDetails != null)
+            {
+                    GetExistingPassport.fld_LbrRefID = tbl_LbrPrmtPsprtUpdate.fld_LbrRefID;
+                    GetExistingPassport.fld_PassportRenewalStatus = tbl_LbrPrmtPsprtUpdate.fld_PassportRenewalStatus;
+                    GetExistingPassport.fld_NewPrmtPsprtNo = tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsprtNo;
+                    GetExistingPassport.fld_ModifiedBy = GetUserID;
+                    GetExistingPassport.fld_ModifiedDT = DT;
+                    db.Entry(GetExistingPassport).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    GetLabourDetails.fld_ModifiedBy = GetUserID;
+                    GetLabourDetails.fld_ModifiedDT = DT;
+                    GetLabourDetails.fld_PassportRenewalStatus = tbl_LbrPrmtPsprtUpdate.fld_PassportRenewalStatus;
+                    GetLabourDetails.fld_WorkerIDNo = tbl_LbrPrmtPsprtUpdate.fld_NewPrmtPsprtNo;
+                    db.Entry(GetLabourDetails).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    SyncToCheckRollFunc(GetLabourDetails, 2);
+                    ViewBag.MsgColor = "color: green";
+            }
+            List<SelectListItem> PassportRenewalStatus = new List<SelectListItem>();
+            List<SelectListItem> PassportPermitStatus = new List<SelectListItem>();
+            PassportRenewalStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportrenewalstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrPrmtPsprtUpdate.fld_PassportRenewalStatus).ToList();
+            PassportRenewalStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            PassportPermitStatus = new SelectList(Masterdb.tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrPrmtPsprtUpdate.fld_PassportStatus).ToList();
+            PassportPermitStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "0" }));
+            ViewBag.fld_PassportRenewalStatus = PassportRenewalStatus;
+            ViewBag.fld_PassportStatus = PassportPermitStatus;
+            var LbrDataInfo = await db.tbl_LbrDataInfo.FindAsync(tbl_LbrPrmtPsprtUpdate.fld_LbrRefID);
+            return RedirectToAction("PassportUpdate", "LabourPrmtPsprt", new { id = LbrDataInfo.fld_ID });
+ 
+        }
         public bool SyncToCheckRollFunc(tbl_LbrDataInfo tbl_LbrDataInfo, short Indc)
         {
             string Host1, Catalog1, UserID1, Pass1 = "";

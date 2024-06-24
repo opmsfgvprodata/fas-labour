@@ -2475,4 +2475,16 @@
   <data name="msgChooseOnLeave" xml:space="preserve">
     <value>Please select region, estate and on leave status</value>
   </data>
+  <data name="lblhdrContractInfo" xml:space="preserve">
+    <value>CONTRACT INFORMATION</value>
+  </data>
+  <data name="lblhdrPassportInfo" xml:space="preserve">
+    <value>PASSPORT INFORMATION</value>
+  </data>
+  <data name="lblhdrPermitInfo" xml:space="preserve">
+    <value>PERMIT INFORMATION</value>
+  </data>
+  <data name="lblhdrServiceInfo" xml:space="preserve">
+    <value>SERVICE INFORMATION</value>
+  </data>
 </root>

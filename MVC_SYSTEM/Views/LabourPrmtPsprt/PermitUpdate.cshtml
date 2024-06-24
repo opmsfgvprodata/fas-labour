@@ -54,7 +54,7 @@
                                             <div>
                                                 <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:40px; ">Worker ID:</label>
                                             </div>
-                                            <div class="ex2">
+                                            <div class="ex3">
                                                 <div class="col-md-7">
                                                     @Html.EditorFor(model => model.fld_WorkerIDNo, new { htmlAttributes = new { @class = "form-control", @style = " margin-top: 20px", @readonly = "readonly" } })
                                                 </div>
@@ -80,13 +80,41 @@
                                             <div>
                                                 <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px; ">Current Permit No:</label>
                                             </div>
-                                            <div class="ex2">
+                                            <div class="ex3">
                                                 <div class="col-md-7">
                                                     @Html.TextBox("fld_OldPrmtPsprtNo", Model.fld_PermitNo, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
                                                 </div>
                                             </div>
                                         </td>
+                                        <td>
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:20px; "> New Permit No:</label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class="col-md-7">
+                                                    @Html.TextBox("fld_NewPrmtPsprtNo", null, htmlAttributes: new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </td>
 
+                                        <td></td>
+                                    </tr>
+                                    <tr style="padding-top:20px">
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Current Permit Start Date:</label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class="col-md-7">
+                                                    <div class='input-group date' id='datetimepicker2'>
+                                                        @Html.TextBox("fld_PermitStartDT", Model.fld_PermitStartDT, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control"})
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td style="width:50%">
                                             <div>
                                                 <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Current Permit Exp Date:</label>
@@ -102,21 +130,29 @@
                                                 </div>
                                             </div>
                                         </td>
+
+
+
                                         <td></td>
                                     </tr>
 
                                     <tr style="padding-top:20px">
-
-                                        <td>
+                                        <td style="width:50%">
                                             <div>
-                                                <label style="float:left; margin-right:10px ; padding-left:40px; padding-top:20px; "> New Permit No:</label>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Renewal Permit Start Date:</label>
                                             </div>
-                                            <div class="ex2">
+                                            <div class="ex3">
                                                 <div class="col-md-7">
-                                                    @Html.TextBox("fld_NewPrmtPsprtNo", null, htmlAttributes: new { @class = "form-control" })
+                                                    <div class='input-group date' id='datetimepicker3'>
+                                                        @Html.TextBox("fld_PermitRenewalStartDate", Model.fld_PermitRenewalStartDate, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control"})
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
+
 
                                         <td style="width:50%">
                                             <div>
@@ -124,12 +160,40 @@
                                             </div>
                                             <div class="ex3">
                                                 <div class="col-md-7">
-                                                    <div class='input-group date' id='datetimepicker2'>
+                                                    <div class='input-group date' id='datetimepicker4'>
                                                         @Html.TextBox("fld_NewPrmtPsrtEndDT", Model.fld_PermitEndDT.Value.AddYears(1), "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control" })
                                                         <span class="input-group-addon">
                                                             <span class="glyphicon glyphicon-calendar"></span>
                                                         </span>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr style="padding-top:20px">
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Permit Status:</label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class="col-md-7">
+                                                    @Html.DropDownList("fld_PermitStatus", null, htmlAttributes: new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.fld_PermitRenewalStatus, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+
+
+                                        <td style="width:50%">
+                                            <div>
+                                                <label style="float:left; margin-right:10px ; padding-left:40px;  padding-top:20px">Renewal Permit Status:</label>
+                                            </div>
+                                            <div class="ex3">
+                                                <div class="col-md-7">
+                                                    @Html.DropDownList("fld_PermitRenewalStatus", null, htmlAttributes: new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.fld_PermitRenewalStatus, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                         </td>
@@ -174,7 +238,15 @@
         format: '@dateformat',
         useCurrent: false
     });
-    
+        $('#datetimepicker3').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
+
+    $('#datetimepicker4').datetimepicker({
+        format: '@dateformat',
+        useCurrent: false
+    });
 </script>
 
 @section Scripts {

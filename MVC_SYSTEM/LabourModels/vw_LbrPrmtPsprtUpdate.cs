@@ -151,5 +151,15 @@ namespace MVC_SYSTEM.LabourModels
 
         [StringLength(50)]
         public string fld_TmptLhr { get; set; }
+
+
+        public string fld_PassportStatus { get; set; }
+        public string fld_PassportRenewalStatus { get; set; }
+        public DateTime? fld_PassportRenewalStartDate { get; set; }
+        public string fld_PermitStatus { get; set; }
+        public string fld_PermitRenewalStatus { get; set; }
+        public DateTime? fld_PermitRenewalStartDate { get; set; }
+        public DateTime? fld_ContractStartDate { get; set; }
+        public DateTime? fld_ContractExpiryDate { get; set; }
     }
 }

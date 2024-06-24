@@ -19,7 +19,7 @@ namespace MVC_SYSTEM.App_LocalResources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class GlobalResEstate {
@@ -3976,11 +3976,47 @@ namespace MVC_SYSTEM.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MAKLUMAT KONTRAK.
+        /// </summary>
+        public static string lblhdrContractInfo {
+            get {
+                return ResourceManager.GetString("lblhdrContractInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MAKLUMAT PASSPORT.
+        /// </summary>
+        public static string lblhdrPassportInfo {
+            get {
+                return ResourceManager.GetString("lblhdrPassportInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MAKLUMAT PERMIT.
+        /// </summary>
+        public static string lblhdrPermitInfo {
+            get {
+                return ResourceManager.GetString("lblhdrPermitInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maklumat Peribadi.
         /// </summary>
         public static string lblhdrPersonalInfo {
             get {
                 return ResourceManager.GetString("lblhdrPersonalInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MAKLUMAT SERVIS.
+        /// </summary>
+        public static string lblhdrServiceInfo {
+            get {
+                return ResourceManager.GetString("lblhdrServiceInfo", resourceCulture);
             }
         }
         

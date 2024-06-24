@@ -1,4 +1,9 @@
 ﻿@model IEnumerable<MVC_SYSTEM.LabourModels.vw_LbrPrmtPsprtUpdate>
+@{
+    GetConfig GetConfig = new GetConfig();
+    string PermitRenewalStatus = "";
+    string PermitStatus = "";
+}
 <div class="modal-body">
     <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
         <thead>
@@ -8,40 +13,48 @@
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerName)</th>
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_NewPrmtPsprtNo)</th>
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_NewPrmtPsrtEndDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">New Permit Start Date</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">New Permit Status</th>
+
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_OldPrmtPsprtNo)</th>
-                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_OldPrmtPsrtEndDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Old Permit Start Date</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Old Permit End Date</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Old Permit Status</th>
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
+                PermitRenewalStatus = GetConfig.GetWebConfigDesc(item.fld_PermitRenewalStatus, "permitrenewalstatus", item.fld_NegaraID, item.fld_SyarikatID);
+                string OldPermitStatus = "Expired";
+                if (item.fld_Deleted == false)
+                {
+                    OldPermitStatus = "Valid";
+                }
+                else
+                {
+                    OldPermitStatus = "Expired";
+                }
                 <tr>
                     <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerNo)</td>
                     <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
                     <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
                     <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_NewPrmtPsprtNo)</td>
                     <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_NewPrmtPsrtEndDT)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_PermitRenewalStartDate)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@PermitRenewalStatus</td>
                     <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_OldPrmtPsprtNo)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_PermitStartDT)</td>
                     <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_OldPrmtPsrtEndDT)</td>
+                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@OldPermitStatus</td>
                     <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
-                        @if (item.fld_Deleted == false)
+                        @if (OldPermitStatus == "Expired")
                         {
-                            @*if (item.fld_FomemaResult == false)
-                                {
-                                    @Html.ActionLink("Cancel", "CancelLabourFomema", new { id = item.fld_ID })
-                                    <br />
-                                    @Html.ActionLink("Flight Ticket", "TicketRequestRegister", "LabourTicketRequest", new { id = item.fld_LbrRefID }, null)
-                                }
-                                else
-                                {
-                                    @Html.ActionLink("Cancel", "CancelLabourFomema", new { id = item.fld_ID })
-                                    <br />
-                                    @Html.ActionLink("Update Permit", "TKAFullInformation", "LabourDetail", new { id = item.fld_LbrRefID }, null)
-                                }*@
                         }
                         else
                         {
+                            @Html.ActionLink("Edit Permit", "PermitEdit", "LabourPrmtPsprt", new { id = item.fld_LbrRefID, fld_id = item.fld_ID }, null)
                         }
                     </td>
                 </tr>
@@ -49,7 +62,7 @@
             @if (!Model.Any())
             {
                 <tr>
-                    <td colspan="8" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">No Data</td>
+                    <td colspan="12" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">No Data</td>
                 </tr>
             }
         </tbody>

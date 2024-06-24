@@ -1,4 +1,10 @@
 ﻿@model IEnumerable<MVC_SYSTEM.LabourModels.vw_LbrPrmtPsprtUpdate>
+
+@{
+    GetConfig GetConfig = new GetConfig();
+    string PassportRenewalStatus = "";
+    string PassportStatus = "";
+}
 <div class="modal-body">
     <table class="table table-hover" style="font-size: 11px;" cellspacing="0" border="0" width="100%">
         <thead>
@@ -8,48 +14,57 @@
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_WorkerName)</th>
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_NewPrmtPsprtNo)</th>
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_NewPrmtPsrtEndDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">New Passport Start Date</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Pasport Renewal Status</th>
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_OldPrmtPsprtNo)</th>
-                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">@Html.DisplayNameFor(model => model.fld_OldPrmtPsrtEndDT)</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Old Passport Start Date</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Old Passport End Date</th>
+                <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Old Passport Status</th>
                 <th bgcolor="#aed6f1" style="color:white;text-align:center;vertical-align:middle !important;border:1px solid black;color:black;" border="1">Action</th>
             </tr>
         </thead>
+
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.OrderBy(x=>x.fld_CreatedDT))
             {
-                <tr>
-                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerNo)</td>
-                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
-                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
-                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_NewPrmtPsprtNo)</td>
-                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_NewPrmtPsrtEndDT)</td>
-                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_OldPrmtPsprtNo)</td>
-                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_OldPrmtPsrtEndDT)</td>
-                    <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
-                        @if (item.fld_Deleted == false)
-                        {
-                            @*if (item.fld_FomemaResult == false)
-                                {
-                                    @Html.ActionLink("Cancel", "CancelLabourFomema", new { id = item.fld_ID })
-                                    <br />
-                                    @Html.ActionLink("Flight Ticket", "TicketRequestRegister", "LabourTicketRequest", new { id = item.fld_LbrRefID }, null)
-                                }
-                                else
-                                {
-                                    @Html.ActionLink("Cancel", "CancelLabourFomema", new { id = item.fld_ID })
-                                    <br />
-                                    @Html.ActionLink("Update Permit", "TKAFullInformation", "LabourDetail", new { id = item.fld_LbrRefID }, null)
-                                }*@
-                        }
-                        else
-                        {
-                        }
-                    </td>
-                </tr>
+                PassportRenewalStatus = GetConfig.GetWebConfigDesc(item.fld_PassportRenewalStatus, "passportrenewalstatus", item.fld_NegaraID, item.fld_SyarikatID);
+                string OldPassportStatus = "Expired";
+                if (item.fld_Deleted == false)
+                {
+                    OldPassportStatus = "Valid";
+                }
+                else
+                {
+                    OldPassportStatus = "Expired";
+                }
+
+            <tr>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerNo)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerIDNo)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_WorkerName)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_NewPrmtPsprtNo)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_NewPrmtPsrtEndDT)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_PassportRenewalStartDate)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@PassportRenewalStatus</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@Html.DisplayFor(modelItem => item.fld_OldPrmtPsprtNo)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_PassportStartDT)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@string.Format("{0:dd/MM/yyyy}", item.fld_OldPrmtPsrtEndDT)</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">@OldPassportStatus</td>
+                <td align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">
+                @if (OldPassportStatus == "Expired")
+                {
+                }
+                else
+                {
+                    @Html.ActionLink("Edit Passport", "PassportEdit", "LabourPrmtPsprt", new { id = item.fld_LbrRefID, fld_id = item.fld_ID }, null)
+                }
+                </td>                
+            </tr>
             }
             @if (!Model.Any())
             {
                 <tr>
-                    <td colspan="8" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">No Data</td>
+                    <td colspan="12" align="center" style="vertical-align:middle !important;border:1px solid black;" border="1">No Data</td>
                 </tr>
             }
         </tbody>

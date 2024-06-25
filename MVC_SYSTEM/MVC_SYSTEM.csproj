@@ -2361,6 +2361,8 @@
     <Content Include="Views\LabourOnLeave\_LabourOnLeave.cshtml" />
     <Content Include="Views\LabourPrmtPsprt\_LabourPrmtPsprt.cshtml" />
     <Content Include="Views\LabourSickDeath\_LabourSickDeath.cshtml" />
+    <Content Include="Views\LabourPrmtPsprt\PassportEdit.cshtml" />
+    <Content Include="Views\LabourPrmtPsprt\PermitEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Asset\Upload\120\" />

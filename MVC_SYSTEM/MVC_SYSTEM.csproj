@@ -339,6 +339,7 @@
     <Compile Include="CustomModels\CustMod_NewRequestIncrement.cs" />
     <Compile Include="CustomModels\CustMod_NNActCode.cs" />
     <Compile Include="CustomModels\CustMod_Peringkat.cs" />
+    <Compile Include="CustomModels\CustMod_PermitPassport.cs" />
     <Compile Include="CustomModels\CustMod_PktOthr.cs" />
     <Compile Include="CustomModels\CustMod_ReturnJson.cs" />
     <Compile Include="CustomModels\CustMod_ReturnJsonToView.cs" />

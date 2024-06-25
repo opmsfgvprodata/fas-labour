@@ -69,7 +69,7 @@ namespace MVC_SYSTEM.Controllers
             List<SelectListItem> fld_WilayahID = new List<SelectListItem>();
             List<SelectListItem> fld_LadangID = new List<SelectListItem>();
             int? GetWilayahID = 0;
-
+            int? roleid = GetIdentity.RoleID(GetUserID);
             int Month = DT.AddMonths(-1).Month;
             int Year = DT.Year - int.Parse(GetConfig.GetData("yeardisplay")) + 1;
             int RangeYear = DT.Year + 1;
@@ -432,7 +432,7 @@ namespace MVC_SYSTEM.Controllers
             List<SelectListItem> fld_WilayahID = new List<SelectListItem>();
             List<SelectListItem> fld_LadangID = new List<SelectListItem>();
             int? GetWilayahID = 0;
-
+            int? roleid = GetIdentity.RoleID(GetUserID);
             int Month = DT.AddMonths(-1).Month;
             int Year = DT.Year - int.Parse(GetConfig.GetData("yeardisplay")) + 1;
             int RangeYear = DT.Year + 1;
@@ -599,7 +599,7 @@ namespace MVC_SYSTEM.Controllers
                     {
                         LbrDataInfo = db.tbl_LbrDataInfo.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahIDList && (x.fld_PermitEndDT >= StartDate1 && x.fld_PermitEndDT <= EndDate1) && x.fld_Absconded == "no" && x.fld_EndContract == "no" && x.fld_SickDeath == "no" && x.fld_Nationality != "MA").OrderBy(x => x.fld_WorkerNo).ToList();
                     }
-                    else
+                    else //fashqadmin
                     {
                         LbrDataInfo = db.tbl_LbrDataInfo.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahIDList && x.fld_LadangID == LadangIDList && (x.fld_PermitEndDT >= StartDate1 && x.fld_PermitEndDT <= EndDate1) && x.fld_Nationality != "MA" && x.fld_Absconded == "no" && x.fld_EndContract == "no" && x.fld_SickDeath == "no").OrderBy(x => x.fld_WorkerNo).ToList();
                     }
@@ -671,6 +671,66 @@ namespace MVC_SYSTEM.Controllers
             }
 
 
+            //Added by Shazana 21/6/2024
+
+            //Added by Shazana on 28/10
+            else if (WilayahID != 0 && LadangID != 0 && RadioGroup == 0 && roleid == 7) //permit
+            {
+
+                if (string.IsNullOrEmpty(FreeText) && LadangIDList !=0 && WilayahIDList != 0)
+                {
+                    if (WilayahIDList != 0 && LadangIDList != 0)
+                    {
+                        LbrDataInfo = db.tbl_LbrDataInfo.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahIDList && x.fld_LadangID== LadangIDList && (x.fld_PermitEndDT >= StartDate1 && x.fld_PermitEndDT <= EndDate1) && x.fld_Absconded == "no" && x.fld_EndContract == "no" && x.fld_SickDeath == "no" && x.fld_Nationality != "MA").OrderBy(x => x.fld_WorkerNo).ToList();
+                    }
+                  
+                }
+                else if (FreeText != "" && LadangIDList != 0 && WilayahIDList != 0)
+                {
+                    LbrDataInfo = db.tbl_LbrDataInfo.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Nationality != "MA" && x.fld_Absconded == "no" && x.fld_EndContract == "no" && x.fld_SickDeath == "no" && (x.fld_PermitEndDT >= StartDate1 && x.fld_PermitEndDT <= EndDate1) && (x.fld_WorkerIDNo.Contains(FreeText) || x.fld_WorkerName.Contains(FreeText) || x.fld_WorkerNo.Contains(FreeText)) && x.fld_WilayahID == WilayahIDList && x.fld_LadangID == LadangIDList).OrderBy(x => x.fld_WorkerNo).ToList();
+                }
+
+
+            }
+
+            else if (WilayahID != 0 && LadangID != 0 && RadioGroup == 1 && roleid == 7)  //Filter by passport
+            {
+
+                if (string.IsNullOrEmpty(FreeText))
+                {
+                    if (WilayahIDList != 0 && LadangIDList != 0)
+                    {
+                        LbrDataInfo = db.tbl_LbrDataInfo.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahIDList && x.fld_LadangID == LadangIDList && (x.fld_PassportEndDT >= StartDate1 && x.fld_PassportEndDT <= EndDate1) && x.fld_Nationality != "MA" && x.fld_Absconded == "no" && x.fld_EndContract == "no" && x.fld_SickDeath == "no").OrderBy(x => x.fld_WorkerNo).ToList();
+                    }
+                  
+                }
+                else if (FreeText != "" && WilayahID != 0  && LadangID != 0)
+                {
+                    LbrDataInfo = db.tbl_LbrDataInfo.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahIDList && x.fld_LadangID == LadangIDList && x.fld_Nationality != "MA" && x.fld_Absconded == "no" && x.fld_EndContract == "no" && x.fld_SickDeath == "no" && (x.fld_PassportEndDT >= StartDate1 && x.fld_PassportEndDT <= EndDate1) && (x.fld_WorkerIDNo.Contains(FreeText) || x.fld_WorkerName.Contains(FreeText) || x.fld_WorkerNo.Contains(FreeText))).OrderBy(x => x.fld_WorkerNo).ToList();
+                }
+
+
+            }
+
+            else if (WilayahID != 0 && LadangID != 0 && RadioGroup == 2 && roleid == 7)  //Filter by passport and permit
+            {
+
+                if (string.IsNullOrEmpty(FreeText))
+                {
+                    if (WilayahIDList != 0 && LadangIDList != 0)
+                    {
+
+                        LbrDataInfo = db.tbl_LbrDataInfo.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahIDList && x.fld_LadangID == LadangIDList && (x.fld_PermitEndDT >= StartDate1 && x.fld_PermitEndDT <= EndDate1) && (x.fld_PassportEndDT >= StartDate1 && x.fld_PassportEndDT <= EndDate1) && x.fld_Nationality != "MA" && x.fld_Absconded == "no" && x.fld_EndContract == "no" && x.fld_SickDeath == "no").OrderBy(x => x.fld_WorkerNo).ToList();
+
+
+                    }
+                }
+                else if(FreeText != "" && WilayahIDList != 0 && LadangIDList != 0)
+                {
+                    LbrDataInfo = db.tbl_LbrDataInfo.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahIDList && x.fld_LadangID == LadangIDList && x.fld_Nationality != "MA" && x.fld_Absconded == "no" && x.fld_EndContract == "no" && x.fld_SickDeath == "no" && (x.fld_PermitEndDT >= StartDate1 && x.fld_PermitEndDT <= EndDate1) && (x.fld_PassportEndDT >= StartDate1 && x.fld_PassportEndDT <= EndDate1) && (x.fld_WorkerIDNo.Contains(FreeText) || x.fld_WorkerName.Contains(FreeText) || x.fld_WorkerNo.Contains(FreeText))).OrderBy(x => x.fld_WorkerNo).ToList();
+                }
+
+            }
             //else
             //{
             //    if (string.IsNullOrEmpty(FreeText))

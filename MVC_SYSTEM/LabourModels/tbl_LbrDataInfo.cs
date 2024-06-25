@@ -232,11 +232,24 @@ namespace MVC_SYSTEM.LabourModels
 
         public string fld_PassportStatus { get; set; }
         public string fld_PassportRenewalStatus { get; set; }
+
+        [Column(TypeName = "date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? fld_PassportRenewalStartDate { get; set; }
         public string fld_PermitStatus { get; set; }
+
         public string fld_PermitRenewalStatus { get; set; }
+
+        [Column(TypeName = "date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? fld_PermitRenewalStartDate { get; set; }
+
+        [Column(TypeName = "date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? fld_ContractStartDate { get; set; }
+
+        [Column(TypeName = "date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? fld_ContractExpiryDate { get; set; }
 
         internal Task<tbl_LbrDataInfo> FirstOrDefaultAsync()

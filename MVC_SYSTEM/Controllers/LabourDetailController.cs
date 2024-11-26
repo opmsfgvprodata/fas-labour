@@ -586,6 +586,10 @@ namespace MVC_SYSTEM.Controllers
                 PermitRenewalStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "" }));
             }
 
+            PassportPermitStatusPermit.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "" }));
+            PassportPermitStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "" }));
+
+
             ViewBag.fld_State = fld_State;
             ViewBag.fld_Country = fld_Country;
             ViewBag.fld_SexType = fld_SexType;
@@ -610,6 +614,8 @@ namespace MVC_SYSTEM.Controllers
             ViewBag.fld_PassportStatus = PassportPermitStatus;
             ViewBag.fld_Roc = fld_Roc;
             ViewBag.fld_BankCode = fld_BankCode;
+
+
 
             return View(tbl_LbrDataInfo);
         }
@@ -808,6 +814,10 @@ namespace MVC_SYSTEM.Controllers
                 }
                 PassportPermitStatus = new SelectList(GetDropdownList.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrDataInfo.fld_PassportStatus).ToList();
                 PassportPermitStatusPermit = new SelectList(GetDropdownList.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrDataInfo.fld_PermitStatus).ToList();
+
+                PassportPermitStatusPermit.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "" }));
+                PassportPermitStatus.Insert(0, (new SelectListItem { Text = GlobalResEstate.lblChoose, Value = "" }));
+
 
                 ViewBag.fld_State = fld_State;
                 ViewBag.fld_Country = fld_Country;

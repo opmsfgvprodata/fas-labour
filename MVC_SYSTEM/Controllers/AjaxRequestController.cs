@@ -536,38 +536,49 @@ namespace MVC_SYSTEM.Controllers
                 {
                     DateDiff umurPekerja = new DateDiff(Convert.ToDateTime(app2.fld_Trlhr).AddDays(-1), lastDay);
 
+                    //Commented by Shazana 28/8/2024
+                    //if (app2 != null)
+                    //{
+                    //    app2.fld_StatusKwspSocso = "2";
+                    //    dbr.SaveChanges();
+                    //}
+
+                    //Added by Shazana 28/8/2024
+                    var jnsSocso = tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "kodCarumanSocso" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).Select(s => s.fldOptConfValue).FirstOrDefault();
+                    var kodSocso = Masterdb.tbl_JenisCaruman.Where(x => x.fld_UmurLower <= umurPekerja.Years && x.fld_UmurUpper >= umurPekerja.Years && x.fld_JenisCaruman == jnsSocso && x.fld_Default == true).Select(s => s.fld_KodCaruman).FirstOrDefault();
+
                     if (app2 != null)
                     {
-                        app2.fld_StatusKwspSocso = "2";
+                        app2.fld_KodSocso = kodSocso;
+                        app2.fld_StatusKwspSocso = "1";
                         dbr.SaveChanges();
                     }
-
-                    var activeContributionCategoryData = Masterdb.tbl_CarumanTambahan.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Deleted == false && x.fld_Default == true && x.fld_Warganegara == 2).ToList();
-
-                    foreach (var activeContribution in activeContributionCategoryData)
-                    {
-                        var activeSubContributionCategoryData = Masterdb.tbl_SubCarumanTambahan.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Deleted == false && x.fld_KodCaruman == activeContribution.fld_KodCaruman);
-                        foreach (var activeSubContribution in activeSubContributionCategoryData)
-                        {
-                            if (activeSubContribution.fld_UmurLower <= umurPekerja.Years && activeSubContribution.fld_UmurUpper >= umurPekerja.Years)
-                            {
-                                if (!dbr.tbl_PkjCarumanTambahan.Any(x => x.fld_Nopkj == NoPkj && x.fld_KodCaruman == activeContribution.fld_KodCaruman && x.fld_KodSubCaruman == activeSubContribution.fld_KodSubCaruman && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahID && x.fld_LadangID == LadangID && x.fld_Deleted == false))
-                                {
-                                    tbl_PkjCarumanTambahan pkjCarumanTambahan = new tbl_PkjCarumanTambahan();
-                                    pkjCarumanTambahan.fld_Nopkj = NoPkj;
-                                    pkjCarumanTambahan.fld_KodCaruman = activeContribution.fld_KodCaruman;
-                                    pkjCarumanTambahan.fld_KodSubCaruman = activeSubContribution.fld_KodSubCaruman;
-                                    pkjCarumanTambahan.fld_NegaraID = NegaraID;
-                                    pkjCarumanTambahan.fld_SyarikatID = SyarikatID;
-                                    pkjCarumanTambahan.fld_WilayahID = WilayahID;
-                                    pkjCarumanTambahan.fld_LadangID = LadangID;
-                                    pkjCarumanTambahan.fld_Deleted = false;
-                                    dbr.tbl_PkjCarumanTambahan.Add(pkjCarumanTambahan);
-                                    dbr.SaveChanges();
-                                }
-                            }
-                        }
-                    }
+                    //var activeContributionCategoryData = Masterdb.tbl_CarumanTambahan.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Deleted == false && x.fld_Default == true && x.fld_Warganegara == 2).ToList();
+                    ////Commented by Shazana 28/8/2024 -stop assign SBKP
+                    //foreach (var activeContribution in activeContributionCategoryData)
+                    //{
+                    //    var activeSubContributionCategoryData = Masterdb.tbl_SubCarumanTambahan.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Deleted == false && x.fld_KodCaruman == activeContribution.fld_KodCaruman);
+                    //    foreach (var activeSubContribution in activeSubContributionCategoryData)
+                    //    {
+                    //        if (activeSubContribution.fld_UmurLower <= umurPekerja.Years && activeSubContribution.fld_UmurUpper >= umurPekerja.Years)
+                    //        {
+                    //            if (!dbr.tbl_PkjCarumanTambahan.Any(x => x.fld_Nopkj == NoPkj && x.fld_KodCaruman == activeContribution.fld_KodCaruman && x.fld_KodSubCaruman == activeSubContribution.fld_KodSubCaruman && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahID && x.fld_LadangID == LadangID && x.fld_Deleted == false))
+                    //            {
+                    //                tbl_PkjCarumanTambahan pkjCarumanTambahan = new tbl_PkjCarumanTambahan();
+                    //                pkjCarumanTambahan.fld_Nopkj = NoPkj;
+                    //                pkjCarumanTambahan.fld_KodCaruman = activeContribution.fld_KodCaruman;
+                    //                pkjCarumanTambahan.fld_KodSubCaruman = activeSubContribution.fld_KodSubCaruman;
+                    //                pkjCarumanTambahan.fld_NegaraID = NegaraID;
+                    //                pkjCarumanTambahan.fld_SyarikatID = SyarikatID;
+                    //                pkjCarumanTambahan.fld_WilayahID = WilayahID;
+                    //                pkjCarumanTambahan.fld_LadangID = LadangID;
+                    //                pkjCarumanTambahan.fld_Deleted = false;
+                    //                dbr.tbl_PkjCarumanTambahan.Add(pkjCarumanTambahan);
+                    //                dbr.SaveChanges();
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
                 else if (app2.fld_Kdrkyt == "MA")
                 {
@@ -670,38 +681,51 @@ namespace MVC_SYSTEM.Controllers
                 {
                     DateDiff umurPekerja = new DateDiff(Convert.ToDateTime(app2.fld_Trlhr).AddDays(-1), lastDay);
 
+                    //Added by Shazana 28/8/2024
+                    var jnsSocso = tblOptionConfigsWebs.Where(x => x.fldOptConfFlag1 == "kodCarumanSocso" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).Select(s => s.fldOptConfValue).FirstOrDefault();
+                    var kodSocso = Masterdb.tbl_JenisCaruman.Where(x => x.fld_UmurLower <= umurPekerja.Years && x.fld_UmurUpper >= umurPekerja.Years && x.fld_JenisCaruman == jnsSocso && x.fld_Default == true).Select(s => s.fld_KodCaruman).FirstOrDefault();
+
                     if (app2 != null)
                     {
-                        app2.fld_StatusKwspSocso = "2";
+                        app2.fld_KodSocso = kodSocso;
+                        app2.fld_StatusKwspSocso = "1";
                         dbr.SaveChanges();
                     }
 
-                    var activeContributionCategoryData = Masterdb.tbl_CarumanTambahan.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Deleted == false && x.fld_Default == true && x.fld_Warganegara == 2).ToList();
 
-                    foreach (var activeContribution in activeContributionCategoryData)
-                    {
-                        var activeSubContributionCategoryData = Masterdb.tbl_SubCarumanTambahan.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Deleted == false && x.fld_KodCaruman == activeContribution.fld_KodCaruman);
-                        foreach (var activeSubContribution in activeSubContributionCategoryData)
-                        {
-                            if (activeSubContribution.fld_UmurLower <= umurPekerja.Years && activeSubContribution.fld_UmurUpper >= umurPekerja.Years)
-                            {
-                                if (!dbr.tbl_PkjCarumanTambahan.Any(x => x.fld_Nopkj == NoPkj && x.fld_KodCaruman == activeContribution.fld_KodCaruman && x.fld_KodSubCaruman == activeSubContribution.fld_KodSubCaruman && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahID && x.fld_LadangID == LadangID && x.fld_Deleted == false))
-                                {
-                                    tbl_PkjCarumanTambahan pkjCarumanTambahan = new tbl_PkjCarumanTambahan();
-                                    pkjCarumanTambahan.fld_Nopkj = NoPkj;
-                                    pkjCarumanTambahan.fld_KodCaruman = activeContribution.fld_KodCaruman;
-                                    pkjCarumanTambahan.fld_KodSubCaruman = activeSubContribution.fld_KodSubCaruman;
-                                    pkjCarumanTambahan.fld_NegaraID = NegaraID;
-                                    pkjCarumanTambahan.fld_SyarikatID = SyarikatID;
-                                    pkjCarumanTambahan.fld_WilayahID = WilayahID;
-                                    pkjCarumanTambahan.fld_LadangID = LadangID;
-                                    pkjCarumanTambahan.fld_Deleted = false;
-                                    dbr.tbl_PkjCarumanTambahan.Add(pkjCarumanTambahan);
-                                    dbr.SaveChanges();
-                                }
-                            }
-                        }
-                    }
+                    //Commented by Shazana 28/8/2024
+                    //if (app2 != null)
+                    //{
+                    //    app2.fld_StatusKwspSocso = "2";
+                    //    dbr.SaveChanges();
+                    //}
+
+                    //var activeContributionCategoryData = Masterdb.tbl_CarumanTambahan.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Deleted == false && x.fld_Default == true && x.fld_Warganegara == 2).ToList();
+
+                    //foreach (var activeContribution in activeContributionCategoryData)
+                    //{
+                    //    var activeSubContributionCategoryData = Masterdb.tbl_SubCarumanTambahan.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Deleted == false && x.fld_KodCaruman == activeContribution.fld_KodCaruman);
+                    //    foreach (var activeSubContribution in activeSubContributionCategoryData)
+                    //    {
+                    //        if (activeSubContribution.fld_UmurLower <= umurPekerja.Years && activeSubContribution.fld_UmurUpper >= umurPekerja.Years)
+                    //        {
+                    //            if (!dbr.tbl_PkjCarumanTambahan.Any(x => x.fld_Nopkj == NoPkj && x.fld_KodCaruman == activeContribution.fld_KodCaruman && x.fld_KodSubCaruman == activeSubContribution.fld_KodSubCaruman && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_WilayahID == WilayahID && x.fld_LadangID == LadangID && x.fld_Deleted == false))
+                    //            {
+                    //                tbl_PkjCarumanTambahan pkjCarumanTambahan = new tbl_PkjCarumanTambahan();
+                    //                pkjCarumanTambahan.fld_Nopkj = NoPkj;
+                    //                pkjCarumanTambahan.fld_KodCaruman = activeContribution.fld_KodCaruman;
+                    //                pkjCarumanTambahan.fld_KodSubCaruman = activeSubContribution.fld_KodSubCaruman;
+                    //                pkjCarumanTambahan.fld_NegaraID = NegaraID;
+                    //                pkjCarumanTambahan.fld_SyarikatID = SyarikatID;
+                    //                pkjCarumanTambahan.fld_WilayahID = WilayahID;
+                    //                pkjCarumanTambahan.fld_LadangID = LadangID;
+                    //                pkjCarumanTambahan.fld_Deleted = false;
+                    //                dbr.tbl_PkjCarumanTambahan.Add(pkjCarumanTambahan);
+                    //                dbr.SaveChanges();
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
                 else if (app2.fld_Kdrkyt == "MA")
                 {

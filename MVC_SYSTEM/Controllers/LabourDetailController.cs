@@ -555,7 +555,7 @@ namespace MVC_SYSTEM.Controllers
 
             //Added by Shazana 29/3/2024
             PassportPermitStatus = new SelectList(GetDropdownList.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrDataInfo.fld_PassportStatus).ToList();
-            PassportPermitStatusPermit = new SelectList(GetDropdownList.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text").ToList();
+            PassportPermitStatusPermit = new SelectList(GetDropdownList.Where(x => x.fldOptConfFlag1 == "passportpermitstatus" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc }).Distinct(), "Value", "Text", tbl_LbrDataInfo.fld_PermitStatus).ToList();
             fld_Roc = new SelectList(GetDropdownList.Where(x => x.fldOptConfFlag1 == "roc" && x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fldDeleted == false).OrderBy(o => o.fldOptConfValue).Select(s => new SelectListItem { Value = s.fldOptConfValue, Text = s.fldOptConfDesc.ToUpper() }).Distinct(), "Value", "Text", tbl_LbrDataInfo.fld_Roc).ToList();
             fld_BankCode = new SelectList(Masterdb.tbl_Bank.Where(x => x.fld_NegaraID == NegaraID && x.fld_SyarikatID == SyarikatID && x.fld_Deleted == false).OrderBy(o => o.fld_KodBank).Select(s => new SelectListItem { Value = s.fld_KodBank, Text = s.fld_NamaBank.ToUpper() }), "Value", "Text", tbl_LbrDataInfo.fld_BankCode).ToList();
 
@@ -1015,7 +1015,17 @@ namespace MVC_SYSTEM.Controllers
                 tbl_Pkjmast.fld_PaymentMode = tbl_LbrDataInfo.fld_PaymentMode;
                 tbl_Pkjmast.fld_Last4Pan = tbl_LbrDataInfo.fld_Last4Pan;
 
-
+                //Added by Shazana 6/12/2024
+                tbl_Pkjmast.fld_PassportStatus = tbl_LbrDataInfo.fld_PassportStatus;
+                tbl_Pkjmast.fld_PermitStatus = tbl_LbrDataInfo.fld_PermitStatus;
+                tbl_Pkjmast.fld_T1prmt = tbl_LbrDataInfo.fld_PermitStartDT;
+                tbl_Pkjmast.fld_T1pspt = tbl_LbrDataInfo.fld_PassportStartDT;
+                tbl_Pkjmast.fld_ContractStartDate = tbl_LbrDataInfo.fld_ContractStartDate;
+                tbl_Pkjmast.fld_ContractExpiryDate = tbl_LbrDataInfo.fld_ContractExpiryDate;
+                tbl_Pkjmast.fld_PassportRenewalStatus = tbl_LbrDataInfo.fld_PassportRenewalStatus;
+                tbl_Pkjmast.fld_PassportRenewalStartDate = tbl_LbrDataInfo.fld_PassportRenewalStartDate;
+                tbl_Pkjmast.fld_PermitRenewalStatus = tbl_LbrDataInfo.fld_PermitRenewalStatus;
+                tbl_Pkjmast.fld_PermitRenewalStartDate = tbl_LbrDataInfo.fld_PermitRenewalStartDate;
                 dbEstate.Entry(tbl_Pkjmast).State = EntityState.Modified;
                 dbEstate.SaveChanges();
                 Result = true;

@@ -209,5 +209,13 @@ namespace MVC_SYSTEM.EstateModels
         [StringLength(4)]
         public string fld_Last4Pan { get; set; }
 
+        public string fld_PermitStatus { get; set; }
+        public string fld_PassportStatus { get; set; }
+        public DateTime? fld_ContractStartDate { get; set; }
+        public DateTime? fld_ContractExpiryDate { get; set; }
+        public string fld_PassportRenewalStatus { get; set; }
+        public DateTime? fld_PassportRenewalStartDate { get; set; }
+        public DateTime? fld_PermitRenewalStartDate { get; set; }
+        public string fld_PermitRenewalStatus { get; set; }
     }
 }
